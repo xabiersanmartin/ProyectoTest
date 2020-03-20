@@ -16,5 +16,10 @@ namespace CapaPresentacion
         {
             InitializeComponent();
         }
+
+        private void FrmBorrarCategoria_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

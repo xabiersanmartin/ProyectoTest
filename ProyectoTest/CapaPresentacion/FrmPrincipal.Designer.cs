@@ -28,49 +28,52 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnAnadirC = new System.Windows.Forms.Button();
+            this.btnBorrarC = new System.Windows.Forms.Button();
+            this.btnModificarC = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button1
+            // btnAnadirC
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(65, 191);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(123, 57);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Añadir Categoria";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnAnadirC.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAnadirC.Location = new System.Drawing.Point(65, 191);
+            this.btnAnadirC.Name = "btnAnadirC";
+            this.btnAnadirC.Size = new System.Drawing.Size(123, 57);
+            this.btnAnadirC.TabIndex = 1;
+            this.btnAnadirC.Text = "Añadir Categoria";
+            this.btnAnadirC.UseVisualStyleBackColor = true;
+            this.btnAnadirC.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // btnBorrarC
             // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(344, 191);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(117, 57);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Borrar Categoria";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnBorrarC.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBorrarC.Location = new System.Drawing.Point(344, 191);
+            this.btnBorrarC.Name = "btnBorrarC";
+            this.btnBorrarC.Size = new System.Drawing.Size(117, 57);
+            this.btnBorrarC.TabIndex = 2;
+            this.btnBorrarC.Text = "Borrar Categoria";
+            this.btnBorrarC.UseVisualStyleBackColor = true;
+            this.btnBorrarC.Click += new System.EventHandler(this.btnBorrarC_Click);
             // 
-            // button3
+            // btnModificarC
             // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(620, 191);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(114, 57);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Modificar Categoria";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnModificarC.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnModificarC.Location = new System.Drawing.Point(620, 191);
+            this.btnModificarC.Name = "btnModificarC";
+            this.btnModificarC.Size = new System.Drawing.Size(114, 57);
+            this.btnModificarC.TabIndex = 3;
+            this.btnModificarC.Text = "Modificar Categoria";
+            this.btnModificarC.UseVisualStyleBackColor = true;
+            this.btnModificarC.Click += new System.EventHandler(this.btnModificarC_Click);
             // 
             // FrmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnModificarC);
+            this.Controls.Add(this.btnBorrarC);
+            this.Controls.Add(this.btnAnadirC);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "FrmPrincipal";
             this.Text = "Formulario Principal";
@@ -80,9 +83,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnAnadirC;
+        private System.Windows.Forms.Button btnBorrarC;
+        private System.Windows.Forms.Button btnModificarC;
     }
 }
 
