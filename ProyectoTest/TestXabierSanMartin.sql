@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 CREATE DATABASE TestXabierSanMartin
 
 USE [TestXabierSanMartin]
@@ -63,70 +62,18 @@ CREATE TABLE [dbo].[Test](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-=======
-Create database TestXabierSanMartin
-
-USE [TestXabierSanMartin]
-
-CREATE TABLE [dbo].[Categorias](
-			[IdCategoria] [int] NOT NULL,
-			[Descripcion] [nvarchar](100) NOT NULL,
-
-CONSTRAINT [PK_TCategorias] PRIMARY KEY CLUSTERED 
-(
-	[IdCategoria] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-CREATE TABLE [dbo].[Test](
-			[IdTest] [int] NOT NULL,
-			[Descripcion] [nvarchar](100) NOT NULL,
-
-CONSTRAINT [PK_TTest] PRIMARY KEY CLUSTERED 
-(
-	[IdTest] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-CREATE TABLE [dbo].[Preguntas](
-			[Npregunta] [int] NOT NULL,
-			[Enunciado] [nvarchar](100) NOT NULL,
-			[RespV] [bit] NOT NULL,
-			[IdTest] [int] NOT NULL
-)
-
-
-CREATE TABLE [dbo].[CategoriasTests](
-			[IdCategoria] [int] NOT NULL,
-			[IdTest] [int] NOT NULL,
-
-CONSTRAINT [PK_TCategoriasTests] PRIMARY KEY CLUSTERED 
-(
-	[IdCategoria] ASC,
-	[IdTest] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
->>>>>>> 6c09003b0c8d2edd31e6e1cecf5f8ede43dcdddb
 
 ALTER TABLE [dbo].[CategoriasTests]  WITH CHECK ADD  CONSTRAINT [FK_CategoriasTests_Categorias] FOREIGN KEY([IdCategoria])
 REFERENCES [dbo].[Categorias] ([IdCategoria])
 ON UPDATE CASCADE
 ON DELETE CASCADE
-<<<<<<< HEAD
 GO
 ALTER TABLE [dbo].[CategoriasTests] CHECK CONSTRAINT [FK_CategoriasTests_Categorias]
 GO
-=======
-
-ALTER TABLE [dbo].[CategoriasTests] CHECK CONSTRAINT [FK_CategoriasTests_Categorias]
-
->>>>>>> 6c09003b0c8d2edd31e6e1cecf5f8ede43dcdddb
 ALTER TABLE [dbo].[CategoriasTests]  WITH CHECK ADD  CONSTRAINT [FK_CategoriasTests_Test] FOREIGN KEY([IdTest])
 REFERENCES [dbo].[Test] ([IdTest])
 ON UPDATE CASCADE
 ON DELETE CASCADE
-<<<<<<< HEAD
 GO
 ALTER TABLE [dbo].[CategoriasTests] CHECK CONSTRAINT [FK_CategoriasTests_Test]
 GO
@@ -166,18 +113,6 @@ INSERT [dbo].[Preguntas] ([IdPregunta], [Npregunta], [Enunciado], [RespV], [IdTe
 INSERT [dbo].[Preguntas] ([IdPregunta], [Npregunta], [Enunciado], [RespV], [IdTest]) VALUES (108, 9, N'Al final de la guerra cayeron dos bombas atomicas a Nagasaki y Osaka?', 1, 2)
 INSERT [dbo].[Preguntas] ([IdPregunta], [Npregunta], [Enunciado], [RespV], [IdTest]) VALUES (109, 10, N'La noche estrellada fue pintada por Pablo Picasso?', 0, 6)
 
-
-
-=======
-
-ALTER TABLE [dbo].[CategoriasTests] CHECK CONSTRAINT [FK_CategoriasTests_Test]
-
-
-
-ALTER TABLE [dbo].[Preguntas] WITH CHECK ADD CONSTRAINT [FK_TPreguntas_TTest] FOREIGN KEY([IdTest])
-REFERENCES [dbo].[Test] ([IdTest])
-
->>>>>>> 6c09003b0c8d2edd31e6e1cecf5f8ede43dcdddb
 
 
 
