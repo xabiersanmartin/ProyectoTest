@@ -8,7 +8,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Categorias](
-	[IdCategoria] [int] NOT NULL,
+	[IdCategoria] [int] NOT NULL IDENTITY,
 	[Descripcion] [nvarchar](100) NOT NULL,
  CONSTRAINT [PK_TCategorias] PRIMARY KEY CLUSTERED 
 (
@@ -83,10 +83,12 @@ GO
 ALTER TABLE [dbo].[Preguntas] CHECK CONSTRAINT [FK_TPreguntas_TTest]
 GO
 
-INSERT [dbo].[Categorias] ([IdCategoria], [Descripcion]) VALUES (1, N'Deporte')
-INSERT [dbo].[Categorias] ([IdCategoria], [Descripcion]) VALUES (2, N'Historia')
-INSERT [dbo].[Categorias] ([IdCategoria], [Descripcion]) VALUES (3, N'Geografia')
-INSERT [dbo].[Categorias] ([IdCategoria], [Descripcion]) VALUES (4, N'Literatura')
+SET IDENTITY_INSERT dbo.Categorias ON; 
+
+INSERT [dbo].[Categorias] ([Descripcion]) VALUES (N'Deporte')
+INSERT [dbo].[Categorias] ([Descripcion]) VALUES (N'Historia')
+INSERT [dbo].[Categorias] ([Descripcion]) VALUES (N'Geografia')
+INSERT [dbo].[Categorias] ([Descripcion]) VALUES (N'Literatura')
 
 INSERT [dbo].[Test] ([IdTest], [Descripcion]) VALUES (1, N'Futbol')
 INSERT [dbo].[Test] ([IdTest], [Descripcion]) VALUES (2, N'II Guerra Mundial')
