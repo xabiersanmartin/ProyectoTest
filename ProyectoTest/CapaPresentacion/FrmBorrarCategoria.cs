@@ -47,7 +47,14 @@ namespace CapaPresentacion
 
             //Cargamos la lista de nuevo para que salga bien al seleccionar el combobox de nuevo
             List<string> list = Program.gestor.DevolverCategorias();
-            
+            if (list == null)
+            {
+                MessageBox.Show("Has eliminado todas las categorias");
+                cboCategorias.Items.Clear();
+                cboCategorias.Text = "";
+                return;
+            }
+
             MessageBox.Show(mensaje);
 
             cboCategorias.Items.Clear();
@@ -72,6 +79,7 @@ namespace CapaPresentacion
                 MessageBox.Show(mensaje);
                 list = Program.gestor.DevolverCategorias();
                 cboCategorias.Items.Clear();
+                cboCategorias.Text = "";
             }
             else
             {

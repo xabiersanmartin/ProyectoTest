@@ -83,7 +83,6 @@ GO
 ALTER TABLE [dbo].[Preguntas] CHECK CONSTRAINT [FK_TPreguntas_TTest]
 GO
 
-SET IDENTITY_INSERT dbo.Categorias ON; 
 
 INSERT [dbo].[Categorias] ([Descripcion]) VALUES (N'Deporte')
 INSERT [dbo].[Categorias] ([Descripcion]) VALUES (N'Historia')
