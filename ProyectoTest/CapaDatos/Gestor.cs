@@ -223,5 +223,15 @@ namespace CapaDatos
 			}
 			return "Categoria modificada correctamente";
 		}
+
+		public string EliminarTodasCategorias()
+		{
+			string queryEliminarCategorias = "DELETE FROM CATEGORIAS";
+			if (HacerConsulta(queryEliminarCategorias) == "-1")
+			{
+				return error;
+			}
+			return "Todas las categorias se han eliminado con exito";
+		}
 	}
 }

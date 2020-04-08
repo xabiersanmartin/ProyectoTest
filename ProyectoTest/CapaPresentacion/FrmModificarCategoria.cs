@@ -20,6 +20,11 @@ namespace CapaPresentacion
         private void FrmModificarCategoria_Load(object sender, EventArgs e)
         {
             List<string> list = Program.gestor.DevolverCategorias();
+            if (list == null)
+            {
+                MessageBox.Show("No hay categorias que eliminar, debes añadir una antes.");
+                return;
+            }
             cboSeleccionarCat.Items.Clear();
             cboSeleccionarCat.Items.AddRange(list.ToArray());
         }

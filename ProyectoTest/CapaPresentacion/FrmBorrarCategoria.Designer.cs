@@ -32,6 +32,7 @@
             this.cboCategorias = new System.Windows.Forms.ComboBox();
             this.btnEliminar = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnBorrarTodo = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -53,7 +54,7 @@
             // 
             // btnEliminar
             // 
-            this.btnEliminar.Location = new System.Drawing.Point(296, 279);
+            this.btnEliminar.Location = new System.Drawing.Point(370, 254);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(111, 49);
             this.btnEliminar.TabIndex = 2;
@@ -71,11 +72,25 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Borrar Categoria";
             // 
+            // btnBorrarTodo
+            // 
+            this.btnBorrarTodo.BackColor = System.Drawing.Color.Red;
+            this.btnBorrarTodo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBorrarTodo.ForeColor = System.Drawing.Color.Black;
+            this.btnBorrarTodo.Location = new System.Drawing.Point(70, 366);
+            this.btnBorrarTodo.Name = "btnBorrarTodo";
+            this.btnBorrarTodo.Size = new System.Drawing.Size(140, 61);
+            this.btnBorrarTodo.TabIndex = 4;
+            this.btnBorrarTodo.Text = "Borrar todas las categorias";
+            this.btnBorrarTodo.UseVisualStyleBackColor = false;
+            this.btnBorrarTodo.Click += new System.EventHandler(this.btnBorrarTodo_Click);
+            // 
             // FrmBorrarCategoria
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(612, 465);
+            this.ClientSize = new System.Drawing.Size(687, 474);
+            this.Controls.Add(this.btnBorrarTodo);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnEliminar);
             this.Controls.Add(this.cboCategorias);
@@ -96,5 +111,6 @@
         private System.Windows.Forms.ComboBox cboCategorias;
         private System.Windows.Forms.Button btnEliminar;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnBorrarTodo;
     }
 }

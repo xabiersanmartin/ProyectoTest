@@ -21,6 +21,12 @@ namespace CapaPresentacion
         private void FrmBorrarCategoria_Load(object sender, EventArgs e)
         {
             List<string> list = Program.gestor.DevolverCategorias();
+            if (list == null)
+            {
+                MessageBox.Show("No hay categorias que eliminar, debes añadir una antes.");
+                return;
+            }
+            
             cboCategorias.Items.Clear();
             cboCategorias.Items.AddRange(list.ToArray());
             
@@ -48,6 +54,30 @@ namespace CapaPresentacion
             cboCategorias.Items.AddRange(list.ToArray());
             cboCategorias.Text = "";
 
+        }
+
+        private void btnBorrarTodo_Click(object sender, EventArgs e)
+        {
+            List<string> list = Program.gestor.DevolverCategorias();
+            if (list == null)
+            {
+                MessageBox.Show("No puede eliminar categorias sino tienes ninguna");
+                return;
+            }
+
+            DialogResult result = MessageBox.Show("¿Seguro que quieres eliminar todas las categorias?", "ELIMINAR", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                string mensaje = Program.gestor.EliminarCategorias();
+                MessageBox.Show(mensaje);
+                list = Program.gestor.DevolverCategorias();
+                cboCategorias.Items.Clear();
+            }
+            else
+            {
+                MessageBox.Show("No se a eliminado nada.");
+                return;
+            }
         }
     }
 }
