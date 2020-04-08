@@ -49,18 +49,18 @@ namespace CapaPresentacion
 
             if (cboSeleccionarCat.SelectedItem == null)
             {
-                MessageBox.Show("Debes seleccionar uno para poder modificarlo");
+                MessageBox.Show("Debes seleccionar una categoria para poder modificarla");
                 return;
             }
 
-
             string  categoriaModifi = cboSeleccionarCat.SelectedItem as string;
-
-
-            string mensaje = Program.gestor.ModificarCategoria(categoriaModifi, txtModificarCat.Text);
-            
-
+            //La cargamos para enviarsela al gestor para comprobacion de errores.
             List<string> list = Program.gestor.DevolverCategorias();
+
+            string mensaje = Program.gestor.ModificarCategoria(categoriaModifi, txtModificarCat.Text, list);
+            
+            //Cargamos la lista de nuevo para que salga bien al seleccionar el combobox de nuevo
+            list = Program.gestor.DevolverCategorias();
 
             MessageBox.Show(mensaje);
 

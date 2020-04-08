@@ -39,6 +39,7 @@ namespace CapaPresentacion
 
             string mensaje = Program.gestor.BorrarCategoria(borrarCategoria);
 
+            //Cargamos la lista de nuevo para que salga bien al seleccionar el combobox de nuevo
             List<string> list = Program.gestor.DevolverCategorias();
             
             MessageBox.Show(mensaje);

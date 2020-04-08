@@ -53,6 +53,8 @@ namespace CapaDatos
 			}
         }
 
+
+		//Lo llamamos en cada funcion para cerrar la conexión.
 		private bool CloseConnection()
 		{
 			try
@@ -67,6 +69,8 @@ namespace CapaDatos
 			}
 		}
 
+
+		//Funcion para comprobar si existe en la base de datos la categoria que nos pasen.
 		private string ExisteCategoria(string consulta)
 		{
 			List<Categorias> listCat = new List<Categorias>();
@@ -96,6 +100,7 @@ namespace CapaDatos
 			return "0";
 		}
 
+		//Funcion creada para acortar codigo y llamarla directamente al ejecutar una consulta.
 		private String HacerConsulta(string consulta)
 		{
 			if (this.OpenConnection() == true)
@@ -127,10 +132,11 @@ namespace CapaDatos
 			{
 				return "El nombre de la categoria que quieres añadir no puede estar vacio.";
 			}
-
+			//Consulta para comprobar si existe la categoeria que nos pasan, despues la pasamos a la función.
 			string ConsultaSiExiste = "SELECT * FROM CATEGORIAS WHERE Descripcion = '" + nombreCategoria + "'";
 			string resultado = ExisteCategoria(ConsultaSiExiste);
 
+			//Comprobamos el resultado de la función para meterlo en la base de datos o decirle que no
 			if (resultado == "-1")
 			{
 				return error;
@@ -193,12 +199,23 @@ namespace CapaDatos
 			return "Categoria eliminada correctamente";
 		}
 
-		public String ModificarCategoria(string categoria, string nuevaCategoria)
+		public String ModificarCategoria(string categoria, string nuevaCategoria, List<string> categorias)
 		{
 			if (String.IsNullOrWhiteSpace(nuevaCategoria))
 			{
 				return "No puedes dejar la categoria que vas a modificar en blanco";
 			}
+			if (categoria.ToLower() == nuevaCategoria.ToLower())
+			{
+				return "No puedes cambiarlo por el mismo nombre";
+			}
+
+			//Comprobamos que ese nombre que mete no sea el mismo de uno que ya existe en la BD.
+			if (categorias.Contains(nuevaCategoria))
+			{
+				return "No puede ponerle el mismo nombre que a una categoria existente";
+			}
+
 			string queryModificarCategoria = "UPDATE CATEGORIAS SET Descripcion = '" + nuevaCategoria + "' WHERE (((Descripcion) = '" + categoria + "'))";
 			if (HacerConsulta(queryModificarCategoria) == "-1")
 			{

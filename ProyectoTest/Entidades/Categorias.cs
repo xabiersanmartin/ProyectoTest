@@ -8,7 +8,7 @@ namespace Entidades
 {
     public class Categorias : IEquatable<Categorias>
     {
-        int idCategoria { get; set; }
+        public int idCategoria { get; set; }
         public string Descripcion { get; set; }
 
 
