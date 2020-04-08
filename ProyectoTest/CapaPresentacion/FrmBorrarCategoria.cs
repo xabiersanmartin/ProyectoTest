@@ -28,7 +28,6 @@ namespace CapaPresentacion
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            string borrarCategoria = cboCategorias.SelectedItem as string;
 
             if (cboCategorias.SelectedItem == null)
             {
@@ -36,16 +35,18 @@ namespace CapaPresentacion
                 return;
             }
 
+            string borrarCategoria = cboCategorias.SelectedItem as string;
+
             string mensaje = Program.gestor.BorrarCategoria(borrarCategoria);
 
             List<string> list = Program.gestor.DevolverCategorias();
+            
+            MessageBox.Show(mensaje);
+
             cboCategorias.Items.Clear();
             cboCategorias.Items.AddRange(list.ToArray());
-
             cboCategorias.Text = "";
 
-            MessageBox.Show(mensaje);
-           
         }
     }
 }

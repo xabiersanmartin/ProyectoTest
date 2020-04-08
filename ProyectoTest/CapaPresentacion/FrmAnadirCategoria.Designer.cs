@@ -31,6 +31,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnAnadir = new System.Windows.Forms.Button();
             this.txtCategoria = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -60,17 +61,28 @@
             this.txtCategoria.TabIndex = 2;
             this.txtCategoria.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCategoria_KeyPress);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(258, 50);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(233, 31);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Añadir Categoria";
+            // 
             // FrmAnadirCategoria
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.txtCategoria);
             this.Controls.Add(this.btnAnadir);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FrmAnadirCategoria";
-            this.Text = "FrmAnadirCategoria";
+            this.Text = "Anadir Categoria";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -82,5 +94,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnAnadir;
         private System.Windows.Forms.TextBox txtCategoria;
+        private System.Windows.Forms.Label label2;
     }
 }

@@ -26,5 +26,10 @@ namespace CapaNegocio
         {
             return nuevoAcceso.EliminarCategoria(eliminarCategoria);
         }
+
+        public string ModificarCategoria(string categoria, string nuevaCategoria)
+        {
+            return nuevoAcceso.ModificarCategoria(categoria, nuevaCategoria);
+        }
     }
 }

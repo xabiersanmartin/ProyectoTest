@@ -22,6 +22,8 @@ namespace CapaPresentacion
             string respuesta = Program.gestor.AnadirCategoria(txtCategoria.Text);
 
             MessageBox.Show(respuesta);
+
+            txtCategoria.Text = "";
         }
 
         private void txtCategoria_KeyPress(object sender, KeyPressEventArgs e)

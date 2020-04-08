@@ -193,5 +193,18 @@ namespace CapaDatos
 			return "Categoria eliminada correctamente";
 		}
 
+		public String ModificarCategoria(string categoria, string nuevaCategoria)
+		{
+			if (String.IsNullOrWhiteSpace(nuevaCategoria))
+			{
+				return "No puedes dejar la categoria que vas a modificar en blanco";
+			}
+			string queryModificarCategoria = "UPDATE CATEGORIAS SET Descripcion = '" + nuevaCategoria + "' WHERE (((Descripcion) = '" + categoria + "'))";
+			if (HacerConsulta(queryModificarCategoria) == "-1")
+			{
+				return error;
+			}
+			return "Categoria modificada correctamente";
+		}
 	}
 }
