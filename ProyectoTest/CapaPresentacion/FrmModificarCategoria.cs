@@ -22,7 +22,7 @@ namespace CapaPresentacion
             List<string> list = Program.gestor.DevolverCategorias();
             if (list == null)
             {
-                MessageBox.Show("No hay categorias que eliminar, debes añadir una antes.");
+                MessageBox.Show("No hay categorias que modificar, debes añadir una antes.");
                 return;
             }
             cboSeleccionarCat.Items.Clear();

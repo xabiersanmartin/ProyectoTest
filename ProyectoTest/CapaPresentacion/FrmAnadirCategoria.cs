@@ -21,9 +21,28 @@ namespace CapaPresentacion
         {
             string respuesta = Program.gestor.AnadirCategoria(txtCategoria.Text);
 
-            MessageBox.Show(respuesta);
+            if (respuesta == "Como puedes ver en el recuadro de al lado, la categoria ya existe")
+            {
+                MessageBox.Show(respuesta, "ERROR");
+                txtCategoria.Text = "";
+                return;
+            }
 
-            txtCategoria.Text = "";
+                MessageBox.Show(respuesta);
+
+                txtCategoria.Text = "";
+
+            //Cargamos a tiempo real la lista para que se cargue el listbox al añadir una nueva categoria.
+            List<string> list = Program.gestor.DevolverCategorias();
+
+            //Controlamos este error aqui porque si clicka el boton de añadir sin introducir nada, al estar la lista vacia porque no se a creado nada
+            //se rompe el programa.
+            if (!(list == null))
+                {
+                    lsbCategorias.Items.Clear();
+                    lsbCategorias.Items.AddRange(list.ToArray());
+                }
+
         }
 
         private void txtCategoria_KeyPress(object sender, KeyPressEventArgs e)
@@ -43,6 +62,15 @@ namespace CapaPresentacion
                 if (Char.IsSeparator(e.KeyChar))
             {
                 e.Handled = false;
+            }
+        }
+
+        private void FrmAnadirCategoria_Load(object sender, EventArgs e)
+        {
+            List<string> list = Program.gestor.DevolverCategorias();
+            if (!(list == null))
+            {
+                lsbCategorias.Items.AddRange(list.ToArray());
             }
         }
     }

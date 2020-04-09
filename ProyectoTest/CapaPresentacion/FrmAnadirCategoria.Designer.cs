@@ -32,6 +32,8 @@
             this.btnAnadir = new System.Windows.Forms.Button();
             this.txtCategoria = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lsbCategorias = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // label1
@@ -71,11 +73,32 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "Añadir Categoria";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(714, 75);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(245, 26);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Categorias Existentes";
+            // 
+            // lsbCategorias
+            // 
+            this.lsbCategorias.FormattingEnabled = true;
+            this.lsbCategorias.ItemHeight = 16;
+            this.lsbCategorias.Location = new System.Drawing.Point(719, 142);
+            this.lsbCategorias.Name = "lsbCategorias";
+            this.lsbCategorias.Size = new System.Drawing.Size(240, 164);
+            this.lsbCategorias.TabIndex = 7;
+            // 
             // FrmAnadirCategoria
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1068, 450);
+            this.Controls.Add(this.lsbCategorias);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtCategoria);
             this.Controls.Add(this.btnAnadir);
@@ -84,6 +107,7 @@
             this.Name = "FrmAnadirCategoria";
             this.Text = "Anadir Categoria";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.FrmAnadirCategoria_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -95,5 +119,7 @@
         private System.Windows.Forms.Button btnAnadir;
         private System.Windows.Forms.TextBox txtCategoria;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ListBox lsbCategorias;
     }
 }

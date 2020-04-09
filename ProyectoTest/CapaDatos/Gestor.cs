@@ -152,7 +152,7 @@ namespace CapaDatos
 			}
 			else
 			{
-				return "La categoria ya existe";
+				return "Como puedes ver en el recuadro de al lado, la categoria ya existe";
 			}
 			return "Categoria añadida correctamente";
 
