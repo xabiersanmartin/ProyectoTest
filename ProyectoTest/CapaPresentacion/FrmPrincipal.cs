@@ -17,19 +17,19 @@ namespace CapaPresentacion
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void añadirCategoriaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmAnadirCategoria frm = new FrmAnadirCategoria();
             frm.Show();
         }
 
-        private void btnBorrarC_Click(object sender, EventArgs e)
+        private void borrarCategoriaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmBorrarCategoria frm = new FrmBorrarCategoria();
             frm.Show();
         }
 
-        private void btnModificarC_Click(object sender, EventArgs e)
+        private void modificarCategoriaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmModificarCategoria frm = new FrmModificarCategoria();
             frm.Show();

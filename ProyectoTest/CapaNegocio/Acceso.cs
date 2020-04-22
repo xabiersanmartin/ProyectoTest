@@ -17,17 +17,17 @@ namespace CapaNegocio
             return nuevoAcceso.AnadirCategoria(nombreCategoria);
         }
 
-        public List<string> DevolverCategorias()
+        public List<Categorias> DevolverCategorias()
         {
             return nuevoAcceso.DevolverCategorias();
         }
 
-        public string BorrarCategoria (string eliminarCategoria)
+        public string BorrarCategoria (Categorias eliminarCategoria)
         {
             return nuevoAcceso.EliminarCategoria(eliminarCategoria);
         }
 
-        public string ModificarCategoria(string categoria, string nuevaCategoria, List<string> categorias)
+        public string ModificarCategoria(Categorias categoria, string nuevaCategoria, List<Categorias> categorias)
         {
             return nuevoAcceso.ModificarCategoria(categoria, nuevaCategoria, categorias);
         }

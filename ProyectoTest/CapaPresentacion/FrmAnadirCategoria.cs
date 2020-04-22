@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entidades;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -33,7 +34,7 @@ namespace CapaPresentacion
                 txtCategoria.Text = "";
 
             //Cargamos a tiempo real la lista para que se cargue el listbox al añadir una nueva categoria.
-            List<string> list = Program.gestor.DevolverCategorias();
+            List<Categorias> list = Program.gestor.DevolverCategorias();
 
             //Controlamos este error aqui porque si clicka el boton de añadir sin introducir nada, al estar la lista vacia porque no se a creado nada
             //se rompe el programa.
@@ -41,6 +42,7 @@ namespace CapaPresentacion
                 {
                     lsbCategorias.Items.Clear();
                     lsbCategorias.Items.AddRange(list.ToArray());
+                    lsbCategorias.DisplayMember = "Descripcion";
                 }
 
         }
@@ -67,10 +69,11 @@ namespace CapaPresentacion
 
         private void FrmAnadirCategoria_Load(object sender, EventArgs e)
         {
-            List<string> list = Program.gestor.DevolverCategorias();
+            List<Categorias> list = Program.gestor.DevolverCategorias();
             if (!(list == null))
             {
                 lsbCategorias.Items.AddRange(list.ToArray());
+                lsbCategorias.DisplayMember = "Descripcion";
             }
         }
     }

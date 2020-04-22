@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entidades;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,7 +20,7 @@ namespace CapaPresentacion
 
         private void FrmModificarCategoria_Load(object sender, EventArgs e)
         {
-            List<string> list = Program.gestor.DevolverCategorias();
+            List<Categorias> list = Program.gestor.DevolverCategorias();
             if (list == null)
             {
                 MessageBox.Show("No hay categorias que modificar, debes añadir una antes.");
@@ -27,6 +28,7 @@ namespace CapaPresentacion
             }
             cboSeleccionarCat.Items.Clear();
             cboSeleccionarCat.Items.AddRange(list.ToArray());
+            cboSeleccionarCat.DisplayMember = "Descripcion";
         }
 
         private void txtModificarCat_KeyPress(object sender, KeyPressEventArgs e)
@@ -58,9 +60,9 @@ namespace CapaPresentacion
                 return;
             }
 
-            string  categoriaModifi = cboSeleccionarCat.SelectedItem as string;
+            Categorias  categoriaModifi = cboSeleccionarCat.SelectedItem as Categorias;
             //La cargamos para enviarsela al gestor para comprobacion de errores.
-            List<string> list = Program.gestor.DevolverCategorias();
+            List<Categorias> list = Program.gestor.DevolverCategorias();
 
             string mensaje = Program.gestor.ModificarCategoria(categoriaModifi, txtModificarCat.Text, list);
             
@@ -71,6 +73,7 @@ namespace CapaPresentacion
 
             cboSeleccionarCat.Items.Clear();
             cboSeleccionarCat.Items.AddRange(list.ToArray());
+            cboSeleccionarCat.DisplayMember = "Descripcion";
             cboSeleccionarCat.Text = "";
 
             txtModificarCat.Text = "";

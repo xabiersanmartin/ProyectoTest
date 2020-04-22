@@ -28,64 +28,166 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnAnadirC = new System.Windows.Forms.Button();
-            this.btnBorrarC = new System.Windows.Forms.Button();
-            this.btnModificarC = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.categoriasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.añadirCategoriaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.borrarCategoriaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modificarCategoriaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.añadirTestsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.borrarTestsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modificarTestsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.preguntasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.añadirPreguntaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.borrarPreguntaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modificarPreguntaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label1 = new System.Windows.Forms.Label();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btnAnadirC
+            // menuStrip1
             // 
-            this.btnAnadirC.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAnadirC.Location = new System.Drawing.Point(65, 191);
-            this.btnAnadirC.Name = "btnAnadirC";
-            this.btnAnadirC.Size = new System.Drawing.Size(123, 57);
-            this.btnAnadirC.TabIndex = 1;
-            this.btnAnadirC.Text = "Añadir Categoria";
-            this.btnAnadirC.UseVisualStyleBackColor = true;
-            this.btnAnadirC.Click += new System.EventHandler(this.button1_Click);
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.categoriasToolStripMenuItem,
+            this.testsToolStripMenuItem,
+            this.preguntasToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(800, 28);
+            this.menuStrip1.TabIndex = 4;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // btnBorrarC
+            // categoriasToolStripMenuItem
             // 
-            this.btnBorrarC.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBorrarC.Location = new System.Drawing.Point(344, 191);
-            this.btnBorrarC.Name = "btnBorrarC";
-            this.btnBorrarC.Size = new System.Drawing.Size(117, 57);
-            this.btnBorrarC.TabIndex = 2;
-            this.btnBorrarC.Text = "Borrar Categoria";
-            this.btnBorrarC.UseVisualStyleBackColor = true;
-            this.btnBorrarC.Click += new System.EventHandler(this.btnBorrarC_Click);
+            this.categoriasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.añadirCategoriaToolStripMenuItem,
+            this.borrarCategoriaToolStripMenuItem,
+            this.modificarCategoriaToolStripMenuItem});
+            this.categoriasToolStripMenuItem.Name = "categoriasToolStripMenuItem";
+            this.categoriasToolStripMenuItem.Size = new System.Drawing.Size(94, 24);
+            this.categoriasToolStripMenuItem.Text = "Categorias";
             // 
-            // btnModificarC
+            // añadirCategoriaToolStripMenuItem
             // 
-            this.btnModificarC.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnModificarC.Location = new System.Drawing.Point(620, 191);
-            this.btnModificarC.Name = "btnModificarC";
-            this.btnModificarC.Size = new System.Drawing.Size(114, 57);
-            this.btnModificarC.TabIndex = 3;
-            this.btnModificarC.Text = "Modificar Categoria";
-            this.btnModificarC.UseVisualStyleBackColor = true;
-            this.btnModificarC.Click += new System.EventHandler(this.btnModificarC_Click);
+            this.añadirCategoriaToolStripMenuItem.Name = "añadirCategoriaToolStripMenuItem";
+            this.añadirCategoriaToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
+            this.añadirCategoriaToolStripMenuItem.Text = "Añadir Categoria";
+            this.añadirCategoriaToolStripMenuItem.Click += new System.EventHandler(this.añadirCategoriaToolStripMenuItem_Click);
+            // 
+            // borrarCategoriaToolStripMenuItem
+            // 
+            this.borrarCategoriaToolStripMenuItem.Name = "borrarCategoriaToolStripMenuItem";
+            this.borrarCategoriaToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
+            this.borrarCategoriaToolStripMenuItem.Text = "Borrar Categoria";
+            this.borrarCategoriaToolStripMenuItem.Click += new System.EventHandler(this.borrarCategoriaToolStripMenuItem_Click);
+            // 
+            // modificarCategoriaToolStripMenuItem
+            // 
+            this.modificarCategoriaToolStripMenuItem.Name = "modificarCategoriaToolStripMenuItem";
+            this.modificarCategoriaToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
+            this.modificarCategoriaToolStripMenuItem.Text = "Modificar Categoria";
+            this.modificarCategoriaToolStripMenuItem.Click += new System.EventHandler(this.modificarCategoriaToolStripMenuItem_Click);
+            // 
+            // testsToolStripMenuItem
+            // 
+            this.testsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.añadirTestsToolStripMenuItem,
+            this.borrarTestsToolStripMenuItem,
+            this.modificarTestsToolStripMenuItem});
+            this.testsToolStripMenuItem.Name = "testsToolStripMenuItem";
+            this.testsToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
+            this.testsToolStripMenuItem.Text = "Tests";
+            // 
+            // añadirTestsToolStripMenuItem
+            // 
+            this.añadirTestsToolStripMenuItem.Name = "añadirTestsToolStripMenuItem";
+            this.añadirTestsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.añadirTestsToolStripMenuItem.Text = "Añadir Tests";
+            // 
+            // borrarTestsToolStripMenuItem
+            // 
+            this.borrarTestsToolStripMenuItem.Name = "borrarTestsToolStripMenuItem";
+            this.borrarTestsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.borrarTestsToolStripMenuItem.Text = "Borrar Tests";
+            // 
+            // modificarTestsToolStripMenuItem
+            // 
+            this.modificarTestsToolStripMenuItem.Name = "modificarTestsToolStripMenuItem";
+            this.modificarTestsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.modificarTestsToolStripMenuItem.Text = "Modificar Tests";
+            // 
+            // preguntasToolStripMenuItem
+            // 
+            this.preguntasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.añadirPreguntaToolStripMenuItem,
+            this.borrarPreguntaToolStripMenuItem,
+            this.modificarPreguntaToolStripMenuItem});
+            this.preguntasToolStripMenuItem.Name = "preguntasToolStripMenuItem";
+            this.preguntasToolStripMenuItem.Size = new System.Drawing.Size(88, 24);
+            this.preguntasToolStripMenuItem.Text = "Preguntas";
+            // 
+            // añadirPreguntaToolStripMenuItem
+            // 
+            this.añadirPreguntaToolStripMenuItem.Name = "añadirPreguntaToolStripMenuItem";
+            this.añadirPreguntaToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.añadirPreguntaToolStripMenuItem.Text = "Añadir pregunta";
+            // 
+            // borrarPreguntaToolStripMenuItem
+            // 
+            this.borrarPreguntaToolStripMenuItem.Name = "borrarPreguntaToolStripMenuItem";
+            this.borrarPreguntaToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.borrarPreguntaToolStripMenuItem.Text = "Borrar pregunta";
+            // 
+            // modificarPreguntaToolStripMenuItem
+            // 
+            this.modificarPreguntaToolStripMenuItem.Name = "modificarPreguntaToolStripMenuItem";
+            this.modificarPreguntaToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.modificarPreguntaToolStripMenuItem.Text = "Modificar Pregunta";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Monotype Corsiva", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(123, 199);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(486, 45);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "BIENVENIDO AL PROGRAMA";
             // 
             // FrmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.btnModificarC);
-            this.Controls.Add(this.btnBorrarC);
-            this.Controls.Add(this.btnAnadirC);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "FrmPrincipal";
             this.Text = "Formulario Principal";
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnAnadirC;
-        private System.Windows.Forms.Button btnBorrarC;
-        private System.Windows.Forms.Button btnModificarC;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem categoriasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem añadirCategoriaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem borrarCategoriaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem modificarCategoriaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem añadirTestsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem borrarTestsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem modificarTestsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem preguntasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem añadirPreguntaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem borrarPreguntaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem modificarPreguntaToolStripMenuItem;
+        private System.Windows.Forms.Label label1;
     }
 }
 

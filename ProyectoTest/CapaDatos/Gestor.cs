@@ -158,10 +158,10 @@ namespace CapaDatos
 
 		}
 
-		public List<string> DevolverCategorias()
+		public List<Categorias> DevolverCategorias()
 		{
 			string queryDevolverCategorias = "SELECT * FROM CATEGORIAS";
-			List<string> devolverCategorias = new List<string>();
+			List<Categorias> devolverCategorias = new List<Categorias>();
 
 			if (OpenConnection() == true)
 			{
@@ -170,7 +170,11 @@ namespace CapaDatos
 
 				while (dataReader.Read())
 				{
-					devolverCategorias.Add(dataReader["Descripcion"].ToString());
+					Categorias nuevaCategoria = new Categorias();
+					nuevaCategoria.Descripcion = dataReader["Descripcion"].ToString();
+					nuevaCategoria.idCategoria = int.Parse(dataReader["IdCategoria"].ToString());
+
+					devolverCategorias.Add(nuevaCategoria);
 				}
 				dataReader.Close();
 				this.CloseConnection();
@@ -189,9 +193,9 @@ namespace CapaDatos
 
 		}
 
-		public String EliminarCategoria(string categoriaEliminar)
+		public String EliminarCategoria(Categorias categoriaEliminar)
 		{
-			string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE (((Descripcion) = '" + categoriaEliminar + "'))";
+			string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE (((Descripcion) = '" + categoriaEliminar.Descripcion + "'))";
 			if (HacerConsulta(queryBorrarCategoria) == "-1")
 			{
 				return error;
@@ -199,24 +203,29 @@ namespace CapaDatos
 			return "Categoria eliminada correctamente";
 		}
 
-		public String ModificarCategoria(string categoria, string nuevaCategoria, List<string> categorias)
+		public String ModificarCategoria(Categorias categoria, string nuevaCategoria, List<Categorias> categorias)
 		{
+
 			if (String.IsNullOrWhiteSpace(nuevaCategoria))
 			{
 				return "No puedes dejar la categoria que vas a modificar en blanco";
 			}
-			if (categoria.ToLower() == nuevaCategoria.ToLower())
+			if (categoria.Descripcion.ToLower() == nuevaCategoria.ToLower())
 			{
 				return "No puedes cambiarlo por el mismo nombre";
 			}
 
 			//Comprobamos que ese nombre que mete no sea el mismo de uno que ya existe en la BD.
-			if (categorias.Contains(nuevaCategoria))
+			foreach (var cat in categorias)
 			{
-				return "No puede ponerle el mismo nombre que a una categoria existente";
+				if (cat.Descripcion.Equals(nuevaCategoria))
+				{
+					return "No puede ponerle el mismo nombre que a una categoria existente";
+				}
 			}
+			
 
-			string queryModificarCategoria = "UPDATE CATEGORIAS SET Descripcion = '" + nuevaCategoria + "' WHERE (((Descripcion) = '" + categoria + "'))";
+			string queryModificarCategoria = "UPDATE CATEGORIAS SET Descripcion = '" + nuevaCategoria + "' WHERE (((Descripcion) = '" + categoria.Descripcion + "'))";
 			if (HacerConsulta(queryModificarCategoria) == "-1")
 			{
 				return error;
