@@ -44,65 +44,78 @@ namespace CapaPresentacion
 
             Categorias borrarCategoria = cboCategorias.SelectedItem as Categorias;
 
-            string mensaje = Program.gestor.BorrarCategoria(borrarCategoria);
+            //Vamos a comprobar con el usuario si quiere eliminar la categoria antes de eliminarla.
+            DialogResult resultado = MessageBox.Show("Seguro que quieres eliminar la categoria " + borrarCategoria.Descripcion, "ELIMINAR", MessageBoxButtons.YesNo);
 
-            //Comprobacion de que la la Categoria no tenga test asociados
-            if (mensaje == "test")
+            if (resultado == DialogResult.Yes)
             {
-                DialogResult result = new DialogResult();
-                List<Tests> testAsociados = new List<Tests>();
+                string mensaje = Program.gestor.BorrarCategoria(borrarCategoria);
 
-                testAsociados = Program.gestor.DevolverTestCategorias(borrarCategoria);
-                string tests = "";
-                for (int i = 0; i < testAsociados.Count; i++)
+                //Comprobacion de que la la Categoria no tenga test asociados
+                if (mensaje == "test")
                 {
-                    
-                    tests += String.Concat(testAsociados[i].Descripcion + " ,");
-                   
-                }
+                    DialogResult result = new DialogResult();
+                    List<Tests> testAsociados = new List<Tests>();
 
-                result = MessageBox.Show("Seguro que quieres eliminar la categoria " + borrarCategoria.Descripcion + " tiene asociados los tests " + tests, "CUIDADO", MessageBoxButtons.YesNo);
-
-                if (result == DialogResult.Yes)
-                {
-                   string respuesta = Program.gestor.BorrarCategoriaTest(borrarCategoria);
-                    MessageBox.Show(respuesta);
-
-                    //Cargamos la lista de nuevo para que salga bien al seleccionar el combobox de nuevo
-                    List<Categorias> lista = Program.gestor.DevolverCategorias();
-                    if (lista == null)
+                    testAsociados = Program.gestor.DevolverTestCategorias(borrarCategoria);
+                    string tests = "";
+                    for (int i = 0; i < testAsociados.Count; i++)
                     {
-                        MessageBox.Show("Has eliminado todas las categorias");
-                        cboCategorias.Items.Clear();
-                        cboCategorias.Text = "";
-                        return;
+
+                        tests += String.Concat(testAsociados[i].Descripcion + " ,");
+
                     }
 
-                    cboCategorias.Items.Clear();
-                    cboCategorias.Items.AddRange(lista.ToArray());
-                    cboCategorias.DisplayMember = "Descripcion";
-                    cboCategorias.Text = "";
+                    result = MessageBox.Show("Seguro que quieres eliminar la categoria " + borrarCategoria.Descripcion + " tiene asociados los tests " + tests, "CUIDADO", MessageBoxButtons.YesNo);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        string respuesta = Program.gestor.BorrarCategoriaTest(borrarCategoria);
+                        MessageBox.Show(respuesta);
+
+                        //Cargamos la lista de nuevo para que salga bien al seleccionar el combobox de nuevo
+                        List<Categorias> lista = Program.gestor.DevolverCategorias();
+                        if (lista == null)
+                        {
+                            MessageBox.Show("Has eliminado todas las categorias");
+                            cboCategorias.Items.Clear();
+                            cboCategorias.Text = "";
+                            return;
+                        }
+
+                        cboCategorias.Items.Clear();
+                        cboCategorias.Items.AddRange(lista.ToArray());
+                        cboCategorias.DisplayMember = "Descripcion";
+                        cboCategorias.Text = "";
+                    }
+
+                    return;
                 }
 
-                return;
-            }
+                //Cargamos la lista de nuevo para que salga bien al seleccionar el combobox de nuevo
+                List<Categorias> list = Program.gestor.DevolverCategorias();
+                if (list == null)
+                {
+                    MessageBox.Show("Has eliminado todas las categorias");
+                    cboCategorias.Items.Clear();
+                    cboCategorias.Text = "";
+                    return;
+                }
 
-            //Cargamos la lista de nuevo para que salga bien al seleccionar el combobox de nuevo
-            List<Categorias> list = Program.gestor.DevolverCategorias();
-            if (list == null)
-            {
-                MessageBox.Show("Has eliminado todas las categorias");
+                MessageBox.Show(mensaje);
+
                 cboCategorias.Items.Clear();
+                cboCategorias.Items.AddRange(list.ToArray());
+                cboCategorias.DisplayMember = "Descripcion";
                 cboCategorias.Text = "";
-                return;
+            }
+            else
+            {
+                MessageBox.Show("No se elimino la categoria " + borrarCategoria.Descripcion);
+                cboCategorias.Text = "";
             }
 
-            MessageBox.Show(mensaje);
-
-            cboCategorias.Items.Clear();
-            cboCategorias.Items.AddRange(list.ToArray());
-            cboCategorias.DisplayMember = "Descripcion";
-            cboCategorias.Text = "";
+            
 
         }
 
