@@ -89,6 +89,7 @@ namespace CapaPresentacion
                         cboCategorias.Text = "";
                     }
 
+                    cboCategorias.SelectedIndex = -1;
                     return;
                 }
 
@@ -102,7 +103,7 @@ namespace CapaPresentacion
                     return;
                 }
 
-                MessageBox.Show(mensaje);
+                MessageBox.Show(mensaje + " " + borrarCategoria.Descripcion);
 
                 cboCategorias.Items.Clear();
                 cboCategorias.Items.AddRange(list.ToArray());
@@ -112,7 +113,7 @@ namespace CapaPresentacion
             else
             {
                 MessageBox.Show("No se elimino la categoria " + borrarCategoria.Descripcion);
-                cboCategorias.Text = "";
+                cboCategorias.SelectedIndex = -1;
             }
 
             
