@@ -344,12 +344,43 @@ namespace CapaDatos
 
 		public string EliminarCategoriaConTest (Categorias categoriaBorrar)
 		{
-			//Se nos borra automaticamente los test que tiene relacionados gracias al Borrar en Cascada en la base de datos.
+			
+			string comprobarTest = "SELECT * FROM CATEGORIASTESTS WHERE (((IdCategoria) = '" + categoriaBorrar.idCategoria + "'))";
+
+			List<int> idTests = new List<int>();
+
+			if (OpenConnection() == true)
+			{
+				SqlCommand cmd = new SqlCommand(comprobarTest, conexion);
+				SqlDataReader dataReader = cmd.ExecuteReader();
+
+
+				while (dataReader.Read())
+				{
+					int result = int.Parse(dataReader["IdTest"].ToString());
+					idTests.Add(result);
+				}
+				dataReader.Close();
+				this.conexion.Close();
+			}
+
+			foreach (var test in idTests)
+			{
+				string queryBorrarTest = "DELETE FROM TEST WHERE (((IdTest) = '" + test + "'))";
+				if (HacerConsulta(queryBorrarTest) == "-1")
+				{
+					return error;
+				}
+			}
+			
+
+			//Se nos borra automaticamente los id de las tabla M-N ya que tiene relacionados gracias al Borrar en Cascada en la base de datos.
 			string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE (((IdCategoria) = '" + categoriaBorrar.idCategoria + "'))";
 			if (HacerConsulta(queryBorrarCategoria) == "-1")
 			{
 				return error;
 			}
+
 			return "Categoria eliminada correctamente";
 		}
 
@@ -408,7 +439,7 @@ namespace CapaDatos
 							return "No se a añadido nada a sucedido un error";
 						}
 						this.conexion.Close();
-						return "Añadido test con su Categoria correctamente";
+						return "Añadido test " + nombreTest+  " con su Categoria "+ categoriaRelacionada.Descripcion+ " correctamente";
 					}
 				}
 			}
