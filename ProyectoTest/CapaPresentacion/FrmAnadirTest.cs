@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entidades;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,87 @@ namespace CapaPresentacion
         public FrmAnadirTest()
         {
             InitializeComponent();
+        }
+
+        private void FrmAnadirTest_Load(object sender, EventArgs e)
+        {
+            List<Categorias> list = Program.gestor.DevolverCategorias();
+            if (list == null)
+            {
+                MessageBox.Show("No hay categorias que eliminar, debes añadir una antes.");
+                return;
+            }
+
+            List<Tests> listTests = Program.gestor.DevolverTests();
+            if (!(list == null))
+            {
+                lsbTestExistentes.Items.AddRange(listTests.ToArray());
+                lsbTestExistentes.DisplayMember = "Descripcion";
+            }
+
+            cboCategorias.Items.Clear();
+            cboCategorias.Items.AddRange(list.ToArray());
+            cboCategorias.DisplayMember = "Descripcion";
+
+            cboCategoria2.Items.Clear();
+            cboCategoria2.Items.AddRange(list.ToArray());
+            cboCategoria2.DisplayMember = "Descripcion";
+
+            cboTests.Items.Clear();
+            cboTests.Items.AddRange(listTests.ToArray());
+            cboTests.DisplayMember = "Descripcion";
+
+        }
+
+        private void btnAnadirTest_Click(object sender, EventArgs e)
+        {
+            if (cboCategorias.SelectedItem == null)
+            {
+                MessageBox.Show("Debes seleccionar con que categoria quieres que corresponda el test, mas tarde podras añadirle mas Categorias, no puede quedarse vacio");
+                return;
+            }
+
+            Categorias categoriaconTest = cboCategorias.SelectedItem as Categorias;
+
+            string mensaje = Program.gestor.AnadirTest(categoriaconTest, txtAnadirTest.Text);
+
+            MessageBox.Show(mensaje);
+
+            cboCategorias.SelectedIndex = -1;
+            txtAnadirTest.Text = "";
+
+            List<Tests> listTests = Program.gestor.DevolverTests();
+            cboTests.Items.Clear();
+            cboTests.Items.AddRange(listTests.ToArray());
+            cboTests.DisplayMember = "Descripcion";
+
+            if (!(listTests == null))
+            {
+                lsbTestExistentes.Items.Clear();
+                lsbTestExistentes.Items.AddRange(listTests.ToArray());
+                lsbTestExistentes.DisplayMember = "Descripcion";
+            }
+
+        }
+
+        private void txtAnadirTest_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (Char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+
+            else
+                if (Char.IsControl(e.KeyChar))
+            {
+                e.Handled = false;
+            }
+
+            else
+                if (Char.IsSeparator(e.KeyChar))
+            {
+                e.Handled = false;
+            }
         }
     }
 }

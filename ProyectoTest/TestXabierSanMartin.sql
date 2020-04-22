@@ -54,7 +54,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Test](
-	[IdTest] [int] NOT NULL,
+	[IdTest] [int] NOT NULL IDENTITY,
 	[Descripcion] [nvarchar](100) NOT NULL,
  CONSTRAINT [PK_TTest] PRIMARY KEY CLUSTERED 
 (
@@ -89,12 +89,12 @@ INSERT [dbo].[Categorias] ([Descripcion]) VALUES (N'Historia')
 INSERT [dbo].[Categorias] ([Descripcion]) VALUES (N'Geografia')
 INSERT [dbo].[Categorias] ([Descripcion]) VALUES (N'Literatura')
 
-INSERT [dbo].[Test] ([IdTest], [Descripcion]) VALUES (1, N'Futbol')
-INSERT [dbo].[Test] ([IdTest], [Descripcion]) VALUES (2, N'II Guerra Mundial')
-INSERT [dbo].[Test] ([IdTest], [Descripcion]) VALUES (3, N'Paises')
-INSERT [dbo].[Test] ([IdTest], [Descripcion]) VALUES (4, N'Capitales')
-INSERT [dbo].[Test] ([IdTest], [Descripcion]) VALUES (5, N'Primer Imperio Frances')
-INSERT [dbo].[Test] ([IdTest], [Descripcion]) VALUES (6, N'Arte Moderno')
+INSERT [dbo].[Test] ([Descripcion]) VALUES (N'Futbol')
+INSERT [dbo].[Test] ([Descripcion]) VALUES (N'II Guerra Mundial')
+INSERT [dbo].[Test] ([Descripcion]) VALUES (N'Paises')
+INSERT [dbo].[Test] ([Descripcion]) VALUES (N'Capitales')
+INSERT [dbo].[Test] ([Descripcion]) VALUES (N'Primer Imperio Frances')
+INSERT [dbo].[Test] ([Descripcion]) VALUES (N'Arte Moderno')
 
 INSERT [dbo].[CategoriasTests] ([IdCategoria], [IdTest]) VALUES (1, 1)
 INSERT [dbo].[CategoriasTests] ([IdCategoria], [IdTest]) VALUES (2, 2)

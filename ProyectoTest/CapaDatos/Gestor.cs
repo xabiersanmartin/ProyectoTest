@@ -1,15 +1,12 @@
-﻿using System;
-using System.IO;
+﻿using Entidades;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Entidades;
 
 namespace CapaDatos
 {
-    public class Gestor
+	public class Gestor
     {
 		private const string cadena = "data source =.; initial catalog =TestXabierSanMartin; integrated security = true";
 		private SqlConnection conexion;
@@ -91,6 +88,35 @@ namespace CapaDatos
 				if (listCat.Count() != 0)
 				{
 					return listCat[0].Descripcion.ToString();
+				}
+			}
+			else
+			{
+				return "-1";
+			}
+			return "0";
+		}
+
+		private string ExisteTest(string consulta)
+		{
+			List<Tests> listTest = new List<Tests>();
+
+			if (OpenConnection() == true)
+			{
+				SqlCommand cmd = new SqlCommand(consulta, conexion);
+				SqlDataReader dataReader = cmd.ExecuteReader();
+
+				while (dataReader.Read())
+				{
+					string nombreTest = dataReader["Descripcion"] + "";
+					listTest.Add(new Tests(nombreTest));
+				}
+				dataReader.Close();
+				this.CloseConnection();
+
+				if (listTest.Count() != 0)
+				{
+					return listTest[0].Descripcion.ToString();
 				}
 			}
 			else
@@ -316,7 +342,7 @@ namespace CapaDatos
 			}
 		}
 
-		public String EliminarCategoriaConTest (Categorias categoriaBorrar)
+		public string EliminarCategoriaConTest (Categorias categoriaBorrar)
 		{
 			//Se nos borra automaticamente los test que tiene relacionados gracias al Borrar en Cascada en la base de datos.
 			string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE (((IdCategoria) = '" + categoriaBorrar.idCategoria + "'))";
@@ -325,6 +351,108 @@ namespace CapaDatos
 				return error;
 			}
 			return "Categoria eliminada correctamente";
+		}
+
+		public string AnadirTest (Categorias categoriaRelacionada, string nombreTest)
+		{
+			if (String.IsNullOrWhiteSpace(nombreTest))
+			{
+				return "No puedes dejar vacio el nombre del test que quieres añadir.";
+			}
+
+			string ConsultaSiExiste = "SELECT * FROM TEST WHERE Descripcion = '" + nombreTest + "'";
+			string resultado = ExisteTest(ConsultaSiExiste);
+
+			if (resultado == "-1")
+			{
+				return error;
+			}
+
+			if (resultado == "0")
+			{
+				string queryTest = "INSERT INTO TEST (descripcion) VALUES ('" + nombreTest + "')";
+				if (HacerConsulta(queryTest) == "-1")
+				{
+					return error;
+				}
+				else
+				{
+					Tests newTest = new Tests();
+					string sacarIdTest = "SELECT IdTest from TEST WHERE (((Descripcion) = '" + nombreTest + "'))";
+					if (OpenConnection() == true)
+					{
+						SqlCommand cmd = new SqlCommand(sacarIdTest, conexion);
+						SqlDataReader cmdRead = cmd.ExecuteReader();
+
+						while (cmdRead.Read())
+						{
+
+							newTest.idTest = int.Parse(cmdRead["IdTest"].ToString());
+						}
+						cmdRead.Close();
+						this.conexion.Close();
+					}
+
+					if (OpenConnection() == true)
+					{
+						string queryCatTest = "INSERT INTO CATEGORIASTESTS VALUES (@IdCategoria, @IdTest)";
+						SqlCommand cmdAnadir = new SqlCommand(queryCatTest, conexion);
+
+						cmdAnadir.CommandText = queryCatTest;
+						cmdAnadir.Parameters.AddWithValue("@IdCategoria", categoriaRelacionada.idCategoria);
+						cmdAnadir.Parameters.AddWithValue("@IdTest", newTest.idTest);
+
+						int numFilas = cmdAnadir.ExecuteNonQuery();
+						if (numFilas <= 0)
+						{
+							return "No se a añadido nada a sucedido un error";
+						}
+						this.conexion.Close();
+						return "Añadido test con su Categoria correctamente";
+					}
+				}
+			}
+			else
+			{
+				return "Este Test " + nombreTest + " ya existe";
+			}
+
+			return "";
+		}
+
+		public List<Tests> DevolverTests()
+		{
+			string queryDevolverCategorias = "SELECT * FROM TEST";
+			List<Tests> devolverTests = new List<Tests>();
+
+			if (OpenConnection() == true)
+			{
+				SqlCommand cmd = new SqlCommand(queryDevolverCategorias, conexion);
+				SqlDataReader dataReader = cmd.ExecuteReader();
+
+				while (dataReader.Read())
+				{
+					Tests nuevoTest = new Tests();
+					nuevoTest.Descripcion = dataReader["Descripcion"].ToString();
+					nuevoTest.idTest = int.Parse(dataReader["IdTest"].ToString());
+
+					devolverTests.Add(nuevoTest);
+				}
+				dataReader.Close();
+				this.CloseConnection();
+				if (devolverTests.Count() != 0)
+				{
+					return devolverTests;
+				}
+				else
+				{
+					return null;
+				}
+			}
+			else
+			{
+				return null;
+			}
 		}
 	}
 }
