@@ -34,5 +34,23 @@ namespace CapaPresentacion
             FrmModificarCategoria frm = new FrmModificarCategoria();
             frm.Show();
         }
+
+        private void añadirTestsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmAnadirTest frm = new FrmAnadirTest();
+            frm.Show();
+        }
+
+        private void borrarTestsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmBorrarTest frm = new FrmBorrarTest();
+            frm.Show();
+        }
+
+        private void modificarTestsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmModificarTest frm = new FrmModificarTest();
+            frm.Show();
+        }
     }
 }

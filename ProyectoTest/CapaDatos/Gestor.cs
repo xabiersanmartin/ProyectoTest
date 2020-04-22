@@ -195,6 +195,29 @@ namespace CapaDatos
 
 		public String EliminarCategoria(Categorias categoriaEliminar)
 		{
+			string comprobarTest = "SELECT * FROM CATEGORIASTESTS WHERE (((IdCategoria) = '" + categoriaEliminar.idCategoria + "'))";
+			string result = "";
+
+			if (OpenConnection() == true)
+			{
+				SqlCommand cmd = new SqlCommand(comprobarTest, conexion);
+				SqlDataReader dataReader = cmd.ExecuteReader();
+
+
+				while (dataReader.Read())
+				{
+					result = (dataReader["IdCategoria"].ToString());
+				}
+				dataReader.Close();
+				this.conexion.Close();
+			}
+
+			if (!(result == ""))
+			{
+				return "test";
+			}
+
+
 			string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE (((Descripcion) = '" + categoriaEliminar.Descripcion + "'))";
 			if (HacerConsulta(queryBorrarCategoria) == "-1")
 			{
@@ -241,6 +264,67 @@ namespace CapaDatos
 				return error;
 			}
 			return "Todas las categorias se han eliminado con exito";
+		}
+
+		public List<Tests> DevolverTestAsociadoCategoria (Categorias categoriaRela)
+		{
+			List<Tests> testAsoc = new List<Tests>();
+			List<Tests> testDevolver = new List<Tests>();
+			string queryTestAsoc = "SELECT IdTest FROM CATEGORIASTESTS WHERE (((IdCategoria) = '" + categoriaRela.idCategoria + "'))";
+
+			if (this.OpenConnection() == true)
+			{
+				SqlCommand cmd = new SqlCommand(queryTestAsoc, conexion);
+				SqlDataReader dataReader = cmd.ExecuteReader();
+
+				while (dataReader.Read())
+				{
+					Tests newTest = new Tests();
+					newTest.idTest = int.Parse(dataReader["IdTest"].ToString());
+
+					testAsoc.Add(newTest);
+				}
+				dataReader.Close();
+				this.conexion.Close();
+
+				foreach (var test in testAsoc)
+				{
+					string queryTest = "SELECT * FROM TEST WHERE (((IdTest) = '" + test.idTest + "'))";
+					if (this.OpenConnection() == true)
+					{
+						SqlCommand cmd2 = new SqlCommand(queryTest, conexion);
+						SqlDataReader dataReader2 = cmd2.ExecuteReader();
+
+						while (dataReader2.Read())
+						{
+							Tests newTest2 = new Tests();
+							newTest2.idTest = int.Parse(dataReader2["IdTest"].ToString());
+							newTest2.Descripcion = dataReader2["Descripcion"].ToString();
+
+							testDevolver.Add(newTest2);
+						}
+						dataReader.Close();
+						this.conexion.Close();
+					}
+				}
+				return testDevolver;
+			}
+
+			else
+			{
+				return null;
+			}
+		}
+
+		public String EliminarCategoriaConTest (Categorias categoriaBorrar)
+		{
+			//Se nos borra automaticamente los test que tiene relacionados gracias al Borrar en Cascada en la base de datos.
+			string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE (((IdCategoria) = '" + categoriaBorrar.idCategoria + "'))";
+			if (HacerConsulta(queryBorrarCategoria) == "-1")
+			{
+				return error;
+			}
+			return "Categoria eliminada correctamente";
 		}
 	}
 }

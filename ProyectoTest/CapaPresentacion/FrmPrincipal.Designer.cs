@@ -54,7 +54,7 @@
             this.preguntasToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(800, 30);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -96,7 +96,7 @@
             this.borrarTestsToolStripMenuItem,
             this.modificarTestsToolStripMenuItem});
             this.testsToolStripMenuItem.Name = "testsToolStripMenuItem";
-            this.testsToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
+            this.testsToolStripMenuItem.Size = new System.Drawing.Size(55, 26);
             this.testsToolStripMenuItem.Text = "Tests";
             // 
             // añadirTestsToolStripMenuItem
@@ -104,18 +104,21 @@
             this.añadirTestsToolStripMenuItem.Name = "añadirTestsToolStripMenuItem";
             this.añadirTestsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.añadirTestsToolStripMenuItem.Text = "Añadir Tests";
+            this.añadirTestsToolStripMenuItem.Click += new System.EventHandler(this.añadirTestsToolStripMenuItem_Click);
             // 
             // borrarTestsToolStripMenuItem
             // 
             this.borrarTestsToolStripMenuItem.Name = "borrarTestsToolStripMenuItem";
             this.borrarTestsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.borrarTestsToolStripMenuItem.Text = "Borrar Tests";
+            this.borrarTestsToolStripMenuItem.Click += new System.EventHandler(this.borrarTestsToolStripMenuItem_Click);
             // 
             // modificarTestsToolStripMenuItem
             // 
             this.modificarTestsToolStripMenuItem.Name = "modificarTestsToolStripMenuItem";
             this.modificarTestsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.modificarTestsToolStripMenuItem.Text = "Modificar Tests";
+            this.modificarTestsToolStripMenuItem.Click += new System.EventHandler(this.modificarTestsToolStripMenuItem_Click);
             // 
             // preguntasToolStripMenuItem
             // 
@@ -130,19 +133,19 @@
             // añadirPreguntaToolStripMenuItem
             // 
             this.añadirPreguntaToolStripMenuItem.Name = "añadirPreguntaToolStripMenuItem";
-            this.añadirPreguntaToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.añadirPreguntaToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
             this.añadirPreguntaToolStripMenuItem.Text = "Añadir pregunta";
             // 
             // borrarPreguntaToolStripMenuItem
             // 
             this.borrarPreguntaToolStripMenuItem.Name = "borrarPreguntaToolStripMenuItem";
-            this.borrarPreguntaToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.borrarPreguntaToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
             this.borrarPreguntaToolStripMenuItem.Text = "Borrar pregunta";
             // 
             // modificarPreguntaToolStripMenuItem
             // 
             this.modificarPreguntaToolStripMenuItem.Name = "modificarPreguntaToolStripMenuItem";
-            this.modificarPreguntaToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.modificarPreguntaToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
             this.modificarPreguntaToolStripMenuItem.Text = "Modificar Pregunta";
             // 
             // label1

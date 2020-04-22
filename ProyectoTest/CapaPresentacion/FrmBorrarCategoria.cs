@@ -44,13 +44,46 @@ namespace CapaPresentacion
 
             Categorias borrarCategoria = cboCategorias.SelectedItem as Categorias;
 
-            //List<string> cats = cboCategorias. as string;
-
             string mensaje = Program.gestor.BorrarCategoria(borrarCategoria);
 
+            //Comprobacion de que la la Categoria no tenga test asociados
             if (mensaje == "test")
             {
-                DialogResult result = MessageBox.Show("Seguro que quieres eliminar la categoria "+borrarCategoria+ " tiene asociado el test ", "CUIDADO", MessageBoxButtons.YesNo);
+                DialogResult result = new DialogResult();
+                List<Tests> testAsociados = new List<Tests>();
+
+                testAsociados = Program.gestor.DevolverTestCategorias(borrarCategoria);
+                string tests = "";
+                for (int i = 0; i < testAsociados.Count; i++)
+                {
+                    
+                    tests += String.Concat(testAsociados[i].Descripcion + " ,");
+                   
+                }
+
+                result = MessageBox.Show("Seguro que quieres eliminar la categoria " + borrarCategoria.Descripcion + " tiene asociados los tests " + tests, "CUIDADO", MessageBoxButtons.YesNo);
+
+                if (result == DialogResult.Yes)
+                {
+                   string respuesta = Program.gestor.BorrarCategoriaTest(borrarCategoria);
+                    MessageBox.Show(respuesta);
+
+                    //Cargamos la lista de nuevo para que salga bien al seleccionar el combobox de nuevo
+                    List<Categorias> lista = Program.gestor.DevolverCategorias();
+                    if (lista == null)
+                    {
+                        MessageBox.Show("Has eliminado todas las categorias");
+                        cboCategorias.Items.Clear();
+                        cboCategorias.Text = "";
+                        return;
+                    }
+
+                    cboCategorias.Items.Clear();
+                    cboCategorias.Items.AddRange(lista.ToArray());
+                    cboCategorias.DisplayMember = "Descripcion";
+                    cboCategorias.Text = "";
+                }
+
                 return;
             }
 

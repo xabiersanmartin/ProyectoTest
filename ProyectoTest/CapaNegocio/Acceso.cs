@@ -36,5 +36,15 @@ namespace CapaNegocio
         {
             return nuevoAcceso.EliminarTodasCategorias();
         }
+
+        public List<Tests> DevolverTestCategorias (Categorias categoria)
+        {
+            return nuevoAcceso.DevolverTestAsociadoCategoria(categoria);
+        }
+
+        public string BorrarCategoriaTest( Categorias categoriaBorrar)
+        {
+            return nuevoAcceso.EliminarCategoriaConTest(categoriaBorrar);
+        }
     }
 }
