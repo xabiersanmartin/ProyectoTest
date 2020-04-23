@@ -28,7 +28,7 @@ namespace CapaDatos
 			}
 			catch (Exception)
 			{
-				return "No se a podido conectar con la base de datos";
+				return "No se ha podido conectar con la base de datos";
 			}
 
 			conexion.Close();
@@ -45,7 +45,7 @@ namespace CapaDatos
 			}
 			catch (SqlException)
 			{
-				error = "No se a podido conectar con la base de datos";
+				error = "No se ha podido conectar con la base de datos";
 				return false;
 			}
         }
@@ -68,9 +68,9 @@ namespace CapaDatos
 
 
 		//Funcion para comprobar si existe en la base de datos la categoria que nos pasen.
-		private string ExisteCategoria(string consulta)
+		private bool ExisteCategoria(string consulta)
 		{
-			List<Categorias> listCat = new List<Categorias>();
+			List<Categoria> listCat = new List<Categoria>();
 
 			if (OpenConnection() == true)
 			{
@@ -80,26 +80,26 @@ namespace CapaDatos
 				while (dataReader.Read())
 				{
 					string nombreCategoria = dataReader["Descripcion"] + "";
-					listCat.Add(new Categorias(nombreCategoria));
+					listCat.Add(new Categoria(nombreCategoria));
 				}
 				dataReader.Close();
 				this.CloseConnection();
 
 				if (listCat.Count() != 0)
 				{
-					return listCat[0].Descripcion.ToString();
+					return false;
 				}
 			}
 			else
 			{
-				return "-1";
+				return false;
 			}
-			return "0";
+			return true;
 		}
 
-		private string ExisteTest(string consulta)
+		private bool ExisteTest(string consulta)
 		{
-			List<Tests> listTest = new List<Tests>();
+			List<Test> listTest = new List<Test>();
 
 			if (OpenConnection() == true)
 			{
@@ -109,25 +109,25 @@ namespace CapaDatos
 				while (dataReader.Read())
 				{
 					string nombreTest = dataReader["Descripcion"] + "";
-					listTest.Add(new Tests(nombreTest));
+					listTest.Add(new Test(nombreTest));
 				}
 				dataReader.Close();
 				this.CloseConnection();
 
 				if (listTest.Count() != 0)
 				{
-					return listTest[0].Descripcion.ToString();
+					return false;
 				}
 			}
 			else
 			{
-				return "-1";
+				return false;
 			}
-			return "0";
+			return true;
 		}
 
 		//Funcion creada para acortar codigo y llamarla directamente al ejecutar una consulta.
-		private String HacerConsulta(string consulta)
+		private bool HacerConsulta(string consulta)
 		{
 			if (this.OpenConnection() == true)
 			{
@@ -140,16 +140,16 @@ namespace CapaDatos
 				catch (Exception ex)
 				{
 					this.CloseConnection();
-					error = ex.Message;
-					return "-1";
+					error = "Se ha producido un error con la conexión pruebe otra vez o contacte con el administrador mensaje de error: "+ex.Message;
+					return false;
 				}
 				this.CloseConnection();
 			}
 			else
 			{
-				return "-1";
+				return false;
 			}
-			return "1";
+			return true;
 		}
 
 		public string AnadirCategoria(string nombreCategoria)
@@ -160,34 +160,31 @@ namespace CapaDatos
 			}
 			//Consulta para comprobar si existe la categoeria que nos pasan, despues la pasamos a la función.
 			string ConsultaSiExiste = "SELECT * FROM CATEGORIAS WHERE Descripcion = '" + nombreCategoria + "'";
-			string resultado = ExisteCategoria(ConsultaSiExiste);
+			bool resultado = ExisteCategoria(ConsultaSiExiste);
 
 			//Comprobamos el resultado de la función para meterlo en la base de datos o decirle que no
-			if (resultado == "-1")
+			if (resultado == false)
 			{
-				return error;
+				return "No puede añadir la categoria "+nombreCategoria+" porque ya existe";
 			}
 
-			if (resultado == "0")
+			if (resultado == true)
 			{
 				string queryAnadirCategoria = "INSERT INTO Categorias (descripcion) VALUES('" + nombreCategoria + "')";
-				if (HacerConsulta(queryAnadirCategoria)== "-1")
+				if (HacerConsulta(queryAnadirCategoria)== false)
 				{
 					return error;
 				}
 			}
-			else
-			{
-				return "Como puedes ver en el recuadro de al lado, la categoria ya existe";
-			}
+
 			return "Categoria añadida correctamente";
 
 		}
 
-		public List<Categorias> DevolverCategorias()
+		public List<Categoria> DevolverCategorias()
 		{
 			string queryDevolverCategorias = "SELECT * FROM CATEGORIAS";
-			List<Categorias> devolverCategorias = new List<Categorias>();
+			List<Categoria> devolverCategorias = new List<Categoria>();
 
 			if (OpenConnection() == true)
 			{
@@ -196,7 +193,7 @@ namespace CapaDatos
 
 				while (dataReader.Read())
 				{
-					Categorias nuevaCategoria = new Categorias();
+					Categoria nuevaCategoria = new Categoria();
 					nuevaCategoria.Descripcion = dataReader["Descripcion"].ToString();
 					nuevaCategoria.idCategoria = int.Parse(dataReader["IdCategoria"].ToString());
 
@@ -219,10 +216,12 @@ namespace CapaDatos
 
 		}
 
-		public String EliminarCategoria(Categorias categoriaEliminar)
+		public String EliminarCategoria(Categoria categoriaEliminar)
 		{
 			string comprobarTest = "SELECT * FROM CATEGORIASTESTS WHERE (((IdCategoria) = '" + categoriaEliminar.idCategoria + "'))";
 			string result = "";
+			string result2 = "";
+			List<Test> listTest = new List<Test>();
 
 			if (OpenConnection() == true)
 			{
@@ -233,26 +232,52 @@ namespace CapaDatos
 				while (dataReader.Read())
 				{
 					result = (dataReader["IdCategoria"].ToString());
+					Test newTest = new Test();
+					newTest.idTest = int.Parse(dataReader["IdTest"].ToString());
+					newTest.idCategoria = int.Parse(dataReader["IdCategoria"].ToString());
+					listTest.Add(newTest);
 				}
 				dataReader.Close();
 				this.conexion.Close();
 			}
 
-			if (!(result == ""))
+			foreach (var test in listTest)
+			{
+				string comprobarPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = '" + test.idTest +"'))";
+				if (OpenConnection() == true)
+				{
+					SqlCommand cmd2 = new SqlCommand(comprobarPreguntas, conexion);
+					SqlDataReader dataReader2 = cmd2.ExecuteReader();
+
+					while (dataReader2.Read())
+					{
+						result2 = dataReader2["IdTest"].ToString();
+					}
+					dataReader2.Close();
+					this.conexion.Close();
+				}
+			}
+
+			if (result != "" && result2 == "")
 			{
 				return "test";
 			}
 
+			if (!((result == "") && (result2 == "")))
+			{
+				return "preguntas";
+			}
+
 
 			string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE (((Descripcion) = '" + categoriaEliminar.Descripcion + "'))";
-			if (HacerConsulta(queryBorrarCategoria) == "-1")
+			if (HacerConsulta(queryBorrarCategoria) == false)
 			{
 				return error;
 			}
 			return "Categoria eliminada correctamente";
 		}
 
-		public String ModificarCategoria(Categorias categoria, string nuevaCategoria, List<Categorias> categorias)
+		public String ModificarCategoria(Categoria categoria, string nuevaCategoria, List<Categoria> categorias)
 		{
 
 			if (String.IsNullOrWhiteSpace(nuevaCategoria))
@@ -261,7 +286,7 @@ namespace CapaDatos
 			}
 			if (categoria.Descripcion.ToLower() == nuevaCategoria.ToLower())
 			{
-				return "No puedes cambiarlo por el mismo nombre";
+				return "No puedes ponerle el mismo nombre a la categoria.";
 			}
 
 			//Comprobamos que ese nombre que mete no sea el mismo de uno que ya existe en la BD.
@@ -275,7 +300,7 @@ namespace CapaDatos
 			
 
 			string queryModificarCategoria = "UPDATE CATEGORIAS SET Descripcion = '" + nuevaCategoria + "' WHERE (((Descripcion) = '" + categoria.Descripcion + "'))";
-			if (HacerConsulta(queryModificarCategoria) == "-1")
+			if (HacerConsulta(queryModificarCategoria) == false)
 			{
 				return error;
 			}
@@ -285,17 +310,17 @@ namespace CapaDatos
 		public string EliminarTodasCategorias()
 		{
 			string queryEliminarCategorias = "DELETE FROM CATEGORIAS";
-			if (HacerConsulta(queryEliminarCategorias) == "-1")
+			if (HacerConsulta(queryEliminarCategorias) == false)
 			{
 				return error;
 			}
 			return "Todas las categorias se han eliminado con exito";
 		}
 
-		public List<Tests> DevolverTestAsociadoCategoria (Categorias categoriaRela)
+		public List<Test> DevolverTestAsociadoCategoria (Categoria categoriaRela)
 		{
-			List<Tests> testAsoc = new List<Tests>();
-			List<Tests> testDevolver = new List<Tests>();
+			List<Test> testAsoc = new List<Test>();
+			List<Test> testDevolver = new List<Test>();
 			string queryTestAsoc = "SELECT IdTest FROM CATEGORIASTESTS WHERE (((IdCategoria) = '" + categoriaRela.idCategoria + "'))";
 
 			if (this.OpenConnection() == true)
@@ -305,7 +330,7 @@ namespace CapaDatos
 
 				while (dataReader.Read())
 				{
-					Tests newTest = new Tests();
+					Test newTest = new Test();
 					newTest.idTest = int.Parse(dataReader["IdTest"].ToString());
 
 					testAsoc.Add(newTest);
@@ -323,7 +348,7 @@ namespace CapaDatos
 
 						while (dataReader2.Read())
 						{
-							Tests newTest2 = new Tests();
+							Test newTest2 = new Test();
 							newTest2.idTest = int.Parse(dataReader2["IdTest"].ToString());
 							newTest2.Descripcion = dataReader2["Descripcion"].ToString();
 
@@ -342,7 +367,7 @@ namespace CapaDatos
 			}
 		}
 
-		public string EliminarCategoriaConTest (Categorias categoriaBorrar)
+		public string EliminarCategoriaConTest (Categoria categoriaBorrar)
 		{
 			
 			string comprobarTest = "SELECT * FROM CATEGORIASTESTS WHERE (((IdCategoria) = '" + categoriaBorrar.idCategoria + "'))";
@@ -363,11 +388,12 @@ namespace CapaDatos
 				dataReader.Close();
 				this.conexion.Close();
 			}
+			
 
 			foreach (var test in idTests)
 			{
 				string queryBorrarTest = "DELETE FROM TEST WHERE (((IdTest) = '" + test + "'))";
-				if (HacerConsulta(queryBorrarTest) == "-1")
+				if (HacerConsulta(queryBorrarTest) == false)
 				{
 					return error;
 				}
@@ -376,15 +402,15 @@ namespace CapaDatos
 
 			//Se nos borra automaticamente los id de las tabla M-N ya que tiene relacionados gracias al Borrar en Cascada en la base de datos.
 			string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE (((IdCategoria) = '" + categoriaBorrar.idCategoria + "'))";
-			if (HacerConsulta(queryBorrarCategoria) == "-1")
+			if (HacerConsulta(queryBorrarCategoria) == false)
 			{
 				return error;
 			}
 
-			return "Categoria eliminada correctamente";
+			return "Categoria y tests eliminados correctamente";
 		}
 
-		public string AnadirTest (Categorias categoriaRelacionada, string nombreTest)
+		public string AnadirTest (Categoria categoriaRelacionada, string nombreTest)
 		{
 			if (String.IsNullOrWhiteSpace(nombreTest))
 			{
@@ -392,23 +418,23 @@ namespace CapaDatos
 			}
 
 			string ConsultaSiExiste = "SELECT * FROM TEST WHERE Descripcion = '" + nombreTest + "'";
-			string resultado = ExisteTest(ConsultaSiExiste);
+			bool resultado = ExisteTest(ConsultaSiExiste);
 
-			if (resultado == "-1")
+			if (resultado == false)
 			{
-				return error;
+				return "El test " + nombreTest +  " que quieres añadir ya existe.";
 			}
 
-			if (resultado == "0")
+			if (resultado == true)
 			{
 				string queryTest = "INSERT INTO TEST (descripcion) VALUES ('" + nombreTest + "')";
-				if (HacerConsulta(queryTest) == "-1")
+				if (HacerConsulta(queryTest) == false)
 				{
 					return error;
 				}
 				else
 				{
-					Tests newTest = new Tests();
+					Test newTest = new Test();
 					string sacarIdTest = "SELECT IdTest from TEST WHERE (((Descripcion) = '" + nombreTest + "'))";
 					if (OpenConnection() == true)
 					{
@@ -436,34 +462,30 @@ namespace CapaDatos
 						int numFilas = cmdAnadir.ExecuteNonQuery();
 						if (numFilas <= 0)
 						{
-							return "No se a añadido nada a sucedido un error";
+							return "Fallo al añadir, contacte con el administrador";
 						}
 						this.conexion.Close();
 						return "Añadido test " + nombreTest+  " con su Categoria "+ categoriaRelacionada.Descripcion+ " correctamente";
 					}
 				}
 			}
-			else
-			{
-				return "Este Test " + nombreTest + " ya existe";
-			}
 
 			return "";
 		}
 
-		public List<Tests> DevolverTests()
+		public List<Test> DevolverTests()
 		{
 			string queryDevolverCategorias = "SELECT * FROM TEST";
-			List<Tests> devolverTests = new List<Tests>();
+			List<Test> devolverTests = new List<Test>();
 
-			if (OpenConnection() == true)
+			if (this.OpenConnection() == true)
 			{
 				SqlCommand cmd = new SqlCommand(queryDevolverCategorias, conexion);
 				SqlDataReader dataReader = cmd.ExecuteReader();
 
 				while (dataReader.Read())
 				{
-					Tests nuevoTest = new Tests();
+					Test nuevoTest = new Test();
 					nuevoTest.Descripcion = dataReader["Descripcion"].ToString();
 					nuevoTest.idTest = int.Parse(dataReader["IdTest"].ToString());
 
@@ -484,6 +506,50 @@ namespace CapaDatos
 			{
 				return null;
 			}
+		}
+
+		public List<Pregunta> DevolverPreguntasDeTest(List<Test> listTest)
+		{
+			List<Pregunta> testConPreguntas = new List<Pregunta>();
+
+			foreach (var test in listTest)
+			{
+				string queryPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = '" + test.idTest +"'))";
+				if (OpenConnection() == true)
+				{
+					SqlCommand cmd = new SqlCommand(queryPreguntas, conexion);
+					SqlDataReader dataReader = cmd.ExecuteReader();
+
+					while (dataReader.Read())
+					{
+						Pregunta newPregunta = new Pregunta();
+						newPregunta.idPregunta = int.Parse(dataReader["IdPregunta"].ToString());
+						newPregunta.idTest = int.Parse(dataReader["IdTest"].ToString());
+						newPregunta.numPregunta = int.Parse(dataReader["Npregunta"].ToString());
+						newPregunta.enunciado = dataReader["Enunciado"].ToString();
+						newPregunta.respV = bool.Parse(dataReader["RespV"].ToString());
+						testConPreguntas.Add(newPregunta);
+					}
+					dataReader.Close();
+					this.conexion.Close();
+				}
+			}
+			return testConPreguntas;
+			
+		}
+
+		public string BorrarCategoriaTestsPreguntas(List<Pregunta> preguntasEliminar)
+		{
+			foreach (var pregunta in preguntasEliminar)
+			{
+				string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE (((IdPregunta) = '" + pregunta.idPregunta + "'))";
+				if (HacerConsulta(queryEliminarPreguntas) == false)
+				{
+					return error;
+				}
+
+			}
+			return "Preguntas eliminadas";
 		}
 	}
 }

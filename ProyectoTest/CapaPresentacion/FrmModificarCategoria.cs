@@ -20,7 +20,7 @@ namespace CapaPresentacion
 
         private void FrmModificarCategoria_Load(object sender, EventArgs e)
         {
-            List<Categorias> list = Program.gestor.DevolverCategorias();
+            List<Categoria> list = Program.gestor.DevolverCategorias();
             if (list == null)
             {
                 MessageBox.Show("No hay categorias que modificar, debes añadir una antes.");
@@ -60,9 +60,9 @@ namespace CapaPresentacion
                 return;
             }
 
-            Categorias  categoriaModifi = cboSeleccionarCat.SelectedItem as Categorias;
+            Categoria  categoriaModifi = cboSeleccionarCat.SelectedItem as Categoria;
             //La cargamos para enviarsela al gestor para comprobacion de errores.
-            List<Categorias> list = Program.gestor.DevolverCategorias();
+            List<Categoria> list = Program.gestor.DevolverCategorias();
 
             string mensaje = Program.gestor.ModificarCategoria(categoriaModifi, txtModificarCat.Text, list);
             
@@ -77,6 +77,11 @@ namespace CapaPresentacion
             cboSeleccionarCat.Text = "";
 
             txtModificarCat.Text = "";
+        }
+
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

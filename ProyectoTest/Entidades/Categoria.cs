@@ -6,22 +6,24 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class Categorias : IEquatable<Categorias>
+    public class Categoria : IEquatable<Categoria>
     {
         public int idCategoria { get; set; }
         public string Descripcion { get; set; }
 
+        public List<Test> testCategorias { get; set; }
 
-        public Categorias(string descripcion)
+
+        public Categoria(string descripcion)
         {
             Descripcion = descripcion;
         }
 
-        public Categorias()
+        public Categoria()
         {
         }
 
-        public Categorias(int idCategoria, string descripcion)
+        public Categoria(int idCategoria, string descripcion)
         {
             this.idCategoria = idCategoria;
             Descripcion = descripcion;
@@ -29,10 +31,10 @@ namespace Entidades
 
         public override bool Equals(object obj)
         {
-            return Equals(obj as Categorias);
+            return Equals(obj as Categoria);
         }
 
-        public bool Equals(Categorias other)
+        public bool Equals(Categoria other)
         {
             return other != null &&
                    idCategoria == other.idCategoria;

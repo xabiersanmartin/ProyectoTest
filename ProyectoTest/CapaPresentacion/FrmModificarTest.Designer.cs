@@ -34,6 +34,7 @@
             this.txtModificarTest = new System.Windows.Forms.TextBox();
             this.cboSeleccionarTest = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnVolver = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label3
@@ -88,11 +89,22 @@
             this.label1.TabIndex = 6;
             this.label1.Text = "Selecciona Test";
             // 
+            // btnVolver
+            // 
+            this.btnVolver.Location = new System.Drawing.Point(12, 393);
+            this.btnVolver.Name = "btnVolver";
+            this.btnVolver.Size = new System.Drawing.Size(126, 45);
+            this.btnVolver.TabIndex = 12;
+            this.btnVolver.Text = "&Volver";
+            this.btnVolver.UseVisualStyleBackColor = true;
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
+            // 
             // FrmModificarTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnModificar);
@@ -115,5 +127,6 @@
         private System.Windows.Forms.TextBox txtModificarTest;
         private System.Windows.Forms.ComboBox cboSeleccionarTest;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnVolver;
     }
 }

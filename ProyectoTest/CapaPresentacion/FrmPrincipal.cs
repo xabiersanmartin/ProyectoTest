@@ -20,37 +20,38 @@ namespace CapaPresentacion
         private void añadirCategoriaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmAnadirCategoria frm = new FrmAnadirCategoria();
-            frm.Show();
+            frm.ShowDialog(this);
+            
         }
 
         private void borrarCategoriaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmBorrarCategoria frm = new FrmBorrarCategoria();
-            frm.Show();
+            frm.ShowDialog(this);
         }
 
         private void modificarCategoriaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmModificarCategoria frm = new FrmModificarCategoria();
-            frm.Show();
+            frm.ShowDialog(this);
         }
 
         private void añadirTestsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmAnadirTest frm = new FrmAnadirTest();
-            frm.Show();
+            frm.ShowDialog(this);
         }
 
         private void borrarTestsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmBorrarTest frm = new FrmBorrarTest();
-            frm.Show();
+            frm.ShowDialog(this);
         }
 
         private void modificarTestsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmModificarTest frm = new FrmModificarTest();
-            frm.Show();
+            frm.ShowDialog(this);
         }
     }
 }

@@ -42,6 +42,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.cboTests = new System.Windows.Forms.ComboBox();
             this.btnTestCategoria = new System.Windows.Forms.Button();
+            this.btnVolver = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -170,11 +171,22 @@
             this.btnTestCategoria.Text = "&Añadir Test a Categoria";
             this.btnTestCategoria.UseVisualStyleBackColor = true;
             // 
+            // btnVolver
+            // 
+            this.btnVolver.Location = new System.Drawing.Point(6, 723);
+            this.btnVolver.Name = "btnVolver";
+            this.btnVolver.Size = new System.Drawing.Size(126, 45);
+            this.btnVolver.TabIndex = 14;
+            this.btnVolver.Text = "&Volver";
+            this.btnVolver.UseVisualStyleBackColor = true;
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
+            // 
             // FrmAnadirTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(976, 694);
+            this.ClientSize = new System.Drawing.Size(976, 780);
+            this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.btnTestCategoria);
             this.Controls.Add(this.cboTests);
             this.Controls.Add(this.label7);
@@ -214,5 +226,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox cboTests;
         private System.Windows.Forms.Button btnTestCategoria;
+        private System.Windows.Forms.Button btnVolver;
     }
 }

@@ -20,14 +20,14 @@ namespace CapaPresentacion
 
         private void FrmAnadirTest_Load(object sender, EventArgs e)
         {
-            List<Categorias> list = Program.gestor.DevolverCategorias();
+            List<Categoria> list = Program.gestor.DevolverCategorias();
             if (list == null)
             {
                 MessageBox.Show("No hay categorias que eliminar, debes añadir una antes.");
                 return;
             }
 
-            List<Tests> listTests = Program.gestor.DevolverTests();
+            List<Test> listTests = Program.gestor.DevolverTests();
             if (!(list == null))
             {
                 lsbTestExistentes.Items.AddRange(listTests.ToArray());
@@ -56,7 +56,7 @@ namespace CapaPresentacion
                 return;
             }
 
-            Categorias categoriaconTest = cboCategorias.SelectedItem as Categorias;
+            Categoria categoriaconTest = cboCategorias.SelectedItem as Categoria;
 
             string mensaje = Program.gestor.AnadirTest(categoriaconTest, txtAnadirTest.Text);
 
@@ -65,7 +65,7 @@ namespace CapaPresentacion
             cboCategorias.SelectedIndex = -1;
             txtAnadirTest.Text = "";
 
-            List<Tests> listTests = Program.gestor.DevolverTests();
+            List<Test> listTests = Program.gestor.DevolverTests();
             cboTests.Items.Clear();
             cboTests.Items.AddRange(listTests.ToArray());
             cboTests.DisplayMember = "Descripcion";
@@ -97,6 +97,11 @@ namespace CapaPresentacion
             {
                 e.Handled = false;
             }
+        }
+
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

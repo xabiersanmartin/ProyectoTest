@@ -34,6 +34,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.lsbCategorias = new System.Windows.Forms.ListBox();
+            this.btnVolver = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -92,11 +93,22 @@
             this.lsbCategorias.Size = new System.Drawing.Size(240, 164);
             this.lsbCategorias.TabIndex = 7;
             // 
+            // btnVolver
+            // 
+            this.btnVolver.Location = new System.Drawing.Point(12, 393);
+            this.btnVolver.Name = "btnVolver";
+            this.btnVolver.Size = new System.Drawing.Size(126, 45);
+            this.btnVolver.TabIndex = 8;
+            this.btnVolver.Text = "&Volver";
+            this.btnVolver.UseVisualStyleBackColor = true;
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
+            // 
             // FrmAnadirCategoria
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1068, 450);
+            this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.lsbCategorias);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -121,5 +133,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ListBox lsbCategorias;
+        private System.Windows.Forms.Button btnVolver;
     }
 }

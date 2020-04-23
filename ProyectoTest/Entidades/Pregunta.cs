@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class Preguntas : IEquatable<Preguntas>
+    public class Pregunta : IEquatable<Pregunta>
     {
-        public int idPreguntas { get; set; }
+        public int idPregunta { get; set; }
         public int numPregunta { get; set; }
         public string enunciado { get; set; }
         public bool respV { get; set; }
         public int idTest { get; set; }
 
-        public Preguntas()
+        public Pregunta()
         {
         }
 
-        public Preguntas(int idPreguntas, int numPregunta, string enunciado, bool respV, int idTest)
+        public Pregunta(int idPreguntas, int numPregunta, string enunciado, bool respV, int idTest)
         {
-            this.idPreguntas = idPreguntas;
+            this.idPregunta = idPreguntas;
             this.numPregunta = numPregunta;
             this.enunciado = enunciado;
             this.respV = respV;
@@ -29,18 +29,18 @@ namespace Entidades
 
         public override bool Equals(object obj)
         {
-            return Equals(obj as Preguntas);
+            return Equals(obj as Pregunta);
         }
 
-        public bool Equals(Preguntas other)
+        public bool Equals(Pregunta other)
         {
             return other != null &&
-                   idPreguntas == other.idPreguntas;
+                   idPregunta == other.idPregunta;
         }
 
         public override int GetHashCode()
         {
-            return -2025408053 + idPreguntas.GetHashCode();
+            return -2025408053 + idPregunta.GetHashCode();
         }
     }
 }

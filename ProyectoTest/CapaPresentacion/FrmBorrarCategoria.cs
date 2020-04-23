@@ -20,7 +20,7 @@ namespace CapaPresentacion
 
         private void FrmBorrarCategoria_Load(object sender, EventArgs e)
         {
-            List<Categorias> list = Program.gestor.DevolverCategorias();
+            List<Categoria> list = Program.gestor.DevolverCategorias();
             if (list == null)
             {
                 MessageBox.Show("No hay categorias que eliminar, debes añadir una antes.");
@@ -42,7 +42,7 @@ namespace CapaPresentacion
                 return;
             }
 
-            Categorias borrarCategoria = cboCategorias.SelectedItem as Categorias;
+            Categoria borrarCategoria = cboCategorias.SelectedItem as Categoria;
 
             //Vamos a comprobar con el usuario si quiere eliminar la categoria antes de eliminarla.
             DialogResult resultado = MessageBox.Show("Seguro que quieres eliminar la categoria " + borrarCategoria.Descripcion, "ELIMINAR", MessageBoxButtons.YesNo);
@@ -51,11 +51,70 @@ namespace CapaPresentacion
             {
                 string mensaje = Program.gestor.BorrarCategoria(borrarCategoria);
 
+                if (mensaje == "preguntas")
+                {
+                    DialogResult result = new DialogResult();
+                    List<Test> testAsociados = new List<Test>();
+                    List<Pregunta> preguntasAsociadas = new List<Pregunta>();
+
+                    testAsociados = Program.gestor.DevolverTestCategorias(borrarCategoria);
+                    string tests = "";
+
+                    for (int i = 0; i < testAsociados.Count; i++)
+                    {
+                        if ((i+1) == testAsociados.Count)
+                        {
+                            tests += String.Concat(testAsociados[i].Descripcion + ".");
+                        }
+                        else
+                        {
+                            tests += String.Concat(testAsociados[i].Descripcion + ", ");
+                        }
+                        
+                    }
+
+                    preguntasAsociadas = Program.gestor.DevolverTestConPreguntas(testAsociados);
+                    string tests2 = "";
+
+                    for (int i = 0; i < preguntasAsociadas.Count; i++)
+                    {
+                        if ((i + 1) == preguntasAsociadas.Count)
+                        {
+                            tests2 += String.Concat(preguntasAsociadas[i].enunciado + ".");
+                        }
+                        else
+                        {
+                            tests2 += String.Concat(preguntasAsociadas[i].enunciado + ", ");
+                        }
+                        
+                    }
+
+                    result = MessageBox.Show("Seguro que quieres eliminar la categoria " + borrarCategoria.Descripcion + "\n" + "\n" + "Con los tests: "  + tests + "\n" + "\n" + " Con las preguntas: "  + tests2, "CUIDADO", MessageBoxButtons.YesNo);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        string respuesta = Program.gestor.EliminarPreguntasDeTest(preguntasAsociadas);
+                        string respuesta2 = Program.gestor.BorrarCategoriaTest(borrarCategoria);
+
+                        if (respuesta == "Preguntas eliminadas" && respuesta2 == "Categoria y tests eliminados correctamente")
+                        {
+                            MessageBox.Show("La categoria fue eliminada correctamente con todos sus tests y preguntas");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Ha sucedido un problema contacte con administrador.");
+                        }
+                    }
+
+                    cboCategorias.SelectedIndex = -1;
+                    return;
+                }
+
                 //Comprobacion de que la la Categoria no tenga test asociados
                 if (mensaje == "test")
                 {
                     DialogResult result = new DialogResult();
-                    List<Tests> testAsociados = new List<Tests>();
+                    List<Test> testAsociados = new List<Test>();
 
                     testAsociados = Program.gestor.DevolverTestCategorias(borrarCategoria);
                     string tests = "";
@@ -74,7 +133,7 @@ namespace CapaPresentacion
                         MessageBox.Show(respuesta);
 
                         //Cargamos la lista de nuevo para que salga bien al seleccionar el combobox de nuevo
-                        List<Categorias> lista = Program.gestor.DevolverCategorias();
+                        List<Categoria> lista = Program.gestor.DevolverCategorias();
                         if (lista == null)
                         {
                             MessageBox.Show("Has eliminado todas las categorias");
@@ -94,7 +153,7 @@ namespace CapaPresentacion
                 }
 
                 //Cargamos la lista de nuevo para que salga bien al seleccionar el combobox de nuevo
-                List<Categorias> list = Program.gestor.DevolverCategorias();
+                List<Categoria> list = Program.gestor.DevolverCategorias();
                 if (list == null)
                 {
                     MessageBox.Show("Has eliminado todas las categorias");
@@ -122,7 +181,7 @@ namespace CapaPresentacion
 
         private void btnBorrarTodo_Click(object sender, EventArgs e)
         {
-            List<Categorias> list = Program.gestor.DevolverCategorias();
+            List<Categoria> list = Program.gestor.DevolverCategorias();
             if (list == null)
             {
                 MessageBox.Show("No puede eliminar categorias sino tienes ninguna");
@@ -143,6 +202,11 @@ namespace CapaPresentacion
                 MessageBox.Show("No se a eliminado nada.");
                 return;
             }
+        }
+
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

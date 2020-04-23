@@ -17,17 +17,17 @@ namespace CapaNegocio
             return nuevoAcceso.AnadirCategoria(nombreCategoria);
         }
 
-        public List<Categorias> DevolverCategorias()
+        public List<Categoria> DevolverCategorias()
         {
             return nuevoAcceso.DevolverCategorias();
         }
 
-        public string BorrarCategoria (Categorias eliminarCategoria)
+        public string BorrarCategoria (Categoria eliminarCategoria)
         {
             return nuevoAcceso.EliminarCategoria(eliminarCategoria);
         }
 
-        public string ModificarCategoria(Categorias categoria, string nuevaCategoria, List<Categorias> categorias)
+        public string ModificarCategoria(Categoria categoria, string nuevaCategoria, List<Categoria> categorias)
         {
             return nuevoAcceso.ModificarCategoria(categoria, nuevaCategoria, categorias);
         }
@@ -37,24 +37,34 @@ namespace CapaNegocio
             return nuevoAcceso.EliminarTodasCategorias();
         }
 
-        public List<Tests> DevolverTestCategorias (Categorias categoria)
+        public List<Test> DevolverTestCategorias (Categoria categoria)
         {
             return nuevoAcceso.DevolverTestAsociadoCategoria(categoria);
         }
 
-        public string BorrarCategoriaTest( Categorias categoriaBorrar)
+        public string BorrarCategoriaTest( Categoria categoriaBorrar)
         {
             return nuevoAcceso.EliminarCategoriaConTest(categoriaBorrar);
         }
 
-        public string AnadirTest(Categorias categoria, string nombreTest)
+        public string AnadirTest(Categoria categoria, string nombreTest)
         {
            return nuevoAcceso.AnadirTest(categoria, nombreTest);
         }
 
-        public List<Tests> DevolverTests()
+        public List<Test> DevolverTests()
         {
             return nuevoAcceso.DevolverTests();
+        }
+
+        public List<Pregunta> DevolverTestConPreguntas (List<Test> listTest)
+        {
+            return nuevoAcceso.DevolverPreguntasDeTest(listTest);
+        }
+
+        public string EliminarPreguntasDeTest(List<Pregunta> listPreguntas)
+        {
+            return nuevoAcceso.BorrarCategoriaTestsPreguntas(listPreguntas);
         }
     }
 }

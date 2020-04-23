@@ -6,27 +6,41 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class Tests : IEquatable<Tests>
+    public class Test : IEquatable<Test>
     {
 
         public int idTest { get; set; }
+
+        public int idCategoria { get; set; }
         public string Descripcion { get; set; }
 
-        public Tests()
+        public List<Pregunta> preguntasTest { get; set; }
+
+
+
+        public Test()
         {
         }
 
-        public Tests(string descripcion)
+        public Test(string descripcion)
         {
             Descripcion = descripcion;
         }
 
-        public override bool Equals(object obj)
+        public Test(int idTest, int idCategoria, string descripcion, List<Pregunta> preguntasTest)
         {
-            return Equals(obj as Tests);
+            this.idTest = idTest;
+            this.idCategoria = idCategoria;
+            Descripcion = descripcion;
+            this.preguntasTest = preguntasTest;
         }
 
-        public bool Equals(Tests other)
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Test);
+        }
+
+        public bool Equals(Test other)
         {
             return other != null &&
                    idTest == other.idTest;
