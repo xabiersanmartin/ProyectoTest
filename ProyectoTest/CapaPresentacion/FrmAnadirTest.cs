@@ -23,7 +23,7 @@ namespace CapaPresentacion
             List<Categoria> list = Program.gestor.DevolverCategorias();
             if (list == null)
             {
-                MessageBox.Show("No hay categorias que eliminar, debes añadir una antes.");
+                MessageBox.Show("No hay categorias, debes crear una antes para poder asociarla con un test","CUIDADO");
                 return;
             }
 
