@@ -47,9 +47,9 @@ namespace CapaNegocio
             return nuevoAcceso.EliminarCategoriaConTest(categoriaBorrar);
         }
 
-        public string AnadirTest(Categoria categoria, string nombreTest)
+        public string AnadirTest(string nombreTest)
         {
-           return nuevoAcceso.AnadirTest(categoria, nombreTest);
+           return nuevoAcceso.AnadirTest(nombreTest);
         }
 
         public List<Test> DevolverTests()
@@ -65,6 +65,11 @@ namespace CapaNegocio
         public string EliminarPreguntasDeTest(List<Pregunta> listPreguntas)
         {
             return nuevoAcceso.BorrarCategoriaTestsPreguntas(listPreguntas);
+        }
+
+        public string AnadirCategoriaTest(Categoria categoria, Test test)
+        {
+            return nuevoAcceso.AnadirCategoriaTest(categoria, test);
         }
     }
 }

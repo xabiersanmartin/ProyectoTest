@@ -35,6 +35,11 @@ namespace Entidades
             this.preguntasTest = preguntasTest;
         }
 
+        public Test(int idTest)
+        {
+            this.idTest = idTest;
+        }
+
         public override bool Equals(object obj)
         {
             return Equals(obj as Test);

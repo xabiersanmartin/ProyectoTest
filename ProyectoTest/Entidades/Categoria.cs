@@ -29,6 +29,11 @@ namespace Entidades
             Descripcion = descripcion;
         }
 
+        public Categoria(int idCategoria)
+        {
+            this.idCategoria = idCategoria;
+        }
+
         public override bool Equals(object obj)
         {
             return Equals(obj as Categoria);
