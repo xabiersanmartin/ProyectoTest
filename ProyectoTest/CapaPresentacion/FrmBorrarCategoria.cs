@@ -21,15 +21,19 @@ namespace CapaPresentacion
         private void FrmBorrarCategoria_Load(object sender, EventArgs e)
         {
             List<Categoria> list = Program.gestor.DevolverCategorias();
-            if (list == null)
+            if (list != null)
+            {
+                cboCategorias.Items.Clear();
+                cboCategorias.Items.AddRange(list.ToArray());
+                cboCategorias.DisplayMember = "Descripcion";
+            }
+            else
             {
                 MessageBox.Show("No hay categorias que eliminar, debes añadir una antes.");
-                return;
+                cboCategorias.Enabled = false;
             }
             
-            cboCategorias.Items.Clear();
-            cboCategorias.Items.AddRange(list.ToArray());
-            cboCategorias.DisplayMember = "Descripcion";
+            
             
         }
 
@@ -188,7 +192,7 @@ namespace CapaPresentacion
                 return;
             }
 
-            DialogResult result = MessageBox.Show("¿Seguro que quieres eliminar todas las categorias?", "ELIMINAR", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("¿Seguro que quieres eliminar todas las categorias? \n \n Piensa que tambien eliminaras todos los test asociados a esas categorias y las preguntas asociadas a los test", "ELIMINAR", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 string mensaje = Program.gestor.EliminarCategorias();

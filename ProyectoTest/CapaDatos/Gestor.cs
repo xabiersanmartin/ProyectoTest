@@ -312,11 +312,21 @@ namespace CapaDatos
         public string EliminarTodasCategorias()
         {
             string queryEliminarCategorias = "DELETE FROM CATEGORIAS";
+            string queryEliminarTest = "DELETE T FROM TEST AS T INNER JOIN CATEGORIASTESTS ON T.IDTEST = CATEGORIASTESTS.IDTEST WHERE T.IDTEST = CATEGORIASTESTS.IDTEST";
+            string queryEliminarPreg = "DELETE P FROM PREGUNTAS AS P INNER JOIN TEST ON P.IDTEST = TEST.IDTEST WHERE P.IDTEST = TEST.IDTEST";
+            if (HacerConsulta(queryEliminarPreg) == false)
+            {
+                return error;
+            }
+            if (HacerConsulta(queryEliminarTest) == false)
+            {
+                return error;
+            }
             if (HacerConsulta(queryEliminarCategorias) == false)
             {
                 return error;
             }
-            return "Todas las categorias se han eliminado con exito";
+            return "Todas las categorias, test y preguntas se han eliminado con exito";
         }
 
         public List<Test> DevolverTestAsociadoCategoria(Categoria categoriaRela)
