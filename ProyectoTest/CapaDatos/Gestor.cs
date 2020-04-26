@@ -97,47 +97,6 @@ namespace CapaDatos
             return true;
         }
 
-        //private bool ExisteTestCategoria(string consulta)
-        //{
-        //    List<Test> listTest = new List<Test>();
-        //    List<Categoria> listCat = new List<Categoria>();
-
-        //    if (OpenConnection() == true)
-        //    {
-        //        SqlCommand cmd = new SqlCommand(consulta, conexion);
-        //        cmd.ExecuteScalar();
-
-
-        //        {
-
-        //        }
-        //        int id;
-        //        int id2;
-
-        //        while (dataReader.Read())
-        //        {
-        //            string idTest = (dataReader["IdTest"].ToString());
-        //            string idCategoria = dataReader["idCategoria"].ToString();
-        //            id = Convert.ToInt32(idCategoria);
-        //            id2 = Convert.ToInt32(idTest);
-
-        //            listCat.Add(new Categoria(id));
-        //            listTest.Add(new Test(id2));
-        //        }
-        //        dataReader.Close();
-        //        this.CloseConnection();
-
-        //        if (listTest.Count() != 0 && listCat.Count() != 0)
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //    return true;
-        //}
 
         private bool ExisteTest(string consulta)
         {
@@ -476,87 +435,90 @@ namespace CapaDatos
                     return error;
                 }
             }
-            return "El test "+nombreTest+ " se ha añadido correctamente";
-    }
+            return "El test " + nombreTest + " se ha añadido correctamente";
+        }
 
-    public List<Test> DevolverTests()
-    {
-        string queryDevolverCategorias = "SELECT * FROM TEST";
-        List<Test> devolverTests = new List<Test>();
-
-        if (this.OpenConnection() == true)
+        public List<Test> DevolverTests()
         {
-            SqlCommand cmd = new SqlCommand(queryDevolverCategorias, conexion);
-            SqlDataReader dataReader = cmd.ExecuteReader();
+            string queryDevolverCategorias = "SELECT * FROM TEST";
+            List<Test> devolverTests = new List<Test>();
 
-            while (dataReader.Read())
+            if (this.OpenConnection() == true)
             {
-                Test nuevoTest = new Test();
-                nuevoTest.Descripcion = dataReader["Descripcion"].ToString();
-                nuevoTest.idTest = int.Parse(dataReader["IdTest"].ToString());
+                SqlCommand cmd = new SqlCommand(queryDevolverCategorias, conexion);
+                SqlDataReader dataReader = cmd.ExecuteReader();
 
-                devolverTests.Add(nuevoTest);
-            }
-            dataReader.Close();
-            this.CloseConnection();
-            if (devolverTests.Count() != 0)
-            {
-                return devolverTests;
+                while (dataReader.Read())
+                {
+                    Test nuevoTest = new Test();
+                    Pregunta  newPregunta = new Pregunta();
+
+                    nuevoTest.Descripcion = dataReader["Descripcion"].ToString();
+                    nuevoTest.idTest = int.Parse(dataReader["IdTest"].ToString());
+
+                    devolverTests.Add(nuevoTest);
+                }
+                dataReader.Close();
+                this.CloseConnection();
+
+                if (devolverTests.Count() != 0)
+                {
+                    return devolverTests;
+                }
+                else
+                {
+                    return null;
+                }
             }
             else
             {
                 return null;
             }
         }
-        else
-        {
-            return null;
-        }
-    }
 
-    public List<Pregunta> DevolverPreguntasDeTest(List<Test> listTest)
-    {
-        List<Pregunta> testConPreguntas = new List<Pregunta>();
-
-        foreach (var test in listTest)
+        public List<Pregunta> DevolverPreguntasDeTest(List<Test> listTest)
         {
-            string queryPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = '" + test.idTest + "'))";
-            if (OpenConnection() == true)
+            List<Pregunta> testConPreguntas = new List<Pregunta>();
+
+            foreach (var test in listTest)
             {
-                SqlCommand cmd = new SqlCommand(queryPreguntas, conexion);
-                SqlDataReader dataReader = cmd.ExecuteReader();
-
-                while (dataReader.Read())
+                string queryPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = '" + test.idTest + "'))";
+                if (OpenConnection() == true)
                 {
-                    Pregunta newPregunta = new Pregunta();
-                    newPregunta.idPregunta = int.Parse(dataReader["IdPregunta"].ToString());
-                    newPregunta.idTest = int.Parse(dataReader["IdTest"].ToString());
-                    newPregunta.numPregunta = int.Parse(dataReader["Npregunta"].ToString());
-                    newPregunta.enunciado = dataReader["Enunciado"].ToString();
-                    newPregunta.respV = bool.Parse(dataReader["RespV"].ToString());
-                    testConPreguntas.Add(newPregunta);
+                    SqlCommand cmd = new SqlCommand(queryPreguntas, conexion);
+                    SqlDataReader dataReader = cmd.ExecuteReader();
+
+                    while (dataReader.Read())
+                    {
+                        Pregunta newPregunta = new Pregunta();
+                        newPregunta.idPregunta = int.Parse(dataReader["IdPregunta"].ToString());
+                        newPregunta.idTest = int.Parse(dataReader["IdTest"].ToString());
+                        newPregunta.numPregunta = int.Parse(dataReader["Npregunta"].ToString());
+                        newPregunta.enunciado = dataReader["Enunciado"].ToString();
+                        newPregunta.respV = bool.Parse(dataReader["RespV"].ToString());
+                        testConPreguntas.Add(newPregunta);
+                    }
+                    dataReader.Close();
+                    this.conexion.Close();
                 }
-                dataReader.Close();
-                this.conexion.Close();
             }
+            return testConPreguntas;
+
         }
-        return testConPreguntas;
 
-    }
-
-    public string BorrarCategoriaTestsPreguntas(List<Pregunta> preguntasEliminar)
-    {
-        foreach (var pregunta in preguntasEliminar)
+        public string BorrarCategoriaTestsPreguntas(List<Pregunta> preguntasEliminar)
         {
-            string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE (((IdPregunta) = '" + pregunta.idPregunta + "'))";
-            if (HacerConsulta(queryEliminarPreguntas) == false)
+            foreach (var pregunta in preguntasEliminar)
             {
-                return error;
-            }
+                string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE (((IdPregunta) = '" + pregunta.idPregunta + "'))";
+                if (HacerConsulta(queryEliminarPreguntas) == false)
+                {
+                    return error;
+                }
 
+            }
+            return "Preguntas eliminadas";
         }
-        return "Preguntas eliminadas";
-    }
 
         public string AnadirCategoriaTest(Categoria categoria, Test test)
         {
@@ -584,18 +546,18 @@ namespace CapaDatos
                             {
                                 dr.Close();
                                 this.conexion.Close();
-                                return "La categoria " + categoria.Descripcion+ " ya esta asociado con el test "+test.Descripcion;
+                                return "La categoria " + categoria.Descripcion + " ya esta asociado con el test " + test.Descripcion;
                             }
                         }
                         dr.Close();
                     }
                     this.conexion.Close();
                 }
-                
+
             }
             catch (Exception ex)
             {
-                error = "Fallo al conectar, contace con el administrador descripcion del error: " +ex.Message;
+                error = "Fallo al conectar, contace con el administrador descripcion del error: " + ex.Message;
                 return error;
             }
 
@@ -611,12 +573,85 @@ namespace CapaDatos
                 int numFilas = cmdAnadir.ExecuteNonQuery();
                 if (numFilas <= 0)
                 {
-                    return "Fallo al añadir la categoria " + categoria.Descripcion+ "con el test "+test.Descripcion + ", contacte con el administrador";
+                    return "Fallo al añadir la categoria " + categoria.Descripcion + "con el test " + test.Descripcion + ", contacte con el administrador";
                 }
                 this.conexion.Close();
             }
 
             return "La categoria " + categoria.Descripcion + " añadido correctamente al test " + test.Descripcion;
         }
-}
+
+        public string EliminarTest(Test testEliminar)
+        {
+            string comprobarTest = "SELECT idTest FROM PREGUNTAS WHERE (((IdTest) = '" + testEliminar.idTest + "'))";
+            int comprobacion = 0;
+
+            if (OpenConnection() == true)
+            {
+                
+                SqlCommand cmd = new SqlCommand(comprobarTest, conexion);
+                comprobacion = Convert.ToInt32(cmd.ExecuteScalar());
+            }
+            this.conexion.Close();
+
+            if (comprobacion > 0)
+            {
+                return "preguntas";
+            }
+            else
+            {
+                string eliminarTest = "DELETE FROM TEST WHERE (((IdTest) =  '" + testEliminar.idTest + "'))";
+                if (HacerConsulta(eliminarTest) == false)
+                {
+                    return error;
+                }
+            }
+
+            return "Test " + testEliminar.Descripcion + " eliminado";
+        }
+
+        public string EliminarTestConPreguntas(Test eliminarTest)
+        {
+            string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE IdTest = " +  eliminarTest.idTest;
+            if (HacerConsulta(queryEliminarPreguntas) == false)
+            {
+                return error;
+            }
+
+            string queryEliminarTest = "DELETE FROM TEST WHERE Idtest = " + eliminarTest.idTest;
+            if (HacerConsulta(queryEliminarTest) == false)
+            {
+                return "error";
+            }
+
+            return "Test " + eliminarTest.Descripcion + " con las preguntas asociadas elimanado";
+        }
+
+        public  Test DevolverTestConPreguntas (Test buscarTest){
+
+            List<Test> testConPreguntas = new List<Test>();
+
+
+                string queryPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = '" + buscarTest.idTest + "'))";
+                if (OpenConnection() == true)
+                {
+                    SqlCommand cmd = new SqlCommand(queryPreguntas, conexion);
+                    SqlDataReader dataReader = cmd.ExecuteReader();
+
+                    while (dataReader.Read())
+                    {
+                    Pregunta newPregunta = new Pregunta();
+                    newPregunta.enunciado = dataReader["Enunciado"].ToString();
+                    newPregunta.idPregunta = int.Parse(dataReader["IdPregunta"].ToString());
+
+                    buscarTest.preguntasTest.Add(newPregunta);
+                    }
+                    dataReader.Close();
+                    this.conexion.Close();
+                }
+
+            return buscarTest;
+
+        }
+    }
 }

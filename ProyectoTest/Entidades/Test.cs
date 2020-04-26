@@ -14,7 +14,7 @@ namespace Entidades
         public int idCategoria { get; set; }
         public string Descripcion { get; set; }
 
-        public List<Pregunta> preguntasTest { get; set; }
+        public List<Pregunta> preguntasTest = new List<Pregunta>();
 
 
 

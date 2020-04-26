@@ -71,5 +71,20 @@ namespace CapaNegocio
         {
             return nuevoAcceso.AnadirCategoriaTest(categoria, test);
         }
+
+        public string EliminarTest(Test eliminarTest)
+        {
+            return nuevoAcceso.EliminarTest(eliminarTest);
+        }
+
+        public string EliminarPreguntasDeTest(Test eliminarTest)
+        {
+            return nuevoAcceso.EliminarTestConPreguntas(eliminarTest);
+        }
+
+        public Test DevolverPreguntasTest (Test buscarTest)
+        {
+            return nuevoAcceso.DevolverTestConPreguntas(buscarTest);
+        }
     }
 }

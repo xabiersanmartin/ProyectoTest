@@ -27,6 +27,11 @@ namespace Entidades
             this.idTest = idTest;
         }
 
+        public Pregunta(string enunciado)
+        {
+            this.enunciado = enunciado;
+        }
+
         public override bool Equals(object obj)
         {
             return Equals(obj as Pregunta);

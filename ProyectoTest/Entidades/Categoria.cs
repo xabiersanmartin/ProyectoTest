@@ -11,7 +11,7 @@ namespace Entidades
         public int idCategoria { get; set; }
         public string Descripcion { get; set; }
 
-        public List<Test> testCategorias { get; set; }
+        public List<Test> testCategorias = new List<Test>();
 
 
         public Categoria(string descripcion)

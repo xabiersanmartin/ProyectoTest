@@ -21,27 +21,29 @@ namespace CapaPresentacion
         private void FrmAnadirTest_Load(object sender, EventArgs e)
         {
             List<Categoria> list = Program.gestor.DevolverCategorias();
-            if (list == null)
+            if (list != null)
             {
-                MessageBox.Show("No hay categorias, debes crear una antes para poder asociarla con un test","CUIDADO");
-                return;
+                cboCategoria2.Items.Clear();
+                cboCategoria2.Items.AddRange(list.ToArray());
+                cboCategoria2.DisplayMember = "Descripcion";
+                
+            }
+            else
+            {
+                MessageBox.Show("No hay categorias, debes crear una antes para poder asociarla con un test", "CUIDADO");
+                cboCategoria2.Enabled = false;
             }
 
             List<Test> listTests = Program.gestor.DevolverTests();
-            if (!(list == null))
+            if (listTests != null)
             {
                 lsbTestExistentes.Items.AddRange(listTests.ToArray());
                 lsbTestExistentes.DisplayMember = "Descripcion";
+
+                cboTests.Items.Clear();
+                cboTests.Items.AddRange(listTests.ToArray());
+                cboTests.DisplayMember = "Descripcion";
             }
-
-
-            cboCategoria2.Items.Clear();
-            cboCategoria2.Items.AddRange(list.ToArray());
-            cboCategoria2.DisplayMember = "Descripcion";
-
-            cboTests.Items.Clear();
-            cboTests.Items.AddRange(listTests.ToArray());
-            cboTests.DisplayMember = "Descripcion";
 
         }
 

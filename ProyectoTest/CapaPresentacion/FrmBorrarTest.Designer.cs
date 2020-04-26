@@ -30,7 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.cboEliminarTest = new System.Windows.Forms.ComboBox();
-            this.btnAnadirTest = new System.Windows.Forms.Button();
+            this.btnEliminarTest = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.btnVolver = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -56,14 +56,15 @@
             this.cboEliminarTest.Size = new System.Drawing.Size(190, 24);
             this.cboEliminarTest.TabIndex = 2;
             // 
-            // btnAnadirTest
+            // btnEliminarTest
             // 
-            this.btnAnadirTest.Location = new System.Drawing.Point(338, 288);
-            this.btnAnadirTest.Name = "btnAnadirTest";
-            this.btnAnadirTest.Size = new System.Drawing.Size(120, 38);
-            this.btnAnadirTest.TabIndex = 3;
-            this.btnAnadirTest.Text = "&Eliminar Test";
-            this.btnAnadirTest.UseVisualStyleBackColor = true;
+            this.btnEliminarTest.Location = new System.Drawing.Point(338, 288);
+            this.btnEliminarTest.Name = "btnEliminarTest";
+            this.btnEliminarTest.Size = new System.Drawing.Size(120, 38);
+            this.btnEliminarTest.TabIndex = 3;
+            this.btnEliminarTest.Text = "&Eliminar Test";
+            this.btnEliminarTest.UseVisualStyleBackColor = true;
+            this.btnEliminarTest.Click += new System.EventHandler(this.btnEliminarTest_Click);
             // 
             // label2
             // 
@@ -122,7 +123,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.btnAnadirTest);
+            this.Controls.Add(this.btnEliminarTest);
             this.Controls.Add(this.cboEliminarTest);
             this.Controls.Add(this.label1);
             this.Name = "FrmBorrarTest";
@@ -138,7 +139,7 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cboEliminarTest;
-        private System.Windows.Forms.Button btnAnadirTest;
+        private System.Windows.Forms.Button btnEliminarTest;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnVolver;
         private System.Windows.Forms.Label label3;
