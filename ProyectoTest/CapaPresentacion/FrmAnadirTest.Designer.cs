@@ -31,7 +31,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtAnadirTest = new System.Windows.Forms.TextBox();
             this.btnAnadirTest = new System.Windows.Forms.Button();
-            this.lsbTestExistentes = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -41,6 +40,8 @@
             this.cboTests = new System.Windows.Forms.ComboBox();
             this.btnTestCategoria = new System.Windows.Forms.Button();
             this.btnVolver = new System.Windows.Forms.Button();
+            this.dgvTestCat = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTestCat)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -71,24 +72,15 @@
             this.btnAnadirTest.UseVisualStyleBackColor = true;
             this.btnAnadirTest.Click += new System.EventHandler(this.btnAnadirTest_Click);
             // 
-            // lsbTestExistentes
-            // 
-            this.lsbTestExistentes.FormattingEnabled = true;
-            this.lsbTestExistentes.ItemHeight = 16;
-            this.lsbTestExistentes.Location = new System.Drawing.Point(637, 206);
-            this.lsbTestExistentes.Name = "lsbTestExistentes";
-            this.lsbTestExistentes.Size = new System.Drawing.Size(309, 324);
-            this.lsbTestExistentes.TabIndex = 3;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(637, 146);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(216, 31);
+            this.label2.Size = new System.Drawing.Size(594, 31);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Test Existentes";
+            this.label2.Text = "Los Test que tiene la categoria seleccionada";
             // 
             // label4
             // 
@@ -125,6 +117,7 @@
             this.cboCategoria2.Name = "cboCategoria2";
             this.cboCategoria2.Size = new System.Drawing.Size(190, 24);
             this.cboCategoria2.TabIndex = 9;
+            this.cboCategoria2.SelectedIndexChanged += new System.EventHandler(this.cboCategoria2_SelectedIndexChanged);
             // 
             // label7
             // 
@@ -163,11 +156,22 @@
             this.btnVolver.UseVisualStyleBackColor = true;
             this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
+            // dgvTestCat
+            // 
+            this.dgvTestCat.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTestCat.Location = new System.Drawing.Point(653, 202);
+            this.dgvTestCat.Name = "dgvTestCat";
+            this.dgvTestCat.RowHeadersWidth = 51;
+            this.dgvTestCat.RowTemplate.Height = 24;
+            this.dgvTestCat.Size = new System.Drawing.Size(564, 297);
+            this.dgvTestCat.TabIndex = 15;
+            // 
             // FrmAnadirTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(976, 780);
+            this.ClientSize = new System.Drawing.Size(1258, 780);
+            this.Controls.Add(this.dgvTestCat);
             this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.btnTestCategoria);
             this.Controls.Add(this.cboTests);
@@ -177,7 +181,6 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.lsbTestExistentes);
             this.Controls.Add(this.btnAnadirTest);
             this.Controls.Add(this.txtAnadirTest);
             this.Controls.Add(this.label1);
@@ -185,6 +188,7 @@
             this.Text = "Añadir Test";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.FrmAnadirTest_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTestCat)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -195,7 +199,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtAnadirTest;
         private System.Windows.Forms.Button btnAnadirTest;
-        private System.Windows.Forms.ListBox lsbTestExistentes;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
@@ -205,5 +208,6 @@
         private System.Windows.Forms.ComboBox cboTests;
         private System.Windows.Forms.Button btnTestCategoria;
         private System.Windows.Forms.Button btnVolver;
+        private System.Windows.Forms.DataGridView dgvTestCat;
     }
 }

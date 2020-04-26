@@ -26,7 +26,7 @@ namespace CapaPresentacion
                 cboCategoria2.Items.Clear();
                 cboCategoria2.Items.AddRange(list.ToArray());
                 cboCategoria2.DisplayMember = "Descripcion";
-                
+
             }
             else
             {
@@ -37,13 +37,12 @@ namespace CapaPresentacion
             List<Test> listTests = Program.gestor.DevolverTests();
             if (listTests != null)
             {
-                lsbTestExistentes.Items.AddRange(listTests.ToArray());
-                lsbTestExistentes.DisplayMember = "Descripcion";
 
                 cboTests.Items.Clear();
                 cboTests.Items.AddRange(listTests.ToArray());
                 cboTests.DisplayMember = "Descripcion";
             }
+
 
         }
 
@@ -60,13 +59,6 @@ namespace CapaPresentacion
             cboTests.Items.Clear();
             cboTests.Items.AddRange(listTests.ToArray());
             cboTests.DisplayMember = "Descripcion";
-
-            if (!(listTests == null))
-            {
-                lsbTestExistentes.Items.Clear();
-                lsbTestExistentes.Items.AddRange(listTests.ToArray());
-                lsbTestExistentes.DisplayMember = "Descripcion";
-            }
 
         }
 
@@ -102,7 +94,7 @@ namespace CapaPresentacion
             //Ponemos el maximo de mensajes para que al usuario le queden claro todos los posibles errores que le puedan salir.
             if (cboCategoria2.SelectedIndex == -1 && cboTests.SelectedIndex == -1)
             {
-                MessageBox.Show("Para poder asociar un categoria a un test, debes seleccionar ambos","ATENCIÓN");
+                MessageBox.Show("Para poder asociar un categoria a un test, debes seleccionar ambos", "ATENCIÓN");
                 return;
             }
             if (cboCategoria2.SelectedIndex == -1 && cboTests.SelectedIndex != -1)
@@ -124,8 +116,24 @@ namespace CapaPresentacion
 
             MessageBox.Show(mensaje);
 
+            dgvTestCat.Columns.Clear();
+
             cboCategoria2.SelectedIndex = -1;
             cboTests.SelectedIndex = -1;
+        }
+
+        private void cboCategoria2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Categoria categoriaTest = cboCategoria2.SelectedItem as Categoria;
+
+            if (categoriaTest != null)
+            {
+                List<Test> listTest = Program.gestor.DevolverTestCategorias(categoriaTest);
+
+                dgvTestCat.DataSource = (from t in listTest
+                                         select new { Categoria = categoriaTest.Descripcion, Test = t.Descripcion }).ToList();
+            }
+            
         }
     }
 }

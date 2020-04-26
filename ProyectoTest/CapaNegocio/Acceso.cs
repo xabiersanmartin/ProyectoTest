@@ -22,6 +22,7 @@ namespace CapaNegocio
             return nuevoAcceso.DevolverCategorias();
         }
 
+
         public string BorrarCategoria (Categoria eliminarCategoria)
         {
             return nuevoAcceso.EliminarCategoria(eliminarCategoria);

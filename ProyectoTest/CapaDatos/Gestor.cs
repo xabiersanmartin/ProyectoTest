@@ -195,6 +195,7 @@ namespace CapaDatos
                 while (dataReader.Read())
                 {
                     Categoria nuevaCategoria = new Categoria();
+
                     nuevaCategoria.Descripcion = dataReader["Descripcion"].ToString();
                     nuevaCategoria.idCategoria = int.Parse(dataReader["IdCategoria"].ToString());
 
@@ -461,7 +462,7 @@ namespace CapaDatos
                 while (dataReader.Read())
                 {
                     Test nuevoTest = new Test();
-                    Pregunta  newPregunta = new Pregunta();
+                    Pregunta newPregunta = new Pregunta();
 
                     nuevoTest.Descripcion = dataReader["Descripcion"].ToString();
                     nuevoTest.idTest = int.Parse(dataReader["IdTest"].ToString());
@@ -598,7 +599,7 @@ namespace CapaDatos
 
             if (OpenConnection() == true)
             {
-                
+
                 SqlCommand cmd = new SqlCommand(comprobarTest, conexion);
                 comprobacion = Convert.ToInt32(cmd.ExecuteScalar());
             }
@@ -622,7 +623,7 @@ namespace CapaDatos
 
         public string EliminarTestConPreguntas(Test eliminarTest)
         {
-            string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE IdTest = " +  eliminarTest.idTest;
+            string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE IdTest = " + eliminarTest.idTest;
             if (HacerConsulta(queryEliminarPreguntas) == false)
             {
                 return error;
@@ -637,28 +638,29 @@ namespace CapaDatos
             return "Test " + eliminarTest.Descripcion + " con las preguntas asociadas elimanado";
         }
 
-        public  Test DevolverTestConPreguntas (Test buscarTest){
+        public Test DevolverTestConPreguntas(Test buscarTest)
+        {
 
             List<Test> testConPreguntas = new List<Test>();
 
 
-                string queryPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = '" + buscarTest.idTest + "'))";
-                if (OpenConnection() == true)
-                {
-                    SqlCommand cmd = new SqlCommand(queryPreguntas, conexion);
-                    SqlDataReader dataReader = cmd.ExecuteReader();
+            string queryPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = '" + buscarTest.idTest + "'))";
+            if (OpenConnection() == true)
+            {
+                SqlCommand cmd = new SqlCommand(queryPreguntas, conexion);
+                SqlDataReader dataReader = cmd.ExecuteReader();
 
-                    while (dataReader.Read())
-                    {
+                while (dataReader.Read())
+                {
                     Pregunta newPregunta = new Pregunta();
                     newPregunta.enunciado = dataReader["Enunciado"].ToString();
                     newPregunta.idPregunta = int.Parse(dataReader["IdPregunta"].ToString());
 
                     buscarTest.preguntasTest.Add(newPregunta);
-                    }
-                    dataReader.Close();
-                    this.conexion.Close();
                 }
+                dataReader.Close();
+                this.conexion.Close();
+            }
 
             return buscarTest;
 
