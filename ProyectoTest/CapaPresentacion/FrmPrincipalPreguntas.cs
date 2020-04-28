@@ -126,6 +126,18 @@ namespace CapaPresentacion
                 string mensaje = Program.gestor.EliminarTodasPreguntasTest(test.idTest);
 
                 MessageBox.Show(mensaje);
+
+                List<Categoria> list = Program.gestor.DevolverCategorias();
+
+                cboCategorias.Items.Clear();
+                cboCategorias.Items.AddRange(list.ToArray());
+                cboCategorias.DisplayMember = "Descripcion";
+                cboCategorias.SelectedIndex = -1;
+                cboCategorias.Text = "";
+
+                cboTestDeCategorias.Items.Clear();
+                cboTestDeCategorias.Text = "";
+
             }
             else
             {

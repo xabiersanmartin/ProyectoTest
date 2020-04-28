@@ -24,6 +24,7 @@ namespace CapaPresentacion
 
         private void FrmAnadirPregunta_Load(object sender, EventArgs e)
         {
+            
             lbl.Text = test.Descripcion;
 
 
