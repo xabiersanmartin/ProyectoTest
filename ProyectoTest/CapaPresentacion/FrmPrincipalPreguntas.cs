@@ -22,12 +22,12 @@ namespace CapaPresentacion
         {
             cboTestDeCategorias.Enabled = false;    
             List<Categoria> list = Program.gestor.DevolverCategorias();
-            if (list != null)
-            {
+            
                 cboCategorias.Items.Clear();
                 cboCategorias.Items.AddRange(list.ToArray());
                 cboCategorias.DisplayMember = "Descripcion";
-            }
+            
+
         }
 
         private void cboCategorias_SelectedIndexChanged(object sender, EventArgs e)
@@ -43,9 +43,11 @@ namespace CapaPresentacion
             Categoria categoria = cboCategorias.SelectedItem as Categoria;
 
             List<Test> testsDeCategorias = Program.gestor.DevolverTestCategorias(categoria);
-            if (testsDeCategorias == null)
+            if (testsDeCategorias.Count == 0)
             {
                 MessageBox.Show("No tienes ningun test asociado a esta categoria","ATENCIÓN");
+                cboTestDeCategorias.Items.Clear();
+                cboTestDeCategorias.Enabled = false;
                 return;
             }
             cboTestDeCategorias.Enabled = true;

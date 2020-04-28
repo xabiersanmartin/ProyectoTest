@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entidades;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -56,6 +57,13 @@ namespace CapaPresentacion
 
         private void btnFomularioPreguntas_Click(object sender, EventArgs e)
         {
+            List<Categoria> comprobarCategoria = Program.gestor.DevolverCategorias();
+            if (comprobarCategoria == null)
+            {
+                MessageBox.Show("Para poder acceder aqui antes debes tener alguna categoria creada");
+                return;
+            }
+            
             FrmPrincipalPreguntas frm = new FrmPrincipalPreguntas();
             frm.ShowDialog(this);
         }
