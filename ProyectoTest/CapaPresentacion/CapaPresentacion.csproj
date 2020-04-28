@@ -52,6 +52,12 @@
     <Compile Include="FrmAnadirCategoria.Designer.cs">
       <DependentUpon>FrmAnadirCategoria.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmAnadirPregunta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAnadirPregunta.Designer.cs">
+      <DependentUpon>FrmAnadirPregunta.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmAnadirTest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -63,6 +69,12 @@
     </Compile>
     <Compile Include="FrmBorrarCategoria.Designer.cs">
       <DependentUpon>FrmBorrarCategoria.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmBorrarPregunta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmBorrarPregunta.Designer.cs">
+      <DependentUpon>FrmBorrarPregunta.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmBorrarTest.cs">
       <SubType>Form</SubType>
@@ -82,22 +94,34 @@
     <Compile Include="FrmModificarTest.Designer.cs">
       <DependentUpon>FrmModificarTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmPrincipal.cs">
+    <Compile Include="FrmBienvenida.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmPrincipal.Designer.cs">
-      <DependentUpon>FrmPrincipal.cs</DependentUpon>
+    <Compile Include="FrmBienvenida.Designer.cs">
+      <DependentUpon>FrmBienvenida.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPrincipalPreguntas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPrincipalPreguntas.Designer.cs">
+      <DependentUpon>FrmPrincipalPreguntas.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FrmAnadirCategoria.resx">
       <DependentUpon>FrmAnadirCategoria.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmAnadirPregunta.resx">
+      <DependentUpon>FrmAnadirPregunta.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmAnadirTest.resx">
       <DependentUpon>FrmAnadirTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmBorrarCategoria.resx">
       <DependentUpon>FrmBorrarCategoria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmBorrarPregunta.resx">
+      <DependentUpon>FrmBorrarPregunta.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmBorrarTest.resx">
       <DependentUpon>FrmBorrarTest.cs</DependentUpon>
@@ -108,8 +132,11 @@
     <EmbeddedResource Include="FrmModificarTest.resx">
       <DependentUpon>FrmModificarTest.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FrmPrincipal.resx">
-      <DependentUpon>FrmPrincipal.cs</DependentUpon>
+    <EmbeddedResource Include="FrmBienvenida.resx">
+      <DependentUpon>FrmBienvenida.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPrincipalPreguntas.resx">
+      <DependentUpon>FrmPrincipalPreguntas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

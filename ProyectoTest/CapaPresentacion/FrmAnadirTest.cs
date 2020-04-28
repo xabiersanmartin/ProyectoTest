@@ -42,8 +42,6 @@ namespace CapaPresentacion
                 cboTests.Items.AddRange(listTests.ToArray());
                 cboTests.DisplayMember = "Descripcion";
             }
-
-
         }
 
         private void btnAnadirTest_Click(object sender, EventArgs e)
@@ -59,7 +57,6 @@ namespace CapaPresentacion
             cboTests.Items.Clear();
             cboTests.Items.AddRange(listTests.ToArray());
             cboTests.DisplayMember = "Descripcion";
-
         }
 
         private void txtAnadirTest_KeyPress(object sender, KeyPressEventArgs e)

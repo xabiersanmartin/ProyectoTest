@@ -184,6 +184,7 @@
             this.Controls.Add(this.btnAnadirTest);
             this.Controls.Add(this.txtAnadirTest);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "FrmAnadirTest";
             this.Text = "Añadir Test";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

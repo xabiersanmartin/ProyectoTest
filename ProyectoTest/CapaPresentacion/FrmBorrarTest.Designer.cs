@@ -126,6 +126,7 @@
             this.Controls.Add(this.btnEliminarTest);
             this.Controls.Add(this.cboEliminarTest);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "FrmBorrarTest";
             this.Text = "Eliminar Test";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

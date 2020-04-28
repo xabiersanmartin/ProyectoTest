@@ -87,5 +87,20 @@ namespace CapaNegocio
         {
             return nuevoAcceso.DevolverTestConPreguntas(buscarTest);
         }
+
+        public string AnadirPregunta(string enunciado, bool validez, Test agregarTest)
+        {
+            return nuevoAcceso.AnadirPregunta(enunciado, validez, agregarTest);
+        }
+
+        public string BorrarPregunta(int idPregunta)
+        {
+            return nuevoAcceso.BorrarPregunta(idPregunta);
+        }
+
+        public string EliminarTodasPreguntasTest(int idTest)
+        {
+            return nuevoAcceso.EliminarTodasLasPreguntasDeTest(idTest);
+        }
     }
 }

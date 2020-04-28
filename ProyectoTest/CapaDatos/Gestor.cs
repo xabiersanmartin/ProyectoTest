@@ -127,6 +127,7 @@ namespace CapaDatos
             return true;
         }
 
+
         //Funcion creada para acortar codigo y llamarla directamente al ejecutar una consulta.
         private bool HacerConsulta(string consulta)
         {
@@ -358,17 +359,39 @@ namespace CapaDatos
                     {
                         SqlCommand cmd2 = new SqlCommand(queryTest, conexion);
                         SqlDataReader dataReader2 = cmd2.ExecuteReader();
+                        Test newTest2 = new Test();
 
                         while (dataReader2.Read())
                         {
-                            Test newTest2 = new Test();
                             newTest2.idTest = int.Parse(dataReader2["IdTest"].ToString());
                             newTest2.Descripcion = dataReader2["Descripcion"].ToString();
 
-                            testDevolver.Add(newTest2);
                         }
-                        dataReader.Close();
+                        dataReader2.Close();
                         this.conexion.Close();
+
+                        string queryPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = '" + test.idTest + "'))";
+                        if (OpenConnection() == true)
+                        {
+                            SqlCommand cmd3 = new SqlCommand(queryPreguntas, conexion);
+                            SqlDataReader dataReader3 = cmd3.ExecuteReader();
+
+                            while (dataReader3.Read())
+                            {
+                                Pregunta newPregunta = new Pregunta();
+                                newPregunta.idPregunta = int.Parse(dataReader3["IdPregunta"].ToString());
+                                newPregunta.idTest = int.Parse(dataReader3["IdTest"].ToString());
+                                newPregunta.enunciado = dataReader3["Enunciado"].ToString();
+                                newPregunta.respV = bool.Parse(dataReader3["RespV"].ToString());
+
+                                newTest2.preguntasTest.Add(newPregunta);
+                            }
+
+                            testDevolver.Add(newTest2);
+                            dataReader3.Close();
+                            this.conexion.Close();
+                        }
+
                     }
                 }
                 return testDevolver;
@@ -504,7 +527,6 @@ namespace CapaDatos
                         Pregunta newPregunta = new Pregunta();
                         newPregunta.idPregunta = int.Parse(dataReader["IdPregunta"].ToString());
                         newPregunta.idTest = int.Parse(dataReader["IdTest"].ToString());
-                        newPregunta.numPregunta = int.Parse(dataReader["Npregunta"].ToString());
                         newPregunta.enunciado = dataReader["Enunciado"].ToString();
                         newPregunta.respV = bool.Parse(dataReader["RespV"].ToString());
                         testConPreguntas.Add(newPregunta);
@@ -665,5 +687,60 @@ namespace CapaDatos
             return buscarTest;
 
         }
+
+        public string AnadirPregunta(string enunciado, bool valido, Test agregarTest)
+        {
+            string queryExistePregunta = "SELECT * FROM PREGUNTAS WHERE Enunciado = '" + enunciado + "'";
+            int comprobacionExiste = 0;
+
+            if (OpenConnection() == true)
+            {
+                SqlCommand cmd = new SqlCommand(queryExistePregunta, conexion);
+                comprobacionExiste = Convert.ToInt32(cmd.ExecuteScalar());
+            }
+            this.conexion.Close();
+
+            if (comprobacionExiste != 0)
+            {
+                return "Esta pregunta ya existe no puedes añardirla";
+            }
+
+            if (String.IsNullOrWhiteSpace(enunciado))
+            {
+                return "No puedes dejar vacio el enunciado";
+            }
+
+
+            string anadirPregunta = "INSERT INTO PREGUNTAS(Enunciado,RespV,Idtest) VALUES('" + enunciado + "','" + valido + "','" + agregarTest.idTest + "')";
+
+            if (HacerConsulta(anadirPregunta) == false)
+            {
+                return error;
+            }
+
+            return "Pregunta agregada correctamente";
+        }
+
+        public string BorrarPregunta (int idPregunta)
+        {
+            string queryBorrarPregunta = "DELETE FROM PREGUNTAS WHERE IdPregunta = '" + idPregunta + "'";
+            if (HacerConsulta(queryBorrarPregunta) == false)
+            {
+                return error;
+            }
+            return "La pregunta ha sido borrada correctamente.";
+        }
+
+        public string EliminarTodasLasPreguntasDeTest(int idTest)
+        {
+            string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE IDTEST = '" + idTest + "'";
+            if (HacerConsulta(queryEliminarPreguntas) == false)
+            {
+                return error;
+            }
+
+            return "Se eliminaron todas las preguntas del test.";
+        }
+
     }
 }

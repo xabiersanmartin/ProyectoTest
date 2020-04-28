@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace CapaPresentacion
 {
-    public partial class FrmPrincipal : Form
+    public partial class FrmBienvenida : Form
     {
-        public FrmPrincipal()
+        public FrmBienvenida()
         {
             InitializeComponent();
         }
@@ -51,6 +51,12 @@ namespace CapaPresentacion
         private void modificarTestsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmModificarTest frm = new FrmModificarTest();
+            frm.ShowDialog(this);
+        }
+
+        private void btnFomularioPreguntas_Click(object sender, EventArgs e)
+        {
+            FrmPrincipalPreguntas frm = new FrmPrincipalPreguntas();
             frm.ShowDialog(this);
         }
     }

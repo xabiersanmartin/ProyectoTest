@@ -1,6 +1,6 @@
 ﻿namespace CapaPresentacion
 {
-    partial class FrmPrincipal
+    partial class FrmBienvenida
     {
         /// <summary>
         /// Variable del diseñador necesaria.
@@ -37,11 +37,8 @@
             this.añadirTestsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.borrarTestsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modificarTestsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.preguntasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.añadirPreguntaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.borrarPreguntaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.modificarPreguntaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnFomularioPreguntas = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,11 +47,10 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.categoriasToolStripMenuItem,
-            this.testsToolStripMenuItem,
-            this.preguntasToolStripMenuItem});
+            this.testsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(800, 28);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -96,79 +92,63 @@
             this.borrarTestsToolStripMenuItem,
             this.modificarTestsToolStripMenuItem});
             this.testsToolStripMenuItem.Name = "testsToolStripMenuItem";
-            this.testsToolStripMenuItem.Size = new System.Drawing.Size(55, 26);
+            this.testsToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
             this.testsToolStripMenuItem.Text = "Tests";
             // 
             // añadirTestsToolStripMenuItem
             // 
             this.añadirTestsToolStripMenuItem.Name = "añadirTestsToolStripMenuItem";
-            this.añadirTestsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.añadirTestsToolStripMenuItem.Size = new System.Drawing.Size(192, 26);
             this.añadirTestsToolStripMenuItem.Text = "Añadir Tests";
             this.añadirTestsToolStripMenuItem.Click += new System.EventHandler(this.añadirTestsToolStripMenuItem_Click);
             // 
             // borrarTestsToolStripMenuItem
             // 
             this.borrarTestsToolStripMenuItem.Name = "borrarTestsToolStripMenuItem";
-            this.borrarTestsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.borrarTestsToolStripMenuItem.Size = new System.Drawing.Size(192, 26);
             this.borrarTestsToolStripMenuItem.Text = "Borrar Tests";
             this.borrarTestsToolStripMenuItem.Click += new System.EventHandler(this.borrarTestsToolStripMenuItem_Click);
             // 
             // modificarTestsToolStripMenuItem
             // 
             this.modificarTestsToolStripMenuItem.Name = "modificarTestsToolStripMenuItem";
-            this.modificarTestsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.modificarTestsToolStripMenuItem.Size = new System.Drawing.Size(192, 26);
             this.modificarTestsToolStripMenuItem.Text = "Modificar Tests";
             this.modificarTestsToolStripMenuItem.Click += new System.EventHandler(this.modificarTestsToolStripMenuItem_Click);
-            // 
-            // preguntasToolStripMenuItem
-            // 
-            this.preguntasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.añadirPreguntaToolStripMenuItem,
-            this.borrarPreguntaToolStripMenuItem,
-            this.modificarPreguntaToolStripMenuItem});
-            this.preguntasToolStripMenuItem.Name = "preguntasToolStripMenuItem";
-            this.preguntasToolStripMenuItem.Size = new System.Drawing.Size(88, 24);
-            this.preguntasToolStripMenuItem.Text = "Preguntas";
-            // 
-            // añadirPreguntaToolStripMenuItem
-            // 
-            this.añadirPreguntaToolStripMenuItem.Name = "añadirPreguntaToolStripMenuItem";
-            this.añadirPreguntaToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
-            this.añadirPreguntaToolStripMenuItem.Text = "Añadir pregunta";
-            // 
-            // borrarPreguntaToolStripMenuItem
-            // 
-            this.borrarPreguntaToolStripMenuItem.Name = "borrarPreguntaToolStripMenuItem";
-            this.borrarPreguntaToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
-            this.borrarPreguntaToolStripMenuItem.Text = "Borrar pregunta";
-            // 
-            // modificarPreguntaToolStripMenuItem
-            // 
-            this.modificarPreguntaToolStripMenuItem.Name = "modificarPreguntaToolStripMenuItem";
-            this.modificarPreguntaToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
-            this.modificarPreguntaToolStripMenuItem.Text = "Modificar Pregunta";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Monotype Corsiva", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(123, 199);
+            this.label1.Location = new System.Drawing.Point(123, 156);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(486, 45);
             this.label1.TabIndex = 5;
             this.label1.Text = "BIENVENIDO AL PROGRAMA";
             // 
-            // FrmPrincipal
+            // btnFomularioPreguntas
+            // 
+            this.btnFomularioPreguntas.Font = new System.Drawing.Font("Monotype Corsiva", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFomularioPreguntas.Location = new System.Drawing.Point(291, 274);
+            this.btnFomularioPreguntas.Name = "btnFomularioPreguntas";
+            this.btnFomularioPreguntas.Size = new System.Drawing.Size(151, 62);
+            this.btnFomularioPreguntas.TabIndex = 6;
+            this.btnFomularioPreguntas.Text = "Formulario Principal";
+            this.btnFomularioPreguntas.UseVisualStyleBackColor = true;
+            this.btnFomularioPreguntas.Click += new System.EventHandler(this.btnFomularioPreguntas_Click);
+            // 
+            // FrmBienvenida
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnFomularioPreguntas);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "FrmPrincipal";
-            this.Text = "Formulario Principal";
+            this.Name = "FrmBienvenida";
+            this.Text = "Bienvenido";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -186,11 +166,8 @@
         private System.Windows.Forms.ToolStripMenuItem añadirTestsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem borrarTestsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem modificarTestsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem preguntasToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem añadirPreguntaToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem borrarPreguntaToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem modificarPreguntaToolStripMenuItem;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnFomularioPreguntas;
     }
 }
 

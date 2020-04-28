@@ -103,6 +103,21 @@ namespace CapaPresentacion
                         if (respuesta == "Preguntas eliminadas" && respuesta2 == "Categoria y tests eliminados correctamente")
                         {
                             MessageBox.Show("La categoria fue eliminada correctamente con todos sus tests y preguntas");
+
+                            List<Categoria> lista = Program.gestor.DevolverCategorias();
+
+                            if (lista == null)
+                            {
+                                MessageBox.Show("Has eliminado todas las categorias");
+                                cboCategorias.Items.Clear();
+                                cboCategorias.Text = "";
+                                return;
+                            }
+
+                            cboCategorias.Items.Clear();
+                            cboCategorias.Items.AddRange(lista.ToArray());
+                            cboCategorias.DisplayMember = "Descripcion";
+                            cboCategorias.Text = "";
                         }
                         else
                         {

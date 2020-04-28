@@ -37,8 +37,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Preguntas](
-	[IdPregunta] [int] NOT NULL,
-	[Npregunta] [int] NOT NULL,
+	[IdPregunta] [int] NOT NULL IDENTITY,
 	[Enunciado] [nvarchar](100) NOT NULL,
 	[RespV] [bit] NOT NULL,
 	[IdTest] [int] NOT NULL,
@@ -103,16 +102,16 @@ INSERT [dbo].[CategoriasTests] ([IdCategoria], [IdTest]) VALUES (3, 3)
 INSERT [dbo].[CategoriasTests] ([IdCategoria], [IdTest]) VALUES (3, 4)
 INSERT [dbo].[CategoriasTests] ([IdCategoria], [IdTest]) VALUES (4, 6)
 
-INSERT [dbo].[Preguntas] ([IdPregunta], [Npregunta], [Enunciado], [RespV], [IdTest]) VALUES (100, 1, N'¿Nacio Napoleon en el año 1769?', 1, 5)
-INSERT [dbo].[Preguntas] ([IdPregunta], [Npregunta], [Enunciado], [RespV], [IdTest]) VALUES (101, 2, N'¿Perdio Napoleon en Waterloo?', 1, 5)
-INSERT [dbo].[Preguntas] ([IdPregunta], [Npregunta], [Enunciado], [RespV], [IdTest]) VALUES (102, 3, N'Leo Messi, juega en el FC Barcelona', 1, 1)
-INSERT [dbo].[Preguntas] ([IdPregunta], [Npregunta], [Enunciado], [RespV], [IdTest]) VALUES (103, 4, N'Moscu pertenece al lado Asiatico', 0, 4)
-INSERT [dbo].[Preguntas] ([IdPregunta], [Npregunta], [Enunciado], [RespV], [IdTest]) VALUES (104, 5, N'España antes era llamado Hispania', 1, 3)
-INSERT [dbo].[Preguntas] ([IdPregunta], [Npregunta], [Enunciado], [RespV], [IdTest]) VALUES (105, 6, N'Estados Unidos tiene 624 millones de habitantes', 0, 3)
-INSERT [dbo].[Preguntas] ([IdPregunta], [Npregunta], [Enunciado], [RespV], [IdTest]) VALUES (106, 7, N'Macedonia es la capital de Albania', 0, 4)
-INSERT [dbo].[Preguntas] ([IdPregunta], [Npregunta], [Enunciado], [RespV], [IdTest]) VALUES (107, 8, N'Fue Henrich Himmler el lider de Auswitch', 1, 2)
-INSERT [dbo].[Preguntas] ([IdPregunta], [Npregunta], [Enunciado], [RespV], [IdTest]) VALUES (108, 9, N'Al final de la guerra cayeron dos bombas atomicas a Nagasaki y Osaka?', 1, 2)
-INSERT [dbo].[Preguntas] ([IdPregunta], [Npregunta], [Enunciado], [RespV], [IdTest]) VALUES (109, 10, N'La noche estrellada fue pintada por Pablo Picasso?', 0, 6)
+INSERT [dbo].[Preguntas] ([Enunciado], [RespV], [IdTest]) VALUES (N'¿Nacio Napoleon en el año 1769?', 1, 5)
+INSERT [dbo].[Preguntas] ([Enunciado], [RespV], [IdTest]) VALUES (N'¿Perdio Napoleon en Waterloo?', 1, 5)
+INSERT [dbo].[Preguntas] ([Enunciado], [RespV], [IdTest]) VALUES (N'Leo Messi, juega en el FC Barcelona', 1, 1)
+INSERT [dbo].[Preguntas] ([Enunciado], [RespV], [IdTest]) VALUES (N'Moscu pertenece al lado Asiatico', 0, 4)
+INSERT [dbo].[Preguntas] ([Enunciado], [RespV], [IdTest]) VALUES (N'España antes era llamado Hispania', 1, 3)
+INSERT [dbo].[Preguntas] ([Enunciado], [RespV], [IdTest]) VALUES (N'Estados Unidos tiene 624 millones de habitantes', 0, 3)
+INSERT [dbo].[Preguntas] ([Enunciado], [RespV], [IdTest]) VALUES (N'Macedonia es la capital de Albania', 0, 4)
+INSERT [dbo].[Preguntas] ([Enunciado], [RespV], [IdTest]) VALUES (N'Fue Henrich Himmler el lider de Auswitch', 1, 2)
+INSERT [dbo].[Preguntas] ([Enunciado], [RespV], [IdTest]) VALUES (N'Al final de la guerra cayeron dos bombas atomicas a Nagasaki y Osaka?', 1, 2)
+INSERT [dbo].[Preguntas] ([Enunciado], [RespV], [IdTest]) VALUES (N'La noche estrellada fue pintada por Pablo Picasso?', 0, 6)
 
 
 
