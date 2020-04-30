@@ -13,6 +13,8 @@ namespace CapaPresentacion
 {
     public partial class FrmAnadirTest : Form
     {
+        string nombreTest = "";
+        bool cerrar = true;
         public FrmAnadirTest()
         {
             InitializeComponent();
@@ -30,11 +32,11 @@ namespace CapaPresentacion
             }
             else
             {
-                MessageBox.Show("No hay categorias, debes crear una antes para poder asociarla con un test", "CUIDADO");
-                cboCategoria2.Enabled = false;
+                MessageBox.Show("No hay categorias, debes crear una categoria para asociarla al test que quieres crear", "CUIDADO");
+                Close();
             }
 
-            List<Test> listTests = Program.gestor.DevolverTests();
+           List<Test> listTests = Program.gestor.DevolverTests();
             if (listTests != null)
             {
 
@@ -51,12 +53,24 @@ namespace CapaPresentacion
 
             MessageBox.Show(mensaje);
 
+            if (mensaje == "El test se ha añadido correctamente")
+            {
+                MessageBox.Show("Ahora debes relacionar el test " + txtAnadirTest.Text + " con minimo una categoria");
+                btnVolver.Enabled = false;
+                btnAnadirTest.Enabled = false;
+                nombreTest = txtAnadirTest.Text;
+                cerrar = false;
+            }
+
             txtAnadirTest.Text = "";
+            txtAnadirTest.Enabled = false;
 
             List<Test> listTests = Program.gestor.DevolverTests();
             cboTests.Items.Clear();
             cboTests.Items.AddRange(listTests.ToArray());
             cboTests.DisplayMember = "Descripcion";
+
+            
         }
 
         private void txtAnadirTest_KeyPress(object sender, KeyPressEventArgs e)
@@ -113,6 +127,14 @@ namespace CapaPresentacion
 
             MessageBox.Show(mensaje);
 
+            if ((mensaje == "La categoria " + anadirCategoria.Descripcion + " añadido correctamente al test " + anadirTest.Descripcion) && (anadirTest.Descripcion == nombreTest))
+            {
+                btnVolver.Enabled = true;
+                btnAnadirTest.Enabled = true;
+                txtAnadirTest.Enabled = true;
+                cerrar = true;
+            }
+
             dgvTestCat.Columns.Clear();
 
             cboCategoria2.SelectedIndex = -1;
@@ -130,7 +152,15 @@ namespace CapaPresentacion
                 dgvTestCat.DataSource = (from t in listTest
                                          select new { Categoria = categoriaTest.Descripcion, Test = t.Descripcion }).ToList();
             }
-            
+
+        }
+
+        private void FrmAnadirTest_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (cerrar== false)
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

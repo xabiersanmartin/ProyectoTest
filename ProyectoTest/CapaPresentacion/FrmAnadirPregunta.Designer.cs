@@ -39,6 +39,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnVolver = new System.Windows.Forms.Button();
             this.lblNumPreg = new System.Windows.Forms.Label();
+            this.btnVolverTest = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lbl
@@ -129,9 +130,9 @@
             // 
             // btnVolver
             // 
-            this.btnVolver.Location = new System.Drawing.Point(12, 431);
+            this.btnVolver.Location = new System.Drawing.Point(12, 419);
             this.btnVolver.Name = "btnVolver";
-            this.btnVolver.Size = new System.Drawing.Size(126, 45);
+            this.btnVolver.Size = new System.Drawing.Size(129, 45);
             this.btnVolver.TabIndex = 10;
             this.btnVolver.Text = "&Volver";
             this.btnVolver.UseVisualStyleBackColor = true;
@@ -145,11 +146,22 @@
             this.lblNumPreg.Size = new System.Drawing.Size(0, 17);
             this.lblNumPreg.TabIndex = 11;
             // 
+            // btnVolverTest
+            // 
+            this.btnVolverTest.Location = new System.Drawing.Point(169, 419);
+            this.btnVolverTest.Name = "btnVolverTest";
+            this.btnVolverTest.Size = new System.Drawing.Size(126, 45);
+            this.btnVolverTest.TabIndex = 12;
+            this.btnVolverTest.Text = "&Volver Al Test";
+            this.btnVolverTest.UseVisualStyleBackColor = true;
+            this.btnVolverTest.Click += new System.EventHandler(this.btnVolverTest_Click);
+            // 
             // FrmAnadirPregunta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 488);
+            this.Controls.Add(this.btnVolverTest);
             this.Controls.Add(this.lblNumPreg);
             this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.label4);
@@ -183,5 +195,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnVolver;
         private System.Windows.Forms.Label lblNumPreg;
+        private System.Windows.Forms.Button btnVolverTest;
     }
 }

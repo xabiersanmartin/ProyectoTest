@@ -24,6 +24,9 @@ namespace CapaPresentacion
             if (list == null)
             {
                 MessageBox.Show("No hay categorias que modificar, debes añadir una antes.");
+                cboSeleccionarCat.Enabled = false;
+                txtModificarCat.Enabled = false;
+                btnModificar.Enabled = false;
                 return;
             }
             cboSeleccionarCat.Items.Clear();

@@ -14,6 +14,8 @@ namespace CapaPresentacion
     public partial class FrmBorrarPregunta : Form
     {
         public Test test = new Test();
+        public Categoria categoria = new Categoria();
+        public bool volver = false;
 
         public FrmBorrarPregunta()
         {
@@ -22,10 +24,22 @@ namespace CapaPresentacion
 
         private void FrmBorrarPregunta_Load(object sender, EventArgs e)
         {
+            lblTest.Text = test.Descripcion;
 
             cboPreguntas.Items.Clear();
             cboPreguntas.Items.AddRange(test.preguntasTest.ToArray());
             cboPreguntas.DisplayMember = "Enunciado";
+
+            if (volver == true)
+            {
+                btnVolverTest.Visible = true;
+                btnVolver.Text = "Volver al formulario principal";
+                btnVolver.Height = 50;
+            }
+            else
+            {
+                btnVolverTest.Visible = false;
+            }
         }
 
         private void btnBorrarPregunta_Click(object sender, EventArgs e)
@@ -102,6 +116,23 @@ namespace CapaPresentacion
             FrmPrincipalPreguntas frm = new FrmPrincipalPreguntas();
             frm.ShowDialog(this);
             Close();
+        }
+
+        private void btnVolverTest_Click(object sender, EventArgs e)
+        {
+            FrmHacerTest frm = new FrmHacerTest();
+            List<Test> listTestBUscar = Program.gestor.DevolverTestCategorias(categoria);
+            foreach (var testBuscar in listTestBUscar)
+            {
+                if (testBuscar.Descripcion == test.Descripcion)
+                {
+                    frm.test = testBuscar;
+                    frm.categoria = categoria;
+                    frm.ShowDialog(this);
+                    Close();
+                }
+            }
+
         }
     }
 }

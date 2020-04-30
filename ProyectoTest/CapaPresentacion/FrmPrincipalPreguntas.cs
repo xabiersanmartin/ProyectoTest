@@ -13,6 +13,8 @@ namespace CapaPresentacion
 {
     public partial class FrmPrincipalPreguntas : Form
     {
+        public Test test = new Test();
+        public Categoria categoria = new Categoria();
         public FrmPrincipalPreguntas()
         {
             InitializeComponent();
@@ -20,13 +22,19 @@ namespace CapaPresentacion
 
         private void FrmPrincipalPreguntas_Load(object sender, EventArgs e)
         {
+
             cboTestDeCategorias.Enabled = false;    
             List<Categoria> list = Program.gestor.DevolverCategorias();
             
                 cboCategorias.Items.Clear();
                 cboCategorias.Items.AddRange(list.ToArray());
                 cboCategorias.DisplayMember = "Descripcion";
-            
+
+            if (categoria != null)
+            {
+                cboCategorias.SelectedItem = categoria;
+                cboTestDeCategorias.SelectedItem = test;
+            }
 
         }
 
@@ -48,6 +56,7 @@ namespace CapaPresentacion
                 MessageBox.Show("No tienes ningun test asociado a esta categoria","ATENCIÓN");
                 cboTestDeCategorias.Items.Clear();
                 cboTestDeCategorias.Enabled = false;
+                cboCategorias.SelectedIndex = -1;
                 return;
             }
             cboTestDeCategorias.Enabled = true;
@@ -77,7 +86,7 @@ namespace CapaPresentacion
 
             FrmAnadirPregunta frm = new FrmAnadirPregunta();
             frm.test = cboTestDeCategorias.SelectedItem as Test;
-            frm.ShowDialog(this);
+            frm.ShowDialog();
             Close();
         }
 
@@ -99,7 +108,7 @@ namespace CapaPresentacion
 
             FrmBorrarPregunta frm = new FrmBorrarPregunta();
             frm.test = cboTestDeCategorias.SelectedItem as Test;
-            frm.ShowDialog(this);
+            frm.ShowDialog();
             Close();
         }
 
@@ -115,11 +124,11 @@ namespace CapaPresentacion
 
             if (test.preguntasTest.Count == 0)
             {
-                MessageBox.Show("En este test " + test.Descripcion + " no hay preguntas para borrar");
+                MessageBox.Show("En este test(" + test.Descripcion + ") no hay preguntas para borrar");
                 return;
             }
 
-            DialogResult result = MessageBox.Show("Estas seguro que de quieres eliminar todas las prgeuntas del test " + test.Descripcion, "ATENCIÓN", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("Estas seguro que de quieres eliminar todas las preguntas del test " + test.Descripcion, "ATENCIÓN", MessageBoxButtons.YesNo);
 
             if (result == DialogResult.Yes)
             {
@@ -144,6 +153,29 @@ namespace CapaPresentacion
                 cboCategorias.SelectedIndex = -1;
                 cboTestDeCategorias.SelectedIndex = -1;
             }
+        }
+
+        private void btnHacerTest_Click(object sender, EventArgs e)
+        {
+            Test test = cboTestDeCategorias.SelectedItem as Test;
+
+            if (cboTestDeCategorias.SelectedIndex == -1)
+            {
+                MessageBox.Show("No puedes hacer un test si antes no has seleccionado de que test quieres hacerlo.", "ATENCIÓN");
+                return;
+            }
+
+            if (test.preguntasTest.Count == 0)
+            {
+                MessageBox.Show("En este test(" + test.Descripcion + ") no hay preguntas.");
+                return;
+            }
+
+            FrmHacerTest frm = new FrmHacerTest();
+            frm.test = test;
+            frm.categoria = cboCategorias.SelectedItem as Categoria;
+            frm.ShowDialog();
+            Close();
         }
     }
 }

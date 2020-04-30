@@ -311,6 +311,7 @@ namespace CapaDatos
             return "Categoria modificada correctamente";
         }
 
+
         public string EliminarTodasCategorias()
         {
             string queryEliminarCategorias = "DELETE FROM CATEGORIAS";
@@ -469,7 +470,7 @@ namespace CapaDatos
                     return error;
                 }
             }
-            return "El test " + nombreTest + " se ha añadido correctamente";
+            return "El test se ha añadido correctamente";
         }
 
         public List<Test> DevolverTests()
@@ -640,7 +641,41 @@ namespace CapaDatos
                 }
             }
 
-            return "Test " + testEliminar.Descripcion + " eliminado";
+            return "Test eliminado correctamente";
+        }
+        public string ModificarTest(string nombreTest, string nuevoNombreTest, List<Test> listTest)
+        {
+            if (String.IsNullOrWhiteSpace(nuevoNombreTest))
+            {
+                return "El nuevo nombre del test no puede quedar vacio";
+            }
+
+            if (String.IsNullOrWhiteSpace(nombreTest))
+            {
+                return "Debes seleccionar el nombre del test que quieres cambiar";
+            }
+
+            if (nombreTest.ToLower() == nuevoNombreTest.ToLower())
+            {
+                return "No puedes ponerles el mismo nombre";
+            }
+
+            foreach (var test in listTest)
+            {
+                if (test.Descripcion.Equals(nuevoNombreTest))
+                {
+                    return "No puedes ponerle el mismo nombre que a otro test que ya tienes creado";
+                }
+            }
+
+            string queryModificarTest = "UPDATE TEST SET Descripcion = '" + nuevoNombreTest + "' WHERE(((Descripcion) = '" + nombreTest + "'))";
+            if (HacerConsulta(queryModificarTest) == false)
+            {
+                return error;
+            }
+
+            return "Test modificado correctamente";
+
         }
 
         public string EliminarTestConPreguntas(Test eliminarTest)

@@ -78,6 +78,11 @@ namespace CapaNegocio
             return nuevoAcceso.EliminarTest(eliminarTest);
         }
 
+        public string ModificarTest(string nombreTest, string nuevoNombreTest, List<Test> tests)
+        {
+            return nuevoAcceso.ModificarTest(nombreTest, nuevoNombreTest, tests);
+        }
+
         public string EliminarPreguntasDeTest(Test eliminarTest)
         {
             return nuevoAcceso.EliminarTestConPreguntas(eliminarTest);

@@ -82,6 +82,12 @@
     <Compile Include="FrmBorrarTest.Designer.cs">
       <DependentUpon>FrmBorrarTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmHacerTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmHacerTest.Designer.cs">
+      <DependentUpon>FrmHacerTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmModificarCategoria.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,6 +131,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmBorrarTest.resx">
       <DependentUpon>FrmBorrarTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmHacerTest.resx">
+      <DependentUpon>FrmHacerTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmModificarCategoria.resx">
       <DependentUpon>FrmModificarCategoria.cs</DependentUpon>

@@ -79,6 +79,7 @@ namespace CapaPresentacion
                 cboCategorias.SelectedIndex = -1;
                 cboEliminarTest.Enabled = false;
                 cboCategorias.Enabled = false;
+                btnEliminarTest.Enabled = false;
                 return;
             }
 
@@ -219,9 +220,12 @@ namespace CapaPresentacion
                     cboEliminarTest.Text = "";
 
                     List<Categoria> list = Program.gestor.DevolverCategorias();
-                    cboCategorias.Items.Clear();
-                    cboCategorias.Items.AddRange(list.ToArray());
-                    cboCategorias.Text = "";
+                    if (list != null)
+                    {
+                        cboCategorias.Items.Clear();
+                        cboCategorias.Items.AddRange(list.ToArray());
+                        cboCategorias.Text = "";
+                    }
 
                 }
             }
@@ -233,9 +237,13 @@ namespace CapaPresentacion
                 cboEliminarTest.Text = "";
 
                 List<Categoria> list = Program.gestor.DevolverCategorias();
-                cboCategorias.Items.Clear();
-                cboCategorias.Items.AddRange(list.ToArray());
-                cboCategorias.Text = "";
+                if (list != null)
+                {
+                    cboCategorias.Items.Clear();
+                    cboCategorias.Items.AddRange(list.ToArray());
+                    cboCategorias.Text = "";
+                }
+                
             }
 
         }

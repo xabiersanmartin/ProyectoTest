@@ -64,6 +64,7 @@
             this.btnModificar.TabIndex = 9;
             this.btnModificar.Text = "Modificar Test";
             this.btnModificar.UseVisualStyleBackColor = true;
+            this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
             // 
             // txtModificarTest
             // 
@@ -71,6 +72,7 @@
             this.txtModificarTest.Name = "txtModificarTest";
             this.txtModificarTest.Size = new System.Drawing.Size(194, 22);
             this.txtModificarTest.TabIndex = 8;
+            this.txtModificarTest.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtModificarTest_KeyPress);
             // 
             // cboSeleccionarTest
             // 
@@ -111,9 +113,11 @@
             this.Controls.Add(this.txtModificarTest);
             this.Controls.Add(this.cboSeleccionarTest);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "FrmModificarTest";
             this.Text = "Modificar Test";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.FrmModificarTest_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

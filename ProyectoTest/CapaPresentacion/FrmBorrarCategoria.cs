@@ -31,6 +31,8 @@ namespace CapaPresentacion
             {
                 MessageBox.Show("No hay categorias que eliminar, debes añadir una antes.");
                 cboCategorias.Enabled = false;
+                btnBorrarTodo.Enabled = false;
+                btnEliminar.Enabled = false;
             }
             
             

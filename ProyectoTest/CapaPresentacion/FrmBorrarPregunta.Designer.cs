@@ -37,6 +37,9 @@
             this.btnVolver = new System.Windows.Forms.Button();
             this.lblValido = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.btnVolverTest = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lblTest = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -121,11 +124,43 @@
             this.label4.TabIndex = 13;
             this.label4.Text = "Validez de la prgeunta (Verdad/Falso)";
             // 
+            // btnVolverTest
+            // 
+            this.btnVolverTest.Location = new System.Drawing.Point(183, 450);
+            this.btnVolverTest.Name = "btnVolverTest";
+            this.btnVolverTest.Size = new System.Drawing.Size(126, 45);
+            this.btnVolverTest.TabIndex = 14;
+            this.btnVolverTest.Text = "&Volver Al Test";
+            this.btnVolverTest.UseVisualStyleBackColor = true;
+            this.btnVolverTest.Click += new System.EventHandler(this.btnVolverTest_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(60, 64);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(47, 20);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Test:";
+            // 
+            // lblTest
+            // 
+            this.lblTest.AutoSize = true;
+            this.lblTest.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTest.Location = new System.Drawing.Point(113, 64);
+            this.lblTest.Name = "lblTest";
+            this.lblTest.Size = new System.Drawing.Size(0, 20);
+            this.lblTest.TabIndex = 15;
+            // 
             // FrmBorrarPregunta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1053, 507);
+            this.ClientSize = new System.Drawing.Size(1053, 520);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.lblTest);
+            this.Controls.Add(this.btnVolverTest);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.lblValido);
             this.Controls.Add(this.btnVolver);
@@ -155,5 +190,8 @@
         private System.Windows.Forms.Button btnVolver;
         private System.Windows.Forms.Label lblValido;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnVolverTest;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblTest;
     }
 }

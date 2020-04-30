@@ -104,6 +104,7 @@
             this.btnHacerTest.TabIndex = 6;
             this.btnHacerTest.Text = "Hacer Test";
             this.btnHacerTest.UseVisualStyleBackColor = true;
+            this.btnHacerTest.Click += new System.EventHandler(this.btnHacerTest_Click);
             // 
             // btnAnadirPreguntas
             // 

@@ -13,9 +13,10 @@ namespace CapaPresentacion
 {
     public partial class FrmAnadirPregunta : Form
     {
-
+        public bool volver = false;
         public Test test = new Test();
         int numPreg;
+        public Categoria categoria = new Categoria();
 
         public FrmAnadirPregunta()
         {
@@ -27,10 +28,20 @@ namespace CapaPresentacion
             
             lbl.Text = test.Descripcion;
 
-
             numPreg = test.preguntasTest.Count() + 1;
 
             lblNumPreg.Text = numPreg.ToString();
+
+            if (volver == true)
+            {
+                btnVolverTest.Visible = true;
+                btnVolver.Text = "Volver al formulario principal";
+                btnVolver.Height = 50;
+            }
+            else
+            {
+                btnVolverTest.Visible = false;
+            }
         }
 
         private void btnAnadirPregunta_Click(object sender, EventArgs e)
@@ -101,5 +112,21 @@ namespace CapaPresentacion
             Close();
         }
 
+        private void btnVolverTest_Click(object sender, EventArgs e)
+        {
+            FrmHacerTest frm = new FrmHacerTest();
+            List<Test> listTestBUscar = Program.gestor.DevolverTestCategorias(categoria);
+            foreach (var testBuscar in listTestBUscar)
+            {
+                if (testBuscar.Descripcion == test.Descripcion)
+                {
+                    frm.test = testBuscar;
+                    frm.categoria = categoria;
+                    frm.ShowDialog(this);
+                    Close();
+                }
+            }
+            
+        }
     }
 }

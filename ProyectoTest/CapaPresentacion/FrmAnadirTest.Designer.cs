@@ -188,6 +188,7 @@
             this.Name = "FrmAnadirTest";
             this.Text = "Añadir Test";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmAnadirTest_FormClosing);
             this.Load += new System.EventHandler(this.FrmAnadirTest_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvTestCat)).EndInit();
             this.ResumeLayout(false);
