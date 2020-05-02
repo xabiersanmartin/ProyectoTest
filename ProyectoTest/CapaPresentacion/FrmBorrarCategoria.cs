@@ -41,14 +41,14 @@ namespace CapaPresentacion
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-
+            
             if (cboCategorias.SelectedItem == null)
             {
                 MessageBox.Show("Debes seleccionar una categoria para poder eliminar");
                 return;
             }
 
-            //Categoria borrarCategoria = cboCategorias.SelectedItem as Categoria;
+            Categoria borrarCategoria = cboCategorias.SelectedItem as Categoria;
 
             //Vamos a comprobar con el usuario si quiere eliminar la categoria antes de eliminarla.
             DialogResult resultado = MessageBox.Show("Seguro que quieres eliminar la categoria " + borrarCategoria.Descripcion, "ELIMINAR", MessageBoxButtons.YesNo);
