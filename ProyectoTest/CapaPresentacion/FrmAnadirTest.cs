@@ -51,6 +51,13 @@ namespace CapaPresentacion
 
             string mensaje = Program.gestor.AnadirTest(txtAnadirTest.Text);
 
+            if (mensaje == "El test que quieres añadir ya existe.")
+            {
+                MessageBox.Show(mensaje);
+                txtAnadirTest.Text = "";
+                return;
+            }
+
             MessageBox.Show(mensaje);
 
             if (mensaje == "El test se ha añadido correctamente")
@@ -147,7 +154,7 @@ namespace CapaPresentacion
 
             if (categoriaTest != null)
             {
-                List<Test> listTest = Program.gestor.DevolverTestCategorias(categoriaTest);
+                List<Test> listTest = Program.gestor.DevolverTestsDeCategoria(categoriaTest);
 
                 dgvTestCat.DataSource = (from t in listTest
                                          select new { Categoria = categoriaTest.Descripcion, Test = t.Descripcion }).ToList();

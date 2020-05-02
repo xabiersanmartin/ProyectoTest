@@ -13,8 +13,10 @@ namespace CapaPresentacion
 {
     public partial class FrmBienvenida : Form
     {
+
         public FrmBienvenida()
         {
+
             InitializeComponent();
         }
 

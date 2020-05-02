@@ -22,13 +22,11 @@ namespace CapaPresentacion
 
         private void FrmPrincipalPreguntas_Load(object sender, EventArgs e)
         {
-
-            cboTestDeCategorias.Enabled = false;    
-            List<Categoria> list = Program.gestor.DevolverCategorias(); // TODO Ver cuantos copiar-pegar hay de este trozo de código
-            
-                cboCategorias.Items.Clear();
-                cboCategorias.Items.AddRange(list.ToArray());
-                cboCategorias.DisplayMember = "Descripcion";
+            cboTestDeCategorias.Enabled = false;
+            List<Categoria> list = Program.gestor.DevolverCategorias();
+            cboCategorias.Items.Clear();
+            cboCategorias.Items.AddRange(list.ToArray());
+            cboCategorias.DisplayMember = "Descripcion";
 
             if (categoria != null)
             {
@@ -50,10 +48,10 @@ namespace CapaPresentacion
 
             Categoria categoria = cboCategorias.SelectedItem as Categoria;
 
-            List<Test> testsDeCategorias = Program.gestor.DevolverTestCategorias(categoria);
+            List<Test> testsDeCategorias = Program.gestor.DevolverTestsDeCategoria(categoria);
             if (testsDeCategorias.Count == 0)
             {
-                MessageBox.Show("No tienes ningun test asociado a esta categoria","ATENCIÓN");
+                MessageBox.Show("No tienes ningun test asociado a esta categoria", "ATENCIÓN");
                 cboTestDeCategorias.Items.Clear();
                 cboTestDeCategorias.Enabled = false;
                 cboCategorias.SelectedIndex = -1;
@@ -80,7 +78,7 @@ namespace CapaPresentacion
         {
             if (cboTestDeCategorias.SelectedIndex == -1)
             {
-                MessageBox.Show("No puedes añadir una pregunta sin a ver seleccionado antes La categoria y el test al que quieres añadirle esas preguntas","ATENCIÓN");
+                MessageBox.Show("No puedes añadir una pregunta sin a ver seleccionado antes La categoria y el test al que quieres añadirle esas preguntas", "ATENCIÓN");
                 return;
             }
 
@@ -136,11 +134,6 @@ namespace CapaPresentacion
 
                 MessageBox.Show(mensaje);
 
-                List<Categoria> list = Program.gestor.DevolverCategorias();
-
-                cboCategorias.Items.Clear();
-                cboCategorias.Items.AddRange(list.ToArray());
-                cboCategorias.DisplayMember = "Descripcion";
                 cboCategorias.SelectedIndex = -1;
                 cboCategorias.Text = "";
 

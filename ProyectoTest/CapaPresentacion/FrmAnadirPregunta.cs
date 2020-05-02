@@ -115,7 +115,7 @@ namespace CapaPresentacion
         private void btnVolverTest_Click(object sender, EventArgs e)
         {
             FrmHacerTest frm = new FrmHacerTest();
-            List<Test> listTestBUscar = Program.gestor.DevolverTestCategorias(categoria);
+            List<Test> listTestBUscar = Program.gestor.DevolverTestsDeCategoria(categoria);
             foreach (var testBuscar in listTestBUscar)
             {
                 if (testBuscar.Descripcion == test.Descripcion)

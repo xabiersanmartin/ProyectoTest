@@ -10,7 +10,7 @@ namespace CapaNegocio
 {
     public class Acceso
     {
-        Gestor nuevoAcceso = new Gestor();
+        Gestor nuevoAcceso = new Gestor(out string msg);
 
         public String AnadirCategoria(string nombreCategoria)
         {
@@ -23,7 +23,7 @@ namespace CapaNegocio
         }
 
 
-        public string BorrarCategoria (Categoria eliminarCategoria)
+        public string BorrarCategoria (int eliminarCategoria)
         {
             return nuevoAcceso.EliminarCategoria(eliminarCategoria);
         }
@@ -38,7 +38,7 @@ namespace CapaNegocio
             return nuevoAcceso.EliminarTodasCategorias();
         }
 
-        public List<Test> DevolverTestCategorias (Categoria categoria) // TODO ¿De varias categorías o de una?
+        public List<Test> DevolverTestsDeCategoria (Categoria categoria)
         {
             return nuevoAcceso.DevolverTestAsociadoCategoria(categoria);
         }

@@ -1,4 +1,5 @@
-﻿using CapaNegocio;
+﻿using CapaDatos;
+using CapaNegocio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace CapaPresentacion
     static class Program
     {
         public static Acceso gestor = new Acceso();
+        public static Gestor datos;
         /// <summary>
         /// Punto de entrada principal para la aplicación.
         /// </summary>
@@ -18,6 +20,14 @@ namespace CapaPresentacion
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            string msg = "";
+            datos = new Gestor(out msg);
+            if (msg != "")
+            {
+                MessageBox.Show(msg);
+                return;
+            }
             Application.Run(new FrmBienvenida());
         }
     }

@@ -10,16 +10,10 @@ namespace CapaDatos
     {
         private const string cadena = "data source =.; initial catalog =TestXabierSanMartin; integrated security = true";
         private SqlConnection conexion;
-        private string error; // TODO esta variable no tiene sentido, en todo caso debería ser un parámetero de salida en los métodos en que se pueden producir errores y no pueden salir como resultado de la función
 
-        public Gestor()
+        public Gestor(out string msg)
         {
-            Initialize(); // TODO Sin sentido ni la llamada ni el método, que devuelve mensajes que no sirven para nada
-        }
-
-        //Vamos a darle el valor a la conexion para no tener que estar constantemente usandolo.
-        private String Initialize() // TODO Sin sentido
-        {
+            msg = "";
             conexion = new SqlConnection(cadena);
 
             try
@@ -28,15 +22,14 @@ namespace CapaDatos
             }
             catch (Exception)
             {
-                return "No se ha podido conectar con la base de datos";
+                msg = "No se ha podido conectar con la base de datos";
             }
 
             conexion.Close();
-            return "Conectado a la base de datos";
         }
 
         //Creamos esto para llamarlo despues en cada funcion
-        private bool OpenConnection() // TODO ¿Para qué se almacena en error ese valor, si luego no se usa en ningún lugar?
+        private bool OpenConnection()
         {
             try
             {
@@ -45,91 +38,79 @@ namespace CapaDatos
             }
             catch (SqlException)
             {
-                error = "No se ha podido conectar con la base de datos";
                 return false;
             }
         }
 
 
         //Lo llamamos en cada funcion para cerrar la conexión.
-        private bool CloseConnection() // Mª Lo comentado en Open
+        private bool CloseConnection()
         {
             try
             {
                 conexion.Close();
                 return true;
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                error = ex.Message;
                 return false;
             }
         }
 
 
         //Funcion para comprobar si existe en la base de datos la categoria que nos pasen.
-        private bool ExisteCategoria(string consulta) // TODO Si solo necesita saber si exiswte o no, ¿para qué usar una consulta de tipo ExecuteReader y si solo puede haber 1, ¿por qué while? Y ¿que sentido tiene este parámetro? Lo lógico es que se haga dentro la sql
+        private bool ExisteCategoria(string consulta)
         {
-            List<Categoria> listCat = new List<Categoria>(); // TODO Esto es copia de otros lugares, pero en esta función no tiene sentido
+
+            int comprobarExiste = 0;
 
             if (OpenConnection() == true)
             {
                 SqlCommand cmd = new SqlCommand(consulta, conexion);
-                SqlDataReader dataReader = cmd.ExecuteReader();
+                comprobarExiste = Convert.ToInt32(cmd.ExecuteScalar());
 
-                while (dataReader.Read()) // ¿pueden ser varias?
-                {
-                    string nombreCategoria = dataReader["Descripcion"] + "";
-                    listCat.Add(new Categoria(nombreCategoria));
-                }
-                dataReader.Close();
                 this.CloseConnection();
 
-                if (listCat.Count() != 0)
+                if (comprobarExiste != 0)
                 {
                     return false;
                 }
+                else
+                {
+                    return true;
+                }
+
             }
-            else
-            {
-                return false;
-            }
-            return true;
+            return false;
         }
 
-
-        private bool ExisteTest(string consulta) //Mª Idem a Categoria
+        private bool ExisteTest(string consulta)
         {
-            List<Test> listTest = new List<Test>();
+            int comprobarExiste = 0;
 
             if (OpenConnection() == true)
             {
                 SqlCommand cmd = new SqlCommand(consulta, conexion);
-                SqlDataReader dataReader = cmd.ExecuteReader();
+                comprobarExiste = Convert.ToInt32(cmd.ExecuteScalar());
 
-                while (dataReader.Read())
-                {
-                    string nombreTest = dataReader["Descripcion"] + "";
-                    listTest.Add(new Test(nombreTest));
-                }
-                dataReader.Close();
                 this.CloseConnection();
 
-                if (listTest.Count() != 0)
+                if (comprobarExiste != 0)
                 {
                     return false;
                 }
-            }
-            else
-            {
-                return false;
-            }
-            return true;
-        }
+                else
+                {
+                    return true;
+                }
 
+            }
+
+            return false;
+        }
 
         //Funcion creada para acortar codigo y llamarla directamente al ejecutar una consulta.
-        private bool HacerConsulta(string consulta) // TODO Si hay errores, debería salir de este método el error, no en una variable global privada que nadie va a consultar 
+        private bool HacerConsulta(string consulta, out string msg)
         {
             if (this.OpenConnection() == true)
             {
@@ -142,15 +123,17 @@ namespace CapaDatos
                 catch (Exception ex)
                 {
                     this.CloseConnection();
-                    error = "Se ha producido un error con la conexión pruebe otra vez o contacte con el administrador mensaje de error: " + ex.Message;
+                    msg = "Se ha producido un error con la conexión pruebe otra vez o contacte con el administrador mensaje de error: " + ex.Message;
                     return false;
                 }
                 this.CloseConnection();
             }
             else
             {
+                msg = "Error con la conexion a la base de datos";
                 return false;
             }
+            msg = "";
             return true;
         }
 
@@ -173,17 +156,17 @@ namespace CapaDatos
             if (resultado == true)
             {
                 string queryAnadirCategoria = "INSERT INTO Categorias (descripcion) VALUES('" + nombreCategoria + "')";
-                if (HacerConsulta(queryAnadirCategoria) == false)
+                string msg = "";
+                if (HacerConsulta(queryAnadirCategoria, out msg) == false)
                 {
-                    return error;
+                    return msg;
                 }
             }
 
             return "Categoria añadida correctamente";
-
         }
-
-        public List<Categoria> DevolverCategorias() // TODO Si hay errores de ejecución, no salen al exterior
+        
+        public List<Categoria> DevolverCategorias()
         {
             string queryDevolverCategorias = "SELECT * FROM CATEGORIAS";
             List<Categoria> devolverCategorias = new List<Categoria>();
@@ -220,66 +203,31 @@ namespace CapaDatos
 
         }
 
-        public String EliminarCategoria(Categoria categoriaEliminar) // TODO No tiene sentido que reciba toda la categoría, con el id debería bastar. Ver resto de comentarios de la función
+        public String EliminarCategoria(int categoriaEliminar)
         {
-            string comprobarTest = "SELECT * FROM CATEGORIASTESTS WHERE (((IdCategoria) = '" + categoriaEliminar.idCategoria + "'))";
-            //  No se deben hacer las consultas así (con + ) sino con parámetros. Así son más fáciles de hackear (está en los apuntes)
-            // Si solo necesitas saber la cantidad de categorías esta consulta no es la lógica, sino  (Count)
-            string result = "";
-            string result2 = "";
-            List<Test> listTest = new List<Test>();
+            string comprobarTest = "SELECT * FROM CATEGORIASTESTS WHERE (((IdCategoria) = @IdCategoria))";
+            int comprobar = 0;
 
             if (OpenConnection() == true)
             {
                 SqlCommand cmd = new SqlCommand(comprobarTest, conexion);
-                SqlDataReader dataReader = cmd.ExecuteReader();
+                cmd.Parameters.AddWithValue("@IdCategoria", categoriaEliminar);
+                comprobar = Convert.ToInt32(cmd.ExecuteScalar());
 
-                // TODO Si lo que quieres saber es si tiene o no test, ?para qué necesita recorrerlos todos? Bastaría con una consulta Scalar (Count) o sino con HasRows, pero el while que haces carece de sentido
-                while (dataReader.Read()) 
+                this.CloseConnection();
+
+                if (comprobar != 0)
                 {
-                    result = (dataReader["IdCategoria"].ToString()); // ¿?¿?¿? Es una lógica muy extraña
-                    Test newTest = new Test();
-                    newTest.idTest = int.Parse(dataReader["IdTest"].ToString());
-                    newTest.idCategoria = int.Parse(dataReader["IdCategoria"].ToString());
-                    listTest.Add(newTest);
+                    return "test";
                 }
-                dataReader.Close();
-                this.conexion.Close();
+                
             }
 
-            foreach (var test in listTest)
+            string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE (((IdCategoria) = " + categoriaEliminar + "))";
+            string msg = "";
+            if (HacerConsulta(queryBorrarCategoria, out msg) == false)
             {
-                // De nuevo esta búsqueda así planteada no tiene sentido
-                string comprobarPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = '" + test.idTest + "'))";
-                if (OpenConnection() == true)
-                {
-                    SqlCommand cmd2 = new SqlCommand(comprobarPreguntas, conexion);
-                    SqlDataReader dataReader2 = cmd2.ExecuteReader();
-
-                    while (dataReader2.Read())
-                    {
-                        result2 = dataReader2["IdTest"].ToString(); // Un while para 1 sola variable
-                    }
-                    dataReader2.Close();
-                    this.conexion.Close();
-                }
-            }
-
-            if (result != "" && result2 == "")
-            {
-                return "test";
-            }
-
-            if (!((result == "") && (result2 == "")))
-            {
-                return "preguntas";
-            }
-       
-
-            string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE (((Descripcion) = '" + categoriaEliminar.Descripcion + "'))";
-            if (HacerConsulta(queryBorrarCategoria) == false)
-            {
-                return error;
+                return msg;
             }
             return "Categoria eliminada correctamente";
         }
@@ -305,11 +253,11 @@ namespace CapaDatos
                 }
             }
 
-
             string queryModificarCategoria = "UPDATE CATEGORIAS SET Descripcion = '" + nuevaCategoria + "' WHERE (((Descripcion) = '" + categoria.Descripcion + "'))";
-            if (HacerConsulta(queryModificarCategoria) == false)
+            string msg = "";
+            if (HacerConsulta(queryModificarCategoria, out msg) == false)
             {
-                return error;
+                return msg;
             }
             return "Categoria modificada correctamente";
         }
@@ -320,31 +268,32 @@ namespace CapaDatos
             string queryEliminarCategorias = "DELETE FROM CATEGORIAS";
             string queryEliminarTest = "DELETE T FROM TEST AS T INNER JOIN CATEGORIASTESTS ON T.IDTEST = CATEGORIASTESTS.IDTEST WHERE T.IDTEST = CATEGORIASTESTS.IDTEST";
             string queryEliminarPreg = "DELETE P FROM PREGUNTAS AS P INNER JOIN TEST ON P.IDTEST = TEST.IDTEST WHERE P.IDTEST = TEST.IDTEST";
-            if (HacerConsulta(queryEliminarPreg) == false)
+            string msg = "";
+            if (HacerConsulta(queryEliminarPreg, out msg) == false)
             {
-                return error;
+                return msg;
             }
-            if (HacerConsulta(queryEliminarTest) == false)
+            if (HacerConsulta(queryEliminarTest, out msg) == false)
             {
-                return error;
+                return msg;
             }
-            if (HacerConsulta(queryEliminarCategorias) == false)
+            if (HacerConsulta(queryEliminarCategorias, out msg) == false)
             {
-                return error;
+                return msg;
             }
             return "Todas las categorias, test y preguntas se han eliminado con exito";
         }
 
-        public List<Test> DevolverTestAsociadoCategoria(Categoria categoriaRela) // TODO Observa la cantidad de código que se repite con EliminarCategoria
+        public List<Test> DevolverTestAsociadoCategoria(Categoria categoriaRela)
         {
-            
             List<Test> testAsoc = new List<Test>();
             List<Test> testDevolver = new List<Test>();
-            string queryTestAsoc = "SELECT IdTest FROM CATEGORIASTESTS WHERE (((IdCategoria) = '" + categoriaRela.idCategoria + "'))"; // el tipo es int ¿por qué pones esas comillas?
+            string queryTestAsoc = "SELECT IdTest FROM CATEGORIASTESTS WHERE (((IdCategoria) = @IdCategoria))";
 
             if (this.OpenConnection() == true)
             {
                 SqlCommand cmd = new SqlCommand(queryTestAsoc, conexion);
+                cmd.Parameters.AddWithValue("@IdCategoria", categoriaRela.idCategoria);
                 SqlDataReader dataReader = cmd.ExecuteReader();
 
                 while (dataReader.Read())
@@ -359,14 +308,15 @@ namespace CapaDatos
 
                 foreach (var test in testAsoc)
                 {
-                    string queryTest = "SELECT * FROM TEST WHERE (((IdTest) = '" + test.idTest + "'))";
+                    string queryTest = "SELECT * FROM TEST WHERE (((IdTest) = @IdTest))";
                     if (this.OpenConnection() == true)
                     {
                         SqlCommand cmd2 = new SqlCommand(queryTest, conexion);
+                        cmd2.Parameters.AddWithValue("@IdTest", test.idTest);
                         SqlDataReader dataReader2 = cmd2.ExecuteReader();
                         Test newTest2 = new Test();
 
-                        while (dataReader2.Read()) // De nuevo, si esto fuese un while no tendría sentido el código interior.
+                        if (dataReader2.Read())
                         {
                             newTest2.idTest = int.Parse(dataReader2["IdTest"].ToString());
                             newTest2.Descripcion = dataReader2["Descripcion"].ToString();
@@ -375,10 +325,11 @@ namespace CapaDatos
                         dataReader2.Close();
                         this.conexion.Close();
 
-                        string queryPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = '" + test.idTest + "'))";
+                        string queryPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = @IdTest))";
                         if (OpenConnection() == true)
                         {
                             SqlCommand cmd3 = new SqlCommand(queryPreguntas, conexion);
+                            cmd3.Parameters.AddWithValue("@IdTest", test.idTest);
                             SqlDataReader dataReader3 = cmd3.ExecuteReader();
 
                             while (dataReader3.Read())
@@ -411,7 +362,8 @@ namespace CapaDatos
         public string EliminarCategoriaConTest(Categoria categoriaBorrar)
         {
 
-            string comprobarTest = "SELECT * FROM CATEGORIASTESTS WHERE (((IdCategoria) = '" + categoriaBorrar.idCategoria + "'))";
+            string comprobarTest = "SELECT * FROM CATEGORIASTESTS WHERE (((IdCategoria) = " + categoriaBorrar.idCategoria + "))";
+            string msg = "";
 
             List<int> idTests = new List<int>();
 
@@ -433,19 +385,19 @@ namespace CapaDatos
 
             foreach (var test in idTests)
             {
-                string queryBorrarTest = "DELETE FROM TEST WHERE (((IdTest) = '" + test + "'))";
-                if (HacerConsulta(queryBorrarTest) == false)
+                string queryBorrarTest = "DELETE FROM TEST WHERE (((IdTest) = " + test + "))";
+                if (HacerConsulta(queryBorrarTest, out msg) == false)
                 {
-                    return error;
+                    return msg;
                 }
             }
 
 
             //Se nos borra automaticamente los id de las tabla M-N ya que tiene relacionados gracias al Borrar en Cascada en la base de datos.
-            string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE (((IdCategoria) = '" + categoriaBorrar.idCategoria + "'))";
-            if (HacerConsulta(queryBorrarCategoria) == false)
+            string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE (((IdCategoria) = " + categoriaBorrar.idCategoria + "))";
+            if (HacerConsulta(queryBorrarCategoria, out msg) == false)
             {
-                return error;
+                return msg;
             }
 
             return "Categoria y tests eliminados correctamente";
@@ -463,15 +415,16 @@ namespace CapaDatos
 
             if (resultado == false)
             {
-                return "El test " + nombreTest + " que quieres añadir ya existe.";
+                return "El test que quieres añadir ya existe.";
             }
 
             if (resultado == true)
             {
                 string queryTest = "INSERT INTO TEST (descripcion) VALUES ('" + nombreTest + "')";
-                if (HacerConsulta(queryTest) == false)
+                string msg = "";
+                if (HacerConsulta(queryTest, out msg) == false)
                 {
-                    return error;
+                    return msg;
                 }
             }
             return "El test se ha añadido correctamente";
@@ -521,7 +474,7 @@ namespace CapaDatos
 
             foreach (var test in listTest)
             {
-                string queryPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = '" + test.idTest + "'))";
+                string queryPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = " + test.idTest + "))";
                 if (OpenConnection() == true)
                 {
                     SqlCommand cmd = new SqlCommand(queryPreguntas, conexion);
@@ -548,10 +501,11 @@ namespace CapaDatos
         {
             foreach (var pregunta in preguntasEliminar)
             {
-                string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE (((IdPregunta) = '" + pregunta.idPregunta + "'))";
-                if (HacerConsulta(queryEliminarPreguntas) == false)
+                string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE (((IdPregunta) = " + pregunta.idPregunta + "))";
+                string msg = "";
+                if (HacerConsulta(queryEliminarPreguntas, out msg) == false)
                 {
-                    return error;
+                    return msg;
                 }
 
             }
@@ -561,43 +515,35 @@ namespace CapaDatos
         public string AnadirCategoriaTest(Categoria categoria, Test test)
         {
 
-            try
+            if (OpenConnection() == true)
             {
-                if (OpenConnection() == true)
+                string queryComprobacion = "SELECT * FROM CATEGORIASTESTS WHERE IdCategoria = @IdCategoria AND IdTest = @IdTest ";
+                SqlCommand cmd = new SqlCommand(queryComprobacion, conexion);
+                cmd.Parameters.AddWithValue("@IdCategoria", categoria.idCategoria);
+                cmd.Parameters.AddWithValue("@IdTest", test.idTest);
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    string queryComprobacion = "SELECT * FROM CATEGORIASTESTS WHERE IdCategoria = @IdCategoria AND IdTest = @IdTest ";
-                    SqlCommand cmd = new SqlCommand(queryComprobacion, conexion);
-                    cmd.Parameters.AddWithValue("@IdCategoria", categoria.idCategoria);
-                    cmd.Parameters.AddWithValue("@IdTest", test.idTest);
-
-                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    while (dr.Read())
                     {
-                        while (dr.Read())
+                        Test test1 = new Test();
+                        Categoria categoria1 = new Categoria();
+
+                        test1.idTest = int.Parse(dr["IdTest"].ToString());
+                        categoria1.idCategoria = int.Parse(dr["IdCategoria"].ToString());
+
+                        if (test1.idTest == test.idTest && categoria1.idCategoria == categoria.idCategoria)
                         {
-                            Test test1 = new Test();
-                            Categoria categoria1 = new Categoria();
-
-                            test1.idTest = int.Parse(dr["IdTest"].ToString());
-                            categoria1.idCategoria = int.Parse(dr["IdCategoria"].ToString());
-
-                            if (test1.idTest == test.idTest && categoria1.idCategoria == categoria.idCategoria)
-                            {
-                                dr.Close();
-                                this.conexion.Close();
-                                return "La categoria " + categoria.Descripcion + " ya esta asociado con el test " + test.Descripcion;
-                            }
+                            dr.Close();
+                            this.conexion.Close();
+                            return "La categoria " + categoria.Descripcion + " ya esta asociado con el test " + test.Descripcion;
                         }
-                        dr.Close();
                     }
-                    this.conexion.Close();
+                    dr.Close();
                 }
+                this.conexion.Close();
+            }
 
-            }
-            catch (Exception ex)
-            {
-                error = "Fallo al conectar, contace con el administrador descripcion del error: " + ex.Message;
-                return error;
-            }
 
             if (OpenConnection() == true)
             {
@@ -621,13 +567,14 @@ namespace CapaDatos
 
         public string EliminarTest(Test testEliminar)
         {
-            string comprobarTest = "SELECT idTest FROM PREGUNTAS WHERE (((IdTest) = '" + testEliminar.idTest + "'))";
+            string comprobarTest = "SELECT idTest FROM PREGUNTAS WHERE (((IdTest) = @IdTest))";
             int comprobacion = 0;
 
             if (OpenConnection() == true)
             {
 
                 SqlCommand cmd = new SqlCommand(comprobarTest, conexion);
+                cmd.Parameters.AddWithValue("@IdTest", testEliminar.idTest);
                 comprobacion = Convert.ToInt32(cmd.ExecuteScalar());
             }
             this.conexion.Close();
@@ -638,10 +585,11 @@ namespace CapaDatos
             }
             else
             {
-                string eliminarTest = "DELETE FROM TEST WHERE (((IdTest) =  '" + testEliminar.idTest + "'))";
-                if (HacerConsulta(eliminarTest) == false)
+                string eliminarTest = "DELETE FROM TEST WHERE (((IdTest) =  " + testEliminar.idTest + "))";
+                string msg = "";
+                if (HacerConsulta(eliminarTest, out msg) == false)
                 {
-                    return error;
+                    return msg;
                 }
             }
 
@@ -673,9 +621,10 @@ namespace CapaDatos
             }
 
             string queryModificarTest = "UPDATE TEST SET Descripcion = '" + nuevoNombreTest + "' WHERE(((Descripcion) = '" + nombreTest + "'))";
-            if (HacerConsulta(queryModificarTest) == false)
+            string msg = "";
+            if (HacerConsulta(queryModificarTest, out msg) == false)
             {
-                return error;
+                return msg;
             }
 
             return "Test modificado correctamente";
@@ -685,15 +634,16 @@ namespace CapaDatos
         public string EliminarTestConPreguntas(Test eliminarTest)
         {
             string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE IdTest = " + eliminarTest.idTest;
-            if (HacerConsulta(queryEliminarPreguntas) == false)
+            string msg = "";
+            if (HacerConsulta(queryEliminarPreguntas, out msg) == false)
             {
-                return error;
+                return msg;
             }
 
             string queryEliminarTest = "DELETE FROM TEST WHERE Idtest = " + eliminarTest.idTest;
-            if (HacerConsulta(queryEliminarTest) == false)
+            if (HacerConsulta(queryEliminarTest, out msg) == false)
             {
-                return "error";
+                return msg;
             }
 
             return "Test " + eliminarTest.Descripcion + " con las preguntas asociadas elimanado";
@@ -701,14 +651,13 @@ namespace CapaDatos
 
         public Test DevolverTestConPreguntas(Test buscarTest)
         {
-
             List<Test> testConPreguntas = new List<Test>();
 
-
-            string queryPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = '" + buscarTest.idTest + "'))";
+            string queryPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = @IdTest))";
             if (OpenConnection() == true)
             {
                 SqlCommand cmd = new SqlCommand(queryPreguntas, conexion);
+                cmd.Parameters.AddWithValue("@IdTest", buscarTest.idTest);
                 SqlDataReader dataReader = cmd.ExecuteReader();
 
                 while (dataReader.Read())
@@ -750,32 +699,34 @@ namespace CapaDatos
             }
 
 
-            string anadirPregunta = "INSERT INTO PREGUNTAS(Enunciado,RespV,Idtest) VALUES('" + enunciado + "','" + valido + "','" + agregarTest.idTest + "')";
-
-            if (HacerConsulta(anadirPregunta) == false)
+            string anadirPregunta = "INSERT INTO PREGUNTAS(Enunciado,RespV,Idtest) VALUES('" + enunciado + "','" + valido + "'," + agregarTest.idTest + ")";
+            string msg = "";
+            if (HacerConsulta(anadirPregunta, out msg) == false)
             {
-                return error;
+                return msg;
             }
 
             return "Pregunta agregada correctamente";
         }
 
-        public string BorrarPregunta (int idPregunta)
+        public string BorrarPregunta(int idPregunta)
         {
-            string queryBorrarPregunta = "DELETE FROM PREGUNTAS WHERE IdPregunta = '" + idPregunta + "'";
-            if (HacerConsulta(queryBorrarPregunta) == false)
+            string queryBorrarPregunta = "DELETE FROM PREGUNTAS WHERE IdPregunta = " + idPregunta + "";
+            string msg = "";
+            if (HacerConsulta(queryBorrarPregunta, out msg) == false)
             {
-                return error;
+                return msg;
             }
             return "La pregunta ha sido borrada correctamente.";
         }
 
         public string EliminarTodasLasPreguntasDeTest(int idTest)
         {
-            string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE IDTEST = '" + idTest + "'";
-            if (HacerConsulta(queryEliminarPreguntas) == false)
+            string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE IDTEST = " + idTest + "";
+            string msg = "";
+            if (HacerConsulta(queryEliminarPreguntas, out msg) == false)
             {
-                return error;
+                return msg;
             }
 
             return "Se eliminaron todas las preguntas del test.";

@@ -29,21 +29,20 @@ namespace CapaPresentacion
                 return;
             }
 
-                MessageBox.Show(respuesta);
+            MessageBox.Show(respuesta);
 
-                txtCategoria.Text = "";
-
+            txtCategoria.Text = "";
             //Cargamos a tiempo real la lista para que se cargue el listbox al añadir una nueva categoria.
             List<Categoria> list = Program.gestor.DevolverCategorias();
 
             //Controlamos este error aqui porque si clicka el boton de añadir sin introducir nada, al estar la lista vacia porque no se a creado nada
             //se rompe el programa.
             if (!(list == null))
-                {
-                    lsbCategorias.Items.Clear();
-                    lsbCategorias.Items.AddRange(list.ToArray());
-                    lsbCategorias.DisplayMember = "Descripcion";
-                }
+            {
+                lsbCategorias.Items.Clear();
+                lsbCategorias.Items.AddRange(list.ToArray());
+                lsbCategorias.DisplayMember = "Descripcion";
+            }
 
         }
 
@@ -70,6 +69,7 @@ namespace CapaPresentacion
         private void FrmAnadirCategoria_Load(object sender, EventArgs e)
         {
             List<Categoria> list = Program.gestor.DevolverCategorias();
+
             if (!(list == null))
             {
                 lsbCategorias.Items.AddRange(list.ToArray());

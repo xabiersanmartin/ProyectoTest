@@ -30,7 +30,7 @@ namespace CapaPresentacion
             Categoria newCategoria = new Categoria();
             newCategoria = cboCategorias.SelectedItem as Categoria;
 
-            List<Test> listaTest = Program.gestor.DevolverTestCategorias(newCategoria);
+            List<Test> listaTest = Program.gestor.DevolverTestsDeCategoria(newCategoria);
 
             //Comprobamos que esa categoria que introduce tiene tests, de no ser asi se lo decimos al usuario y reninicamos los combobox.
             if (listaTest.Count <=0 )
