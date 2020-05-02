@@ -24,7 +24,7 @@ namespace CapaPresentacion
         {
 
             cboTestDeCategorias.Enabled = false;    
-            List<Categoria> list = Program.gestor.DevolverCategorias();
+            List<Categoria> list = Program.gestor.DevolverCategorias(); // TODO Ver cuantos copiar-pegar hay de este trozo de código
             
                 cboCategorias.Items.Clear();
                 cboCategorias.Items.AddRange(list.ToArray());

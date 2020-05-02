@@ -10,15 +10,15 @@ namespace CapaDatos
     {
         private const string cadena = "data source =.; initial catalog =TestXabierSanMartin; integrated security = true";
         private SqlConnection conexion;
-        private string error;
+        private string error; // TODO esta variable no tiene sentido, en todo caso debería ser un parámetero de salida en los métodos en que se pueden producir errores y no pueden salir como resultado de la función
 
         public Gestor()
         {
-            Initialize();
+            Initialize(); // TODO Sin sentido ni la llamada ni el método, que devuelve mensajes que no sirven para nada
         }
 
         //Vamos a darle el valor a la conexion para no tener que estar constantemente usandolo.
-        private String Initialize()
+        private String Initialize() // TODO Sin sentido
         {
             conexion = new SqlConnection(cadena);
 
@@ -36,7 +36,7 @@ namespace CapaDatos
         }
 
         //Creamos esto para llamarlo despues en cada funcion
-        private bool OpenConnection()
+        private bool OpenConnection() // TODO ¿Para qué se almacena en error ese valor, si luego no se usa en ningún lugar?
         {
             try
             {
@@ -52,7 +52,7 @@ namespace CapaDatos
 
 
         //Lo llamamos en cada funcion para cerrar la conexión.
-        private bool CloseConnection()
+        private bool CloseConnection() // Mª Lo comentado en Open
         {
             try
             {
@@ -68,16 +68,16 @@ namespace CapaDatos
 
 
         //Funcion para comprobar si existe en la base de datos la categoria que nos pasen.
-        private bool ExisteCategoria(string consulta)
+        private bool ExisteCategoria(string consulta) // TODO Si solo necesita saber si exiswte o no, ¿para qué usar una consulta de tipo ExecuteReader y si solo puede haber 1, ¿por qué while? Y ¿que sentido tiene este parámetro? Lo lógico es que se haga dentro la sql
         {
-            List<Categoria> listCat = new List<Categoria>();
+            List<Categoria> listCat = new List<Categoria>(); // TODO Esto es copia de otros lugares, pero en esta función no tiene sentido
 
             if (OpenConnection() == true)
             {
                 SqlCommand cmd = new SqlCommand(consulta, conexion);
                 SqlDataReader dataReader = cmd.ExecuteReader();
 
-                while (dataReader.Read())
+                while (dataReader.Read()) // ¿pueden ser varias?
                 {
                     string nombreCategoria = dataReader["Descripcion"] + "";
                     listCat.Add(new Categoria(nombreCategoria));
@@ -98,7 +98,7 @@ namespace CapaDatos
         }
 
 
-        private bool ExisteTest(string consulta)
+        private bool ExisteTest(string consulta) //Mª Idem a Categoria
         {
             List<Test> listTest = new List<Test>();
 
@@ -129,7 +129,7 @@ namespace CapaDatos
 
 
         //Funcion creada para acortar codigo y llamarla directamente al ejecutar una consulta.
-        private bool HacerConsulta(string consulta)
+        private bool HacerConsulta(string consulta) // TODO Si hay errores, debería salir de este método el error, no en una variable global privada que nadie va a consultar 
         {
             if (this.OpenConnection() == true)
             {
@@ -183,7 +183,7 @@ namespace CapaDatos
 
         }
 
-        public List<Categoria> DevolverCategorias()
+        public List<Categoria> DevolverCategorias() // TODO Si hay errores de ejecución, no salen al exterior
         {
             string queryDevolverCategorias = "SELECT * FROM CATEGORIAS";
             List<Categoria> devolverCategorias = new List<Categoria>();
@@ -220,9 +220,11 @@ namespace CapaDatos
 
         }
 
-        public String EliminarCategoria(Categoria categoriaEliminar)
+        public String EliminarCategoria(Categoria categoriaEliminar) // TODO No tiene sentido que reciba toda la categoría, con el id debería bastar. Ver resto de comentarios de la función
         {
             string comprobarTest = "SELECT * FROM CATEGORIASTESTS WHERE (((IdCategoria) = '" + categoriaEliminar.idCategoria + "'))";
+            //  No se deben hacer las consultas así (con + ) sino con parámetros. Así son más fáciles de hackear (está en los apuntes)
+            // Si solo necesitas saber la cantidad de categorías esta consulta no es la lógica, sino  (Count)
             string result = "";
             string result2 = "";
             List<Test> listTest = new List<Test>();
@@ -232,10 +234,10 @@ namespace CapaDatos
                 SqlCommand cmd = new SqlCommand(comprobarTest, conexion);
                 SqlDataReader dataReader = cmd.ExecuteReader();
 
-
-                while (dataReader.Read())
+                // TODO Si lo que quieres saber es si tiene o no test, ?para qué necesita recorrerlos todos? Bastaría con una consulta Scalar (Count) o sino con HasRows, pero el while que haces carece de sentido
+                while (dataReader.Read()) 
                 {
-                    result = (dataReader["IdCategoria"].ToString());
+                    result = (dataReader["IdCategoria"].ToString()); // ¿?¿?¿? Es una lógica muy extraña
                     Test newTest = new Test();
                     newTest.idTest = int.Parse(dataReader["IdTest"].ToString());
                     newTest.idCategoria = int.Parse(dataReader["IdCategoria"].ToString());
@@ -247,6 +249,7 @@ namespace CapaDatos
 
             foreach (var test in listTest)
             {
+                // De nuevo esta búsqueda así planteada no tiene sentido
                 string comprobarPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = '" + test.idTest + "'))";
                 if (OpenConnection() == true)
                 {
@@ -255,7 +258,7 @@ namespace CapaDatos
 
                     while (dataReader2.Read())
                     {
-                        result2 = dataReader2["IdTest"].ToString();
+                        result2 = dataReader2["IdTest"].ToString(); // Un while para 1 sola variable
                     }
                     dataReader2.Close();
                     this.conexion.Close();
@@ -271,7 +274,7 @@ namespace CapaDatos
             {
                 return "preguntas";
             }
-
+       
 
             string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE (((Descripcion) = '" + categoriaEliminar.Descripcion + "'))";
             if (HacerConsulta(queryBorrarCategoria) == false)
@@ -332,11 +335,12 @@ namespace CapaDatos
             return "Todas las categorias, test y preguntas se han eliminado con exito";
         }
 
-        public List<Test> DevolverTestAsociadoCategoria(Categoria categoriaRela)
+        public List<Test> DevolverTestAsociadoCategoria(Categoria categoriaRela) // TODO Observa la cantidad de código que se repite con EliminarCategoria
         {
+            
             List<Test> testAsoc = new List<Test>();
             List<Test> testDevolver = new List<Test>();
-            string queryTestAsoc = "SELECT IdTest FROM CATEGORIASTESTS WHERE (((IdCategoria) = '" + categoriaRela.idCategoria + "'))";
+            string queryTestAsoc = "SELECT IdTest FROM CATEGORIASTESTS WHERE (((IdCategoria) = '" + categoriaRela.idCategoria + "'))"; // el tipo es int ¿por qué pones esas comillas?
 
             if (this.OpenConnection() == true)
             {
@@ -362,7 +366,7 @@ namespace CapaDatos
                         SqlDataReader dataReader2 = cmd2.ExecuteReader();
                         Test newTest2 = new Test();
 
-                        while (dataReader2.Read())
+                        while (dataReader2.Read()) // De nuevo, si esto fuese un while no tendría sentido el código interior.
                         {
                             newTest2.idTest = int.Parse(dataReader2["IdTest"].ToString());
                             newTest2.Descripcion = dataReader2["Descripcion"].ToString();

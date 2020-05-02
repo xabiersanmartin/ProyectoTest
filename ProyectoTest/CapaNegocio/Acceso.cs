@@ -38,7 +38,7 @@ namespace CapaNegocio
             return nuevoAcceso.EliminarTodasCategorias();
         }
 
-        public List<Test> DevolverTestCategorias (Categoria categoria)
+        public List<Test> DevolverTestCategorias (Categoria categoria) // TODO ¿De varias categorías o de una?
         {
             return nuevoAcceso.DevolverTestAsociadoCategoria(categoria);
         }

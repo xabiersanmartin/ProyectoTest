@@ -48,7 +48,7 @@ namespace CapaPresentacion
                 return;
             }
 
-            Categoria borrarCategoria = cboCategorias.SelectedItem as Categoria;
+            //Categoria borrarCategoria = cboCategorias.SelectedItem as Categoria;
 
             //Vamos a comprobar con el usuario si quiere eliminar la categoria antes de eliminarla.
             DialogResult resultado = MessageBox.Show("Seguro que quieres eliminar la categoria " + borrarCategoria.Descripcion, "ELIMINAR", MessageBoxButtons.YesNo);
