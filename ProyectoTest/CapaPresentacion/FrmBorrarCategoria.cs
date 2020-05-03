@@ -29,7 +29,7 @@ namespace CapaPresentacion
             }
             else
             {
-                MessageBox.Show("No hay categorias que eliminar, debes añadir una antes.");
+                MessageBox.Show("No hay categorías que eliminar, debes añadir una antes.");
                 cboCategorias.Enabled = false;
                 btnBorrarTodo.Enabled = false;
                 btnEliminar.Enabled = false;
@@ -42,14 +42,14 @@ namespace CapaPresentacion
 
             if (cboCategorias.SelectedItem == null)
             {
-                MessageBox.Show("Debes seleccionar una categoria para poder eliminar");
+                MessageBox.Show("Debes seleccionar una categoría para poder eliminar");
                 return;
             }
 
             Categoria borrarCategoria = cboCategorias.SelectedItem as Categoria;
 
             //Vamos a comprobar con el usuario si quiere eliminar la categoria antes de eliminarla.
-            DialogResult resultado = MessageBox.Show("Seguro que quieres eliminar la categoria " + borrarCategoria.Descripcion, "ELIMINAR", MessageBoxButtons.YesNo);
+            DialogResult resultado = MessageBox.Show("Seguro que quieres eliminar la categoría " + borrarCategoria.Descripcion, "ELIMINAR", MessageBoxButtons.YesNo);
 
             if (resultado == DialogResult.Yes)
             {
@@ -80,7 +80,7 @@ namespace CapaPresentacion
                     if (preguntasAsociadas.Count == 0)
                     {
                         DialogResult result2 = new DialogResult();
-                        result2 = MessageBox.Show("Seguro que quieres eliminar la categoria " + borrarCategoria.Descripcion + " que tiene los tests " + tests, "CUIDADO", MessageBoxButtons.YesNo);
+                        result2 = MessageBox.Show("Seguro que quieres eliminar la categoría " + borrarCategoria.Descripcion + " que tiene los tests " + tests, "CUIDADO", MessageBoxButtons.YesNo);
 
                         if (result2 == DialogResult.Yes)
                         {
@@ -91,7 +91,7 @@ namespace CapaPresentacion
                             List<Categoria> lista = Program.gestor.DevolverCategorias();
                             if (lista == null)
                             {
-                                MessageBox.Show("Has eliminado todas las categorias");
+                                MessageBox.Show("Has eliminado todas las categorías");
                                 cboCategorias.Items.Clear();
                                 cboCategorias.Text = "";
                                 return;
@@ -123,22 +123,22 @@ namespace CapaPresentacion
 
                     }
 
-                    result = MessageBox.Show("Seguro que quieres eliminar la categoria " + borrarCategoria.Descripcion + "\n" + "\n" + "Con los tests: " + tests + "\n" + "\n" + " Con las preguntas: " + preguntas, "CUIDADO", MessageBoxButtons.YesNo);
+                    result = MessageBox.Show("Seguro que quieres eliminar la categoría " + borrarCategoria.Descripcion + "\n" + "\n" + "Con los tests: " + tests + "\n" + "\n" + " Con las preguntas: " + preguntas, "CUIDADO", MessageBoxButtons.YesNo);
 
                     if (result == DialogResult.Yes)
                     {
                         string respuesta = Program.gestor.EliminarPreguntasDeTest(preguntasAsociadas);
                         string respuesta2 = Program.gestor.BorrarCategoriaTest(borrarCategoria);
 
-                        if (respuesta == "Preguntas eliminadas" && respuesta2 == "Categoria y tests eliminados correctamente")
+                        if (respuesta == "Preguntas eliminadas" && respuesta2 == "Categoría y tests eliminados correctamente")
                         {
-                            MessageBox.Show("La categoria fue eliminada correctamente con todos sus tests y preguntas");
+                            MessageBox.Show("La categoría fue eliminada correctamente con todos sus tests y preguntas");
 
                             List<Categoria> lista = Program.gestor.DevolverCategorias();
 
                             if (lista == null)
                             {
-                                MessageBox.Show("Has eliminado todas las categorias");
+                                MessageBox.Show("Has eliminado todas las categorías");
                                 cboCategorias.Items.Clear();
                                 cboCategorias.Text = "";
                                 return;
@@ -163,13 +163,13 @@ namespace CapaPresentacion
                 List<Categoria> list = Program.gestor.DevolverCategorias();
                 if (list == null)
                 {
-                    MessageBox.Show("Has eliminado todas las categorias");
+                    MessageBox.Show("Has eliminado todas las categorías");
                     cboCategorias.Items.Clear();
                     cboCategorias.Text = "";
                     return;
                 }
 
-                MessageBox.Show(mensaje + " " + borrarCategoria.Descripcion);
+                MessageBox.Show(mensaje);
 
                 cboCategorias.Items.Clear();
                 cboCategorias.Items.AddRange(list.ToArray());
@@ -178,7 +178,7 @@ namespace CapaPresentacion
             }
             else
             {
-                MessageBox.Show("No se elimino la categoria " + borrarCategoria.Descripcion);
+                MessageBox.Show("No se eliminó la categoría " + borrarCategoria.Descripcion);
                 cboCategorias.SelectedIndex = -1;
             }
 
@@ -189,11 +189,11 @@ namespace CapaPresentacion
             List<Categoria> list = Program.gestor.DevolverCategorias();
             if (list == null)
             {
-                MessageBox.Show("No puede eliminar categorias sino tienes ninguna");
+                MessageBox.Show("No puedes eliminar las categorías sino tienes ninguna");
                 return;
             }
 
-            DialogResult result = MessageBox.Show("¿Seguro que quieres eliminar todas las categorias? \n \n Piensa que tambien eliminaras todos los test asociados a esas categorias y las preguntas asociadas a los test", "ELIMINAR", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("¿Seguro que quieres eliminar todas las categorías? \n \n Piensa que también eliminaras todos los test asociados a esas categorías y las preguntas asociadas a los test", "ELIMINAR", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 string mensaje = Program.gestor.EliminarCategorias();
@@ -204,7 +204,7 @@ namespace CapaPresentacion
             }
             else
             {
-                MessageBox.Show("No se a eliminado nada.");
+                MessageBox.Show("No se ha eliminado nada.");
                 return;
             }
         }

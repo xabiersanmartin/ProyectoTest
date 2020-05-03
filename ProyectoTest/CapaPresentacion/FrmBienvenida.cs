@@ -62,7 +62,7 @@ namespace CapaPresentacion
             List<Categoria> comprobarCategoria = Program.gestor.DevolverCategorias();
             if (comprobarCategoria == null)
             {
-                MessageBox.Show("Para poder acceder aqui antes debes tener alguna categoria creada");
+                MessageBox.Show("Para poder acceder aquí antes debes tener alguna categoría creada");
                 return;
             }
             

@@ -51,7 +51,7 @@ namespace CapaPresentacion
             List<Test> testsDeCategorias = Program.gestor.DevolverTestsDeCategoria(categoria);
             if (testsDeCategorias.Count == 0)
             {
-                MessageBox.Show("No tienes ningun test asociado a esta categoria", "ATENCIÓN");
+                MessageBox.Show("No tienes ningun test asociado a esta categoría", "ATENCIÓN");
                 cboTestDeCategorias.Items.Clear();
                 cboTestDeCategorias.Enabled = false;
                 cboCategorias.SelectedIndex = -1;
@@ -78,7 +78,7 @@ namespace CapaPresentacion
         {
             if (cboTestDeCategorias.SelectedIndex == -1)
             {
-                MessageBox.Show("No puedes añadir una pregunta sin a ver seleccionado antes La categoria y el test al que quieres añadirle esas preguntas", "ATENCIÓN");
+                MessageBox.Show("No puedes añadir una pregunta sin a ver seleccionado antes la categoría y el test al que quieres añadirle esas preguntas", "ATENCIÓN");
                 return;
             }
 
@@ -94,7 +94,7 @@ namespace CapaPresentacion
 
             if (cboTestDeCategorias.SelectedIndex == -1)
             {
-                MessageBox.Show("No puedes borrar una pregunta sin a ver seleccionado antes La categoria y el test al que quieres añadirle esas preguntas", "ATENCIÓN");
+                MessageBox.Show("No puedes borrar una pregunta sin a ver seleccionado antes la categoría y el test al que quieres añadirle esas preguntas", "ATENCIÓN");
                 return;
             }
 
@@ -116,7 +116,7 @@ namespace CapaPresentacion
 
             if (cboTestDeCategorias.SelectedIndex == -1)
             {
-                MessageBox.Show("No puedes eliminar todas las preguntas de un test sin a ver seleccionado antes La categoria y el test.", "ATENCIÓN");
+                MessageBox.Show("No puedes eliminar todas las preguntas de un test sin a ver seleccionado antes la categoría y el test.", "ATENCIÓN");
                 return;
             }
 

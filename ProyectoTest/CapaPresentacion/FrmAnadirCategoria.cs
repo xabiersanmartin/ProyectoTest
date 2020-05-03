@@ -22,7 +22,7 @@ namespace CapaPresentacion
         {
             string respuesta = Program.gestor.AnadirCategoria(txtCategoria.Text);
 
-            if (respuesta == "Como puedes ver en el recuadro de al lado, la categoria ya existe")
+            if (respuesta == "Como puedes ver en el recuadro de al lado, la categoría ya existe")
             {
                 MessageBox.Show(respuesta, "ERROR");
                 txtCategoria.Text = "";

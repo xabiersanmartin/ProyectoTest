@@ -35,7 +35,7 @@ namespace CapaPresentacion
             //Comprobamos que esa categoria que introduce tiene tests, de no ser asi se lo decimos al usuario y reninicamos los combobox.
             if (listaTest.Count <=0 )
             {
-                MessageBox.Show("No tienes ningun test asocidado a esta categoria", "ATENCIÓN");
+                MessageBox.Show("No tienes ningun test asocidado a esta categoría", "ATENCIÓN");
 
                 List<Categoria> list = Program.gestor.DevolverCategorias();
                 cboCategorias.Items.Clear();
@@ -67,7 +67,7 @@ namespace CapaPresentacion
             }
             else
             {
-                MessageBox.Show("No hay categorias, no vas a poder realizar busquedas de test por categorias ya que no tienes ninguna categoria.");
+                MessageBox.Show("No hay categorías, no vas a poder realizar busquedas de test por categorías ya que no tienes ninguna categoría.");
                 cboCategorias.Enabled = false;
             }
 

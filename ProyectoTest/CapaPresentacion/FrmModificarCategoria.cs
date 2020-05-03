@@ -23,7 +23,7 @@ namespace CapaPresentacion
             List<Categoria> list = Program.gestor.DevolverCategorias();
             if (list == null)
             {
-                MessageBox.Show("No hay categorias que modificar, debes añadir una antes.");
+                MessageBox.Show("No hay categorías que modificar, debes añadir una antes.");
                 cboSeleccionarCat.Enabled = false;
                 txtModificarCat.Enabled = false;
                 btnModificar.Enabled = false;
@@ -59,7 +59,7 @@ namespace CapaPresentacion
 
             if (cboSeleccionarCat.SelectedItem == null)
             {
-                MessageBox.Show("Debes seleccionar una categoria para poder modificarla");
+                MessageBox.Show("Debes seleccionar una categoría para poder modificarla");
                 return;
             }
 

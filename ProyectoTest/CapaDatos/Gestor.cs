@@ -59,7 +59,7 @@ namespace CapaDatos
 
 
         //Funcion para comprobar si existe en la base de datos la categoria que nos pasen.
-        private bool ExisteCategoria(string consulta)
+        private bool NoExisteCategoria(string consulta)
         {
 
             int comprobarExiste = 0;
@@ -84,7 +84,7 @@ namespace CapaDatos
             return false;
         }
 
-        private bool ExisteTest(string consulta)
+        private bool NoExisteTest(string consulta)
         {
             int comprobarExiste = 0;
 
@@ -115,10 +115,17 @@ namespace CapaDatos
             if (this.OpenConnection() == true)
             {
                 SqlCommand cmd2 = new SqlCommand(consulta, conexion);
+                int comprobar = 0;
 
                 try
                 {
-                    cmd2.ExecuteNonQuery();
+                    comprobar = cmd2.ExecuteNonQuery();
+                    if (comprobar == 0)
+                    {
+                        this.CloseConnection();
+                        msg = "Fallo al ejecutarse";
+                        return false;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -141,16 +148,16 @@ namespace CapaDatos
         {
             if (String.IsNullOrWhiteSpace(nombreCategoria))
             {
-                return "El nombre de la categoria que quieres añadir no puede estar vacio.";
+                return "El nombre de la categoría que quieres añadir no puede estar vacio.";
             }
             //Consulta para comprobar si existe la categoeria que nos pasan, despues la pasamos a la función.
             string ConsultaSiExiste = "SELECT * FROM CATEGORIAS WHERE Descripcion = '" + nombreCategoria + "'";
-            bool resultado = ExisteCategoria(ConsultaSiExiste);
+            bool resultado = NoExisteCategoria(ConsultaSiExiste);
 
             //Comprobamos el resultado de la función para meterlo en la base de datos o decirle que no
             if (resultado == false)
             {
-                return "No puede añadir la categoria " + nombreCategoria + " porque ya existe";
+                return "No se puede añadir la categoría " + nombreCategoria + " porque ya existe";
             }
 
             if (resultado == true)
@@ -163,7 +170,7 @@ namespace CapaDatos
                 }
             }
 
-            return "Categoria añadida correctamente";
+            return "Categoría añadida correctamente";
         }
         
         public List<Categoria> DevolverCategorias()
@@ -229,7 +236,7 @@ namespace CapaDatos
             {
                 return msg;
             }
-            return "Categoria eliminada correctamente";
+            return "Categoría eliminada correctamente";
         }
 
         public String ModificarCategoria(Categoria categoria, string nuevaCategoria, List<Categoria> categorias)
@@ -237,11 +244,11 @@ namespace CapaDatos
 
             if (String.IsNullOrWhiteSpace(nuevaCategoria))
             {
-                return "No puedes dejar la categoria que vas a modificar en blanco";
+                return "No puedes dejar la categoría que vas a modificar en blanco";
             }
             if (categoria.Descripcion.ToLower() == nuevaCategoria.ToLower())
             {
-                return "No puedes ponerle el mismo nombre a la categoria.";
+                return "No puedes ponerle el mismo nombre a la categoría.";
             }
 
             //Comprobamos que ese nombre que mete no sea el mismo de uno que ya existe en la BD.
@@ -249,7 +256,7 @@ namespace CapaDatos
             {
                 if (cat.Descripcion.Equals(nuevaCategoria))
                 {
-                    return "No puede ponerle el mismo nombre que a una categoria existente";
+                    return "No puede ponerle el mismo nombre que a una categoría existente";
                 }
             }
 
@@ -259,7 +266,7 @@ namespace CapaDatos
             {
                 return msg;
             }
-            return "Categoria modificada correctamente";
+            return "Categoría modificada correctamente";
         }
 
 
@@ -281,7 +288,7 @@ namespace CapaDatos
             {
                 return msg;
             }
-            return "Todas las categorias, test y preguntas se han eliminado con exito";
+            return "Todas las categorías, test y preguntas se han eliminado con exito";
         }
 
         public List<Test> DevolverTestAsociadoCategoria(Categoria categoriaRela)
@@ -400,7 +407,7 @@ namespace CapaDatos
                 return msg;
             }
 
-            return "Categoria y tests eliminados correctamente";
+            return "Categoría y tests eliminados correctamente";
         }
 
         public string AnadirTest(string nombreTest)
@@ -411,7 +418,7 @@ namespace CapaDatos
             }
 
             string ConsultaSiExiste = "SELECT * FROM TEST WHERE Descripcion = '" + nombreTest + "'";
-            bool resultado = ExisteTest(ConsultaSiExiste);
+            bool resultado = NoExisteTest(ConsultaSiExiste);
 
             if (resultado == false)
             {
@@ -536,7 +543,7 @@ namespace CapaDatos
                         {
                             dr.Close();
                             this.conexion.Close();
-                            return "La categoria " + categoria.Descripcion + " ya esta asociado con el test " + test.Descripcion;
+                            return "La categoría " + categoria.Descripcion + " ya esta asociado con el test " + test.Descripcion;
                         }
                     }
                     dr.Close();
@@ -557,12 +564,12 @@ namespace CapaDatos
                 int numFilas = cmdAnadir.ExecuteNonQuery();
                 if (numFilas <= 0)
                 {
-                    return "Fallo al añadir la categoria " + categoria.Descripcion + "con el test " + test.Descripcion + ", contacte con el administrador";
+                    return "Fallo al añadir la categoría " + categoria.Descripcion + "con el test " + test.Descripcion + ", contacte con el administrador";
                 }
                 this.conexion.Close();
             }
 
-            return "La categoria " + categoria.Descripcion + " añadido correctamente al test " + test.Descripcion;
+            return "La categoría " + categoria.Descripcion + " añadida correctamente al test " + test.Descripcion;
         }
 
         public string EliminarTest(Test testEliminar)
@@ -646,7 +653,7 @@ namespace CapaDatos
                 return msg;
             }
 
-            return "Test " + eliminarTest.Descripcion + " con las preguntas asociadas elimanado";
+            return "Test " + eliminarTest.Descripcion + " y las preguntas asociadas elimanadas";
         }
 
         public Test DevolverTestConPreguntas(Test buscarTest)

@@ -32,7 +32,7 @@ namespace CapaPresentacion
             }
             else
             {
-                MessageBox.Show("No hay categorias, debes crear una categoria para asociarla al test que quieres crear", "CUIDADO");
+                MessageBox.Show("No hay categorías, debes crear una categoría para asociarla al test que quieres crear", "CUIDADO");
                 Close();
             }
 
@@ -62,7 +62,7 @@ namespace CapaPresentacion
 
             if (mensaje == "El test se ha añadido correctamente")
             {
-                MessageBox.Show("Ahora debes relacionar el test " + txtAnadirTest.Text + " con minimo una categoria");
+                MessageBox.Show("Ahora debes relacionar el test " + txtAnadirTest.Text + " con minimo una categoría");
                 btnVolver.Enabled = false;
                 btnAnadirTest.Enabled = false;
                 nombreTest = txtAnadirTest.Text;
@@ -112,18 +112,18 @@ namespace CapaPresentacion
             //Ponemos el maximo de mensajes para que al usuario le queden claro todos los posibles errores que le puedan salir.
             if (cboCategoria2.SelectedIndex == -1 && cboTests.SelectedIndex == -1)
             {
-                MessageBox.Show("Para poder asociar un categoria a un test, debes seleccionar ambos", "ATENCIÓN");
+                MessageBox.Show("Para poder asociar un categoría a un test, debes seleccionar ambos", "ATENCIÓN");
                 return;
             }
             if (cboCategoria2.SelectedIndex == -1 && cboTests.SelectedIndex != -1)
             {
-                MessageBox.Show("Para poder asociar el test " + cboTests.Text + " antes debes seleccionar a categoria quieres asociarlo", "ATENCIÓN");
+                MessageBox.Show("Para poder asociar el test " + cboTests.Text + " antes debes seleccionar a categoría quieres asociarlo", "ATENCIÓN");
                 return;
             }
 
             if (cboCategoria2.SelectedIndex != -1 && cboTests.SelectedIndex == -1)
             {
-                MessageBox.Show("Para poder asociar la categoria " + cboCategoria2.Text + " antes debes seleccionar con que test quiere asociarlo", "ATENCIÓN");
+                MessageBox.Show("Para poder asociar la categoría " + cboCategoria2.Text + " antes debes seleccionar con que test quiere asociarlo", "ATENCIÓN");
                 return;
             }
 
@@ -134,7 +134,7 @@ namespace CapaPresentacion
 
             MessageBox.Show(mensaje);
 
-            if ((mensaje == "La categoria " + anadirCategoria.Descripcion + " añadido correctamente al test " + anadirTest.Descripcion) && (anadirTest.Descripcion == nombreTest))
+            if ((mensaje == "La categoría " + anadirCategoria.Descripcion + " añadido correctamente al test " + anadirTest.Descripcion) && (anadirTest.Descripcion == nombreTest))
             {
                 btnVolver.Enabled = true;
                 btnAnadirTest.Enabled = true;
