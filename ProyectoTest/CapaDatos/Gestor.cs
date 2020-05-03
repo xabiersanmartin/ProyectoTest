@@ -20,9 +20,9 @@ namespace CapaDatos
             {
                 conexion.Open();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                msg = "No se ha podido conectar con la base de datos";
+                msg = "No se ha podido conectar con la base de datos " + ex.Message;
             }
 
             conexion.Close();
@@ -59,14 +59,16 @@ namespace CapaDatos
 
 
         //Funcion para comprobar si existe en la base de datos la categoria que nos pasen.
-        private bool NoExisteCategoria(string consulta)
+        private bool NoExiste(string consulta, string parametro)
         {
 
             int comprobarExiste = 0;
 
             if (OpenConnection() == true)
             {
+
                 SqlCommand cmd = new SqlCommand(consulta, conexion);
+                cmd.Parameters.AddWithValue("@valor", parametro);
                 comprobarExiste = Convert.ToInt32(cmd.ExecuteScalar());
 
                 this.CloseConnection();
@@ -81,45 +83,40 @@ namespace CapaDatos
                 }
 
             }
-            return false;
-        }
-
-        private bool NoExisteTest(string consulta)
-        {
-            int comprobarExiste = 0;
-
-            if (OpenConnection() == true)
-            {
-                SqlCommand cmd = new SqlCommand(consulta, conexion);
-                comprobarExiste = Convert.ToInt32(cmd.ExecuteScalar());
-
-                this.CloseConnection();
-
-                if (comprobarExiste != 0)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-
-            }
-
             return false;
         }
 
         //Funcion creada para acortar codigo y llamarla directamente al ejecutar una consulta.
-        private bool HacerConsulta(string consulta, out string msg)
+        private bool HacerConsulta(string consulta, out string msg, string tipoConsulta = "", Dictionary<string, string> parametros = null)
         {
             if (this.OpenConnection() == true)
             {
-                SqlCommand cmd2 = new SqlCommand(consulta, conexion);
+                SqlCommand cmd = new SqlCommand(consulta, conexion);
+                if (tipoConsulta != "")
+                {
+                    switch (tipoConsulta)
+                    {
+                        case "INSERT":
+                            string verga = parametros["VALUES"];
+                            cmd.Parameters.AddWithValue("@VALOR", verga);
+                            break;
+                        case "UPDATE":
+                            cmd.Parameters.AddWithValue("@VALOR1", parametros["SET"]);
+                            cmd.Parameters.AddWithValue("@VALOR2", parametros["WHERE"]);
+                            break;
+                        case "DELETE":
+                            cmd.Parameters.AddWithValue("@VALOR", parametros["WHERE"]);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
                 int comprobar = 0;
 
                 try
                 {
-                    comprobar = cmd2.ExecuteNonQuery();
+                    comprobar = cmd.ExecuteNonQuery();
                     if (comprobar == 0)
                     {
                         this.CloseConnection();
@@ -151,8 +148,10 @@ namespace CapaDatos
                 return "El nombre de la categoría que quieres añadir no puede estar vacio.";
             }
             //Consulta para comprobar si existe la categoeria que nos pasan, despues la pasamos a la función.
-            string ConsultaSiExiste = "SELECT * FROM CATEGORIAS WHERE Descripcion = '" + nombreCategoria + "'";
-            bool resultado = NoExisteCategoria(ConsultaSiExiste);
+            string ConsultaSiExiste = "SELECT * FROM CATEGORIAS WHERE Descripcion = @valor";
+
+
+            bool resultado = NoExiste(ConsultaSiExiste, nombreCategoria);
 
             //Comprobamos el resultado de la función para meterlo en la base de datos o decirle que no
             if (resultado == false)
@@ -162,17 +161,20 @@ namespace CapaDatos
 
             if (resultado == true)
             {
-                string queryAnadirCategoria = "INSERT INTO Categorias (descripcion) VALUES('" + nombreCategoria + "')";
+                string queryAnadirCategoria = "INSERT INTO Categorias (descripcion) VALUES(@valor)";
+                Dictionary<string, string> dic = new Dictionary<string, string>();
+                dic.Add("VALUES", nombreCategoria);
                 string msg = "";
-                if (HacerConsulta(queryAnadirCategoria, out msg) == false)
+                if (HacerConsulta(queryAnadirCategoria, out msg, "INSERT", dic) == false)
                 {
                     return msg;
                 }
+
             }
 
             return "Categoría añadida correctamente";
         }
-        
+
         public List<Categoria> DevolverCategorias()
         {
             string queryDevolverCategorias = "SELECT * FROM CATEGORIAS";
@@ -205,9 +207,9 @@ namespace CapaDatos
             }
             else
             {
+
                 return null;
             }
-
         }
 
         public String EliminarCategoria(int categoriaEliminar)
@@ -227,12 +229,14 @@ namespace CapaDatos
                 {
                     return "test";
                 }
-                
+
             }
 
-            string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE (((IdCategoria) = " + categoriaEliminar + "))";
+            string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE (((IdCategoria) = @VALOR))";
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("WHERE", categoriaEliminar.ToString());
             string msg = "";
-            if (HacerConsulta(queryBorrarCategoria, out msg) == false)
+            if (HacerConsulta(queryBorrarCategoria, out msg, "DELETE", dic) == false)
             {
                 return msg;
             }
@@ -260,9 +264,12 @@ namespace CapaDatos
                 }
             }
 
-            string queryModificarCategoria = "UPDATE CATEGORIAS SET Descripcion = '" + nuevaCategoria + "' WHERE (((Descripcion) = '" + categoria.Descripcion + "'))";
+            string queryModificarCategoria = "UPDATE CATEGORIAS SET Descripcion = @VALOR1 WHERE (((Descripcion) = @VALOR2))";
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("SET", nuevaCategoria);
+            dic.Add("WHERE", categoria.Descripcion);
             string msg = "";
-            if (HacerConsulta(queryModificarCategoria, out msg) == false)
+            if (HacerConsulta(queryModificarCategoria, out msg, "UPDATE", dic) == false)
             {
                 return msg;
             }
@@ -294,70 +301,48 @@ namespace CapaDatos
         public List<Test> DevolverTestAsociadoCategoria(Categoria categoriaRela)
         {
             List<Test> testAsoc = new List<Test>();
-            List<Test> testDevolver = new List<Test>();
-            string queryTestAsoc = "SELECT IdTest FROM CATEGORIASTESTS WHERE (((IdCategoria) = @IdCategoria))";
+            string queryTestAsoc = "SELECT TEST.IdTest, Test.Descripcion FROM TEST INNER JOIN CATEGORIASTESTS INNER JOIN CATEGORIAS ON CATEGORIASTESTS.IDCATEGORIA = CATEGORIAS.IDCATEGORIA ON TEST.IDTEST = CATEGORIASTESTS.IDTEST  WHERE CATEGORIAS.IDCATEGORIA = @IdCategoria";
 
             if (this.OpenConnection() == true)
             {
                 SqlCommand cmd = new SqlCommand(queryTestAsoc, conexion);
                 cmd.Parameters.AddWithValue("@IdCategoria", categoriaRela.idCategoria);
+
                 SqlDataReader dataReader = cmd.ExecuteReader();
 
                 while (dataReader.Read())
                 {
                     Test newTest = new Test();
                     newTest.idTest = int.Parse(dataReader["IdTest"].ToString());
+                    newTest.Descripcion = dataReader["Descripcion"].ToString();
 
                     testAsoc.Add(newTest);
                 }
                 dataReader.Close();
-                this.conexion.Close();
 
+                string queryPreguntasAsoc = "SELECT * FROM PREGUNTAS WHERE IdTest = @IdTest";
                 foreach (var test in testAsoc)
                 {
-                    string queryTest = "SELECT * FROM TEST WHERE (((IdTest) = @IdTest))";
-                    if (this.OpenConnection() == true)
+                    SqlCommand cmd2 = new SqlCommand(queryPreguntasAsoc, conexion);
+                    cmd2.Parameters.AddWithValue("@IdTest", test.idTest);
+                    SqlDataReader dataReader2 = cmd2.ExecuteReader();
+
+                    while (dataReader2.Read())
                     {
-                        SqlCommand cmd2 = new SqlCommand(queryTest, conexion);
-                        cmd2.Parameters.AddWithValue("@IdTest", test.idTest);
-                        SqlDataReader dataReader2 = cmd2.ExecuteReader();
-                        Test newTest2 = new Test();
+                        Pregunta newPregunta = new Pregunta();
+                        newPregunta.idPregunta = int.Parse(dataReader2["IdPregunta"].ToString());
+                        newPregunta.idTest = int.Parse(dataReader2["IdTest"].ToString());
+                        newPregunta.enunciado = dataReader2["Enunciado"].ToString();
+                        newPregunta.respV = bool.Parse(dataReader2["RespV"].ToString());
 
-                        if (dataReader2.Read())
-                        {
-                            newTest2.idTest = int.Parse(dataReader2["IdTest"].ToString());
-                            newTest2.Descripcion = dataReader2["Descripcion"].ToString();
-
-                        }
-                        dataReader2.Close();
-                        this.conexion.Close();
-
-                        string queryPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = @IdTest))";
-                        if (OpenConnection() == true)
-                        {
-                            SqlCommand cmd3 = new SqlCommand(queryPreguntas, conexion);
-                            cmd3.Parameters.AddWithValue("@IdTest", test.idTest);
-                            SqlDataReader dataReader3 = cmd3.ExecuteReader();
-
-                            while (dataReader3.Read())
-                            {
-                                Pregunta newPregunta = new Pregunta();
-                                newPregunta.idPregunta = int.Parse(dataReader3["IdPregunta"].ToString());
-                                newPregunta.idTest = int.Parse(dataReader3["IdTest"].ToString());
-                                newPregunta.enunciado = dataReader3["Enunciado"].ToString();
-                                newPregunta.respV = bool.Parse(dataReader3["RespV"].ToString());
-
-                                newTest2.preguntasTest.Add(newPregunta);
-                            }
-
-                            testDevolver.Add(newTest2);
-                            dataReader3.Close();
-                            this.conexion.Close();
-                        }
-
+                        test.preguntasTest.Add(newPregunta);
                     }
+                    dataReader2.Close();
+
                 }
-                return testDevolver;
+                this.conexion.Close();
+
+                return testAsoc;
             }
 
             else
@@ -369,7 +354,7 @@ namespace CapaDatos
         public string EliminarCategoriaConTest(Categoria categoriaBorrar)
         {
 
-            string comprobarTest = "SELECT * FROM CATEGORIASTESTS WHERE (((IdCategoria) = " + categoriaBorrar.idCategoria + "))";
+            string comprobarTest = "SELECT * FROM CATEGORIASTESTS WHERE IdCategoria = @IdCategoria";
             string msg = "";
 
             List<int> idTests = new List<int>();
@@ -377,6 +362,7 @@ namespace CapaDatos
             if (OpenConnection() == true)
             {
                 SqlCommand cmd = new SqlCommand(comprobarTest, conexion);
+                cmd.Parameters.AddWithValue("@IdCategoria", categoriaBorrar.idCategoria);
                 SqlDataReader dataReader = cmd.ExecuteReader();
 
 
@@ -392,8 +378,10 @@ namespace CapaDatos
 
             foreach (var test in idTests)
             {
-                string queryBorrarTest = "DELETE FROM TEST WHERE (((IdTest) = " + test + "))";
-                if (HacerConsulta(queryBorrarTest, out msg) == false)
+                string queryBorrarTest = "DELETE FROM TEST WHERE IdTest = @VALOR";
+                Dictionary<string, string> dic2 = new Dictionary<string, string>();
+                dic2.Add("WHERE", test.ToString());
+                if (HacerConsulta(queryBorrarTest, out msg, "DELETE", dic2) == false)
                 {
                     return msg;
                 }
@@ -401,8 +389,10 @@ namespace CapaDatos
 
 
             //Se nos borra automaticamente los id de las tabla M-N ya que tiene relacionados gracias al Borrar en Cascada en la base de datos.
-            string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE (((IdCategoria) = " + categoriaBorrar.idCategoria + "))";
-            if (HacerConsulta(queryBorrarCategoria, out msg) == false)
+            string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE IdCategoria = @VALOR";
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("WHERE", categoriaBorrar.idCategoria.ToString());
+            if (HacerConsulta(queryBorrarCategoria, out msg, "DELETE", dic) == false)
             {
                 return msg;
             }
@@ -417,8 +407,10 @@ namespace CapaDatos
                 return "No puedes dejar vacio el nombre del test que quieres añadir.";
             }
 
-            string ConsultaSiExiste = "SELECT * FROM TEST WHERE Descripcion = '" + nombreTest + "'";
-            bool resultado = NoExisteTest(ConsultaSiExiste);
+            string ConsultaSiExiste = "SELECT * FROM TEST WHERE Descripcion = @valor";
+
+
+            bool resultado = NoExiste(ConsultaSiExiste, nombreTest);
 
             if (resultado == false)
             {
@@ -427,9 +419,11 @@ namespace CapaDatos
 
             if (resultado == true)
             {
-                string queryTest = "INSERT INTO TEST (descripcion) VALUES ('" + nombreTest + "')";
+                string queryTest = "INSERT INTO TEST (descripcion) VALUES (@valor)";
+                Dictionary<string, string> dic = new Dictionary<string, string>();
+                dic.Add("VALUES", nombreTest);
                 string msg = "";
-                if (HacerConsulta(queryTest, out msg) == false)
+                if (HacerConsulta(queryTest, out msg, "INSERT", dic) == false)
                 {
                     return msg;
                 }
@@ -481,10 +475,11 @@ namespace CapaDatos
 
             foreach (var test in listTest)
             {
-                string queryPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = " + test.idTest + "))";
+                string queryPreguntas = "SELECT * FROM PREGUNTAS WHERE IdTest = @IdTest";
                 if (OpenConnection() == true)
                 {
                     SqlCommand cmd = new SqlCommand(queryPreguntas, conexion);
+                    cmd.Parameters.AddWithValue("@IdTest", test.idTest);
                     SqlDataReader dataReader = cmd.ExecuteReader();
 
                     while (dataReader.Read())
@@ -508,9 +503,11 @@ namespace CapaDatos
         {
             foreach (var pregunta in preguntasEliminar)
             {
-                string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE (((IdPregunta) = " + pregunta.idPregunta + "))";
+                string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE IdPregunta = @VALOR";
+                Dictionary<string, string> dic = new Dictionary<string, string>();
+                dic.Add("WHERE", pregunta.idPregunta.ToString());
                 string msg = "";
-                if (HacerConsulta(queryEliminarPreguntas, out msg) == false)
+                if (HacerConsulta(queryEliminarPreguntas, out msg, "DELETE", dic) == false)
                 {
                     return msg;
                 }
@@ -592,9 +589,11 @@ namespace CapaDatos
             }
             else
             {
-                string eliminarTest = "DELETE FROM TEST WHERE (((IdTest) =  " + testEliminar.idTest + "))";
+                string eliminarTest = "DELETE FROM TEST WHERE IdTest =  @VALOR";
+                Dictionary<string, string> dic = new Dictionary<string, string>();
+                dic.Add("WHERE", testEliminar.idTest.ToString());
                 string msg = "";
-                if (HacerConsulta(eliminarTest, out msg) == false)
+                if (HacerConsulta(eliminarTest, out msg, "DELETE", dic) == false)
                 {
                     return msg;
                 }
@@ -627,9 +626,12 @@ namespace CapaDatos
                 }
             }
 
-            string queryModificarTest = "UPDATE TEST SET Descripcion = '" + nuevoNombreTest + "' WHERE(((Descripcion) = '" + nombreTest + "'))";
+            string queryModificarTest = "UPDATE TEST SET Descripcion = @VALOR1 WHERE(((Descripcion) = @VALOR2))";
             string msg = "";
-            if (HacerConsulta(queryModificarTest, out msg) == false)
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("SET", nuevoNombreTest);
+            dic.Add("WHERE", nombreTest);
+            if (HacerConsulta(queryModificarTest, out msg, "UPDATE", dic) == false)
             {
                 return msg;
             }
@@ -640,15 +642,19 @@ namespace CapaDatos
 
         public string EliminarTestConPreguntas(Test eliminarTest)
         {
-            string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE IdTest = " + eliminarTest.idTest;
+            string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE IdTest = @VALOR";
             string msg = "";
-            if (HacerConsulta(queryEliminarPreguntas, out msg) == false)
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("WHERE", eliminarTest.idTest.ToString());
+            if (HacerConsulta(queryEliminarPreguntas, out msg, "DELETE", dic) == false)
             {
                 return msg;
             }
 
-            string queryEliminarTest = "DELETE FROM TEST WHERE Idtest = " + eliminarTest.idTest;
-            if (HacerConsulta(queryEliminarTest, out msg) == false)
+            string queryEliminarTest = "DELETE FROM TEST WHERE Idtest = @VALOR";
+            Dictionary<string, string> dic2 = new Dictionary<string, string>();
+            dic2.Add("WHERE", eliminarTest.idTest.ToString());
+            if (HacerConsulta(queryEliminarTest, out msg, "DELETE", dic2) == false)
             {
                 return msg;
             }
@@ -661,6 +667,7 @@ namespace CapaDatos
             List<Test> testConPreguntas = new List<Test>();
 
             string queryPreguntas = "SELECT * FROM PREGUNTAS WHERE (((IdTest) = @IdTest))";
+
             if (OpenConnection() == true)
             {
                 SqlCommand cmd = new SqlCommand(queryPreguntas, conexion);
@@ -685,17 +692,11 @@ namespace CapaDatos
 
         public string AnadirPregunta(string enunciado, bool valido, Test agregarTest)
         {
-            string queryExistePregunta = "SELECT * FROM PREGUNTAS WHERE Enunciado = '" + enunciado + "'";
-            int comprobacionExiste = 0;
+            string queryExistePregunta = "SELECT * FROM PREGUNTAS WHERE Enunciado = @valor";
 
-            if (OpenConnection() == true)
-            {
-                SqlCommand cmd = new SqlCommand(queryExistePregunta, conexion);
-                comprobacionExiste = Convert.ToInt32(cmd.ExecuteScalar());
-            }
-            this.conexion.Close();
+            bool resultado = NoExiste(queryExistePregunta, enunciado);
 
-            if (comprobacionExiste != 0)
+            if (resultado == false)
             {
                 return "Esta pregunta ya existe no puedes añardirla";
             }
@@ -706,11 +707,21 @@ namespace CapaDatos
             }
 
 
-            string anadirPregunta = "INSERT INTO PREGUNTAS(Enunciado,RespV,Idtest) VALUES('" + enunciado + "','" + valido + "'," + agregarTest.idTest + ")";
-            string msg = "";
-            if (HacerConsulta(anadirPregunta, out msg) == false)
+            string anadirPregunta = "INSERT INTO PREGUNTAS(Enunciado,RespV,Idtest) VALUES(@enunciado,@valido,@IdTest)";
+            if (OpenConnection())
             {
-                return msg;
+                SqlCommand cmd = new SqlCommand(anadirPregunta, conexion);
+                cmd.Parameters.AddWithValue("@enunciado", enunciado);
+                cmd.Parameters.AddWithValue("@valido", valido);
+                cmd.Parameters.AddWithValue("@IdTest", agregarTest.idTest);
+                int comprobar = 0;
+                comprobar = Convert.ToInt32(cmd.ExecuteNonQuery());
+
+                if (comprobar == 0)
+                {
+                    return "No se ha podido insertar la pregunta";
+                }
+                this.conexion.Close();
             }
 
             return "Pregunta agregada correctamente";
@@ -718,9 +729,11 @@ namespace CapaDatos
 
         public string BorrarPregunta(int idPregunta)
         {
-            string queryBorrarPregunta = "DELETE FROM PREGUNTAS WHERE IdPregunta = " + idPregunta + "";
+            string queryBorrarPregunta = "DELETE FROM PREGUNTAS WHERE IdPregunta = @VALOR";
             string msg = "";
-            if (HacerConsulta(queryBorrarPregunta, out msg) == false)
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("WHERE", idPregunta.ToString());
+            if (HacerConsulta(queryBorrarPregunta, out msg, "DELETE", dic) == false)
             {
                 return msg;
             }
@@ -729,9 +742,11 @@ namespace CapaDatos
 
         public string EliminarTodasLasPreguntasDeTest(int idTest)
         {
-            string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE IDTEST = " + idTest + "";
+            string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE IDTEST = @VALOR";
             string msg = "";
-            if (HacerConsulta(queryEliminarPreguntas, out msg) == false)
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("WHERE", idTest.ToString());
+            if (HacerConsulta(queryEliminarPreguntas, out msg, "DELETE", dic) == false)
             {
                 return msg;
             }
