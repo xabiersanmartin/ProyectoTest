@@ -13,8 +13,8 @@ namespace CapaPresentacion
 {
     public partial class FrmAnadirTest : Form
     {
-        string nombreTest = "";
-        bool cerrar = true;
+
+        List<Categoria> anadirCategoria = new List<Categoria>();
         public FrmAnadirTest()
         {
             InitializeComponent();
@@ -28,6 +28,10 @@ namespace CapaPresentacion
                 cboCategoria2.Items.Clear();
                 cboCategoria2.Items.AddRange(list.ToArray());
                 cboCategoria2.DisplayMember = "Descripcion";
+
+                cboCategorias.Items.Clear();
+                cboCategorias.Items.AddRange(list.ToArray());
+                cboCategorias.DisplayMember = "Descripcion";
 
             }
             else
@@ -48,36 +52,38 @@ namespace CapaPresentacion
 
         private void btnAnadirTest_Click(object sender, EventArgs e)
         {
+            if (anadirCategoria.Count == 0)
+            {
+                MessageBox.Show("Tienes que asociar minimo con una categoria el test", "ATENCIÓN");
+                return;
+            }
 
-            string mensaje = Program.gestor.AnadirTest(txtAnadirTest.Text);
+            string mensaje = Program.gestor.AnadirTest(txtAnadirTest.Text,anadirCategoria);
 
             if (mensaje == "El test que quieres añadir ya existe.")
             {
                 MessageBox.Show(mensaje);
                 txtAnadirTest.Text = "";
+                anadirCategoria.Clear();
+                cboCategorias.SelectedIndex = -1;
+                cboCategorias.Text = "";
                 return;
             }
 
             MessageBox.Show(mensaje);
 
-            if (mensaje == "El test se ha añadido correctamente")
-            {
-                MessageBox.Show("Ahora debes relacionar el test " + txtAnadirTest.Text + " con minimo una categoría");
-                btnVolver.Enabled = false;
-                btnAnadirTest.Enabled = false;
-                nombreTest = txtAnadirTest.Text;
-                cerrar = false;
-            }
-
             txtAnadirTest.Text = "";
-            txtAnadirTest.Enabled = false;
+
+            cboCategorias.SelectedIndex = -1;
+            cboCategorias.Text = "";
 
             List<Test> listTests = Program.gestor.DevolverTests();
             cboTests.Items.Clear();
             cboTests.Items.AddRange(listTests.ToArray());
             cboTests.DisplayMember = "Descripcion";
 
-            
+            anadirCategoria.Clear();
+            lsbCategorias.Items.Clear();
         }
 
         private void txtAnadirTest_KeyPress(object sender, KeyPressEventArgs e)
@@ -134,13 +140,6 @@ namespace CapaPresentacion
 
             MessageBox.Show(mensaje);
 
-            if ((mensaje == "La categoría " + anadirCategoria.Descripcion + " añadido correctamente al test " + anadirTest.Descripcion) && (anadirTest.Descripcion == nombreTest))
-            {
-                btnVolver.Enabled = true;
-                btnAnadirTest.Enabled = true;
-                txtAnadirTest.Enabled = true;
-                cerrar = true;
-            }
 
             dgvTestCat.Columns.Clear();
 
@@ -162,12 +161,42 @@ namespace CapaPresentacion
 
         }
 
-        private void FrmAnadirTest_FormClosing(object sender, FormClosingEventArgs e)
+        private void cboCategorias_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cerrar== false)
+            if (cboCategorias.SelectedIndex == -1)
             {
-                e.Cancel = true;
+                return;           
             }
+
+            Categoria categoriaAnadir = cboCategorias.SelectedItem as Categoria;
+            if (anadirCategoria.Contains(categoriaAnadir))
+            {
+                return;
+            }
+            anadirCategoria.Add(categoriaAnadir);
+            lsbCategorias.Items.Clear();
+            lsbCategorias.Items.AddRange(anadirCategoria.ToArray());
+            lsbCategorias.DisplayMember = "Descripcion";
+        }
+
+        private void lsbCategorias_DoubleClick(object sender, EventArgs e)
+        {
+            Categoria cat = lsbCategorias.SelectedItem as Categoria;
+            anadirCategoria.Remove(cat);
+
+            if (anadirCategoria.Count != 0) //Si el valor devuelto al eliminar no es 0 en la lista cargamos la lista otra vez con el elemento eliminado y reinicamos el combobox, para evitar la confusión del usuario.
+            {
+                lsbCategorias.Items.Clear();
+                lsbCategorias.Items.AddRange(anadirCategoria.ToArray());
+                lsbCategorias.DisplayMember = "Descripcion";
+                cboCategorias.SelectedIndex = -1;
+            }
+            else //Comprobamos que la lista no este vacia para evitar problemas de ejecucion al meterle al listBox una lista que esta vacia al borrarle el ultimo objeto.
+            {
+                lsbCategorias.Items.Clear();
+                cboCategorias.SelectedIndex = -1;
+            }
+
         }
     }
 }

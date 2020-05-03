@@ -400,15 +400,15 @@ namespace CapaDatos
             return "Categoría y tests eliminados correctamente";
         }
 
-        public string AnadirTest(string nombreTest)
+        public string AnadirTest(string nombreTest, List<Categoria> categorias)
         {
+
             if (String.IsNullOrWhiteSpace(nombreTest))
             {
                 return "No puedes dejar vacio el nombre del test que quieres añadir.";
             }
 
             string ConsultaSiExiste = "SELECT * FROM TEST WHERE Descripcion = @valor";
-
 
             bool resultado = NoExiste(ConsultaSiExiste, nombreTest);
 
@@ -427,6 +427,39 @@ namespace CapaDatos
                 {
                     return msg;
                 }
+
+                if (OpenConnection() == true)
+                {
+                    string queryIdTest = "SELECT IdTest FROM TEST WHERE Descripcion = @Descripcion";
+                    SqlCommand cmd = new SqlCommand(queryIdTest, conexion);
+                    cmd.Parameters.AddWithValue("@Descripcion", nombreTest);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    int idTest = 0;
+
+                    while (reader.Read())
+                    {
+                        idTest = int.Parse(reader["IdTest"].ToString());
+                    }
+
+                    reader.Close();
+
+                    foreach (var cat in categorias)
+                    {
+                        string queryTestCategorias = "INSERT INTO CATEGORIASTESTS VALUES (@IdCategoria,@IdTest)";
+                        SqlCommand cmd2 = new SqlCommand(queryTestCategorias, conexion);
+                        cmd2.Parameters.AddWithValue("@IdCategoria", cat.idCategoria);
+                        cmd2.Parameters.AddWithValue("@IdTest", idTest);
+
+                        int comprobacion = Convert.ToInt32(cmd2.ExecuteNonQuery());
+                        if (comprobacion == 0)
+                        {
+                            this.conexion.Close();
+                            return "No se ejecuto correctamente";
+                        }
+                    }
+                    this.conexion.Close();
+                }
+
             }
             return "El test se ha añadido correctamente";
         }
