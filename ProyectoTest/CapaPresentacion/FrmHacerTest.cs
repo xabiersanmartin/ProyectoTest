@@ -72,16 +72,7 @@ namespace CapaPresentacion
 
             foreach (var checkB in listCheck)
             {
-                if (checkB.Checked) // TODO ¿qué sentido tiene este if? Todo esto es simplemente: comprobarTest.Add(checkB.Checked)
-                {
-                    bool comprobar = true;
-                    comprobarTest.Add(comprobar);
-                }
-                else
-                {
-                    bool comprobar = false;
-                    comprobarTest.Add(comprobar);
-                }
+                comprobarTest.Add(checkB.Checked);
 
                 Point point = checkB.Location;
                 points.Add(point);

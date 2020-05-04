@@ -25,6 +25,11 @@ namespace CapaPresentacion
 
         private void cboCategorias_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (cboCategorias.SelectedIndex == -1)
+            {
+                return;
+            }
+
             cboEliminarTest.SelectedIndex = -1;
 
             Categoria newCategoria = new Categoria();
@@ -33,21 +38,15 @@ namespace CapaPresentacion
             List<Test> listaTest = Program.gestor.DevolverTestsDeCategoria(newCategoria);
 
             //Comprobamos que esa categoria que introduce tiene tests, de no ser asi se lo decimos al usuario y reninicamos los combobox.
-            if (listaTest.Count <=0 )
+            if (listaTest.Count <= 0)
             {
                 MessageBox.Show("No tienes ningun test asocidado a esta categoría", "ATENCIÓN");
 
-                List<Categoria> list = Program.gestor.DevolverCategorias();
-                cboCategorias.Items.Clear();
-                cboCategorias.Items.AddRange(list.ToArray());
                 cboCategorias.SelectedIndex = -1;
                 cboCategorias.Text = "";
 
-                List<Test> listTest = Program.gestor.DevolverTests();
-                cboEliminarTest.Items.Clear();
-                cboEliminarTest.Items.AddRange(listTest.ToArray());
-                cboEliminarTest.DisplayMember = "Descripcion";
-
+                cboEliminarTest.SelectedIndex = -1;
+                cboEliminarTest.Text = "";
                 return;
             }
 
@@ -67,8 +66,9 @@ namespace CapaPresentacion
             }
             else
             {
-                MessageBox.Show("No hay categorías, no vas a poder realizar busquedas de test por categorías ya que no tienes ninguna categoría.");
+                MessageBox.Show("No hay categorías.","ATENCIÓN");
                 cboCategorias.Enabled = false;
+                cboEliminarTest.Enabled = false;
             }
 
             List<Test> listTest = Program.gestor.DevolverTests();
@@ -108,22 +108,12 @@ namespace CapaPresentacion
                 return;
             }
 
-            List<Categoria> list = Program.gestor.DevolverCategorias();
-            if (list != null)
-            {
-                cboCategorias.Items.Clear();
-                cboCategorias.Items.AddRange(list.ToArray());
-                cboCategorias.SelectedIndex = -1;
-                cboCategorias.Text = "";
-            }
-            else
-            {
-                cboCategorias.Enabled = false;
-            }
-
             cboEliminarTest.Items.Clear();
             cboEliminarTest.Items.AddRange(listTest.ToArray());
             cboEliminarTest.DisplayMember = "Descripcion";
+
+            cboCategorias.SelectedIndex = -1;
+            cboCategorias.Text = "";
 
         }
 
@@ -134,74 +124,45 @@ namespace CapaPresentacion
                 MessageBox.Show("Debes seleccionar un test para poder borrarlo.", "ATENCIÓN");
                 return;
             }
+            if (cboCategorias.SelectedIndex == -1)
+            {
+                MessageBox.Show("Debes seleccionar una categoría para borrar el test", "ATENCIÓN");
+                return;
+            }
 
             Test eliminarTest = cboEliminarTest.SelectedItem as Test;
 
             DialogResult result = MessageBox.Show("Seguro que quieres eliminar el test " + eliminarTest.Descripcion + " ?", "CUIDADO", MessageBoxButtons.YesNo);
 
-
             if (result == DialogResult.Yes)
             {
-                string mensaje = Program.gestor.EliminarTest(eliminarTest);
-
-                if (mensaje == "preguntas")
+                bool comprobar = false;
+                if (eliminarTest.preguntasTest.Count != 0)
                 {
-                    Test testPreguntas = Program.gestor.DevolverPreguntasTest(eliminarTest);
                     string preguntas = "";
 
-                    foreach (var preg in testPreguntas.preguntasTest)
+                    foreach (var preg in eliminarTest.preguntasTest)
                     {
                         preguntas += String.Concat(preg.enunciado + ", ");
                     }
 
                     DialogResult result1 = MessageBox.Show("Seguro que quieres eliminar el test " + eliminarTest.Descripcion + " que tiene las preguntas \n \n " + preguntas, "ATENCION", MessageBoxButtons.YesNo);
-
                     if (result1 == DialogResult.Yes)
                     {
-                        string respuesta = Program.gestor.EliminarPreguntasDeTest(eliminarTest);
-
-                        MessageBox.Show(respuesta);
-
-                        List<Test> listTest = Program.gestor.DevolverTests();
-
-                        if (listTest == null)
-                        {
-                            MessageBox.Show("No tienes ningun test para eliminar, para poder eliminarlos debes crearlos antes");
-                            cboEliminarTest.Items.Clear();
-                            cboEliminarTest.Text = "";
-                            cboCategorias.Text = "";
-                            cboEliminarTest.Enabled = false;
-                            cboCategorias.Enabled = false;
-                            return;
-                        }
-
-                        cboEliminarTest.Items.Clear();
-                        cboEliminarTest.Items.AddRange(listTest.ToArray());
-                        cboEliminarTest.Text = "";
-
-                        List<Categoria> list = Program.gestor.DevolverCategorias();
-                        cboCategorias.Items.Clear();
-                        cboCategorias.Items.AddRange(list.ToArray());
-                        cboCategorias.Text = "";
-                    }
-                    else
-                    {
-                        List<Test> listTest = Program.gestor.DevolverTests();
-                        cboEliminarTest.Items.Clear();
-                        cboEliminarTest.Items.AddRange(listTest.ToArray());
-                        cboEliminarTest.Text = "";
-
-                        List<Categoria> list = Program.gestor.DevolverCategorias();
-                        cboCategorias.Items.Clear();
-                        cboCategorias.Items.AddRange(list.ToArray());
-                        cboCategorias.Text = "";
+                        comprobar = true;
                     }
 
                 }
                 else
                 {
+                    comprobar = true;
+                }
 
-                    MessageBox.Show(mensaje);
+                if (comprobar == true)
+                {
+                    string respuesta = Program.gestor.EliminarTest(eliminarTest);
+
+                    MessageBox.Show(respuesta);
 
                     List<Test> listTest = Program.gestor.DevolverTests();
                     if (listTest == null)
@@ -219,33 +180,28 @@ namespace CapaPresentacion
                     cboEliminarTest.Items.AddRange(listTest.ToArray());
                     cboEliminarTest.Text = "";
 
-                    List<Categoria> list = Program.gestor.DevolverCategorias();
-                    if (list != null)
-                    {
-                        cboCategorias.Items.Clear();
-                        cboCategorias.Items.AddRange(list.ToArray());
-                        cboCategorias.Text = "";
-                    }
+                    cboCategorias.SelectedIndex = -1;
+                    cboCategorias.Text = "";
 
+                }
+
+                else
+                {
+                    cboCategorias.SelectedIndex = -1;
+                    cboCategorias.Text = "";
+
+                    cboEliminarTest.SelectedIndex = -1;
+                    cboEliminarTest.Text = "";
                 }
             }
             else
             {
-                List<Test> listTest = Program.gestor.DevolverTests();
-                cboEliminarTest.Items.Clear();
-                cboEliminarTest.Items.AddRange(listTest.ToArray());
+                cboCategorias.SelectedIndex = -1;
+                cboCategorias.Text = "";
+
+                cboEliminarTest.SelectedIndex = -1;
                 cboEliminarTest.Text = "";
-
-                List<Categoria> list = Program.gestor.DevolverCategorias();
-                if (list != null)
-                {
-                    cboCategorias.Items.Clear();
-                    cboCategorias.Items.AddRange(list.ToArray());
-                    cboCategorias.Text = "";
-                }
-                
             }
-
         }
     }
 }

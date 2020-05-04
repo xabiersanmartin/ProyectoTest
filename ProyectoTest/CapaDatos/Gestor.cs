@@ -602,38 +602,6 @@ namespace CapaDatos
             return "La categoría " + categoria.Descripcion + " añadida correctamente al test " + test.Descripcion;
         }
 
-        public string EliminarTest(Test testEliminar)
-        {
-            string comprobarTest = "SELECT idTest FROM PREGUNTAS WHERE (((IdTest) = @IdTest))";
-            int comprobacion = 0;
-
-            if (OpenConnection() == true)
-            {
-
-                SqlCommand cmd = new SqlCommand(comprobarTest, conexion);
-                cmd.Parameters.AddWithValue("@IdTest", testEliminar.idTest);
-                comprobacion = Convert.ToInt32(cmd.ExecuteScalar());
-            }
-            this.conexion.Close();
-
-            if (comprobacion > 0)
-            {
-                return "preguntas";
-            }
-            else
-            {
-                string eliminarTest = "DELETE FROM TEST WHERE IdTest =  @VALOR";
-                Dictionary<string, string> dic = new Dictionary<string, string>();
-                dic.Add("WHERE", testEliminar.idTest.ToString());
-                string msg = "";
-                if (HacerConsulta(eliminarTest, out msg, "DELETE", dic) == false)
-                {
-                    return msg;
-                }
-            }
-
-            return "Test eliminado correctamente";
-        }
         public string ModificarTest(string nombreTest, string nuevoNombreTest, List<Test> listTest)
         {
             if (String.IsNullOrWhiteSpace(nuevoNombreTest))
@@ -673,15 +641,22 @@ namespace CapaDatos
 
         }
 
-        public string EliminarTestConPreguntas(Test eliminarTest)
+        public string EliminarTest(Test eliminarTest)
         {
-            string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE IdTest = @VALOR";
             string msg = "";
-            Dictionary<string, string> dic = new Dictionary<string, string>();
-            dic.Add("WHERE", eliminarTest.idTest.ToString());
-            if (HacerConsulta(queryEliminarPreguntas, out msg, "DELETE", dic) == false)
+            bool mensaje = false;
+
+            if (eliminarTest.preguntasTest.Count != 0)
             {
-                return msg;
+                mensaje = true;
+                string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE IdTest = @VALOR";
+
+                Dictionary<string, string> dic = new Dictionary<string, string>();
+                dic.Add("WHERE", eliminarTest.idTest.ToString());
+                if (HacerConsulta(queryEliminarPreguntas, out msg, "DELETE", dic) == false)
+                {
+                    return msg;
+                }
             }
 
             string queryEliminarTest = "DELETE FROM TEST WHERE Idtest = @VALOR";
@@ -692,7 +667,12 @@ namespace CapaDatos
                 return msg;
             }
 
-            return "Test " + eliminarTest.Descripcion + " y las preguntas asociadas elimanadas";
+            if (mensaje == true)
+            {
+                return "Test " + eliminarTest.Descripcion + " y las preguntas asociadas eliminadas";
+
+            }
+            return "Test " + eliminarTest.Descripcion + " eliminado correctamente";
         }
 
         public Test DevolverTestConPreguntas(Test buscarTest)

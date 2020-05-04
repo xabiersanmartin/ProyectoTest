@@ -34,6 +34,11 @@ namespace Entidades
             this.idCategoria = idCategoria;
         }
 
+        public Categoria(int idCategoria, string descripcion, List<Test> testCategorias) : this(idCategoria, descripcion)
+        {
+            this.testCategorias = testCategorias;
+        }
+
         public override bool Equals(object obj)
         {
             return Equals(obj as Categoria);
