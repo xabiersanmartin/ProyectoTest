@@ -20,7 +20,12 @@ namespace CapaPresentacion
 
         private void FrmBorrarCategoria_Load(object sender, EventArgs e)
         {
-            List<Categoria> list = Program.gestor.DevolverCategorias();
+            string msg = "";
+            List<Categoria> list = Program.gestor.DevolverCategorias(out msg);
+            if (msg != "")
+            {
+                MessageBox.Show(msg, "ATENCIÓN");
+            }
             if (list != null)
             {
                 cboCategorias.Items.Clear();
@@ -29,7 +34,6 @@ namespace CapaPresentacion
             }
             else
             {
-                MessageBox.Show("No hay categorías que eliminar, debes añadir una antes.");
                 cboCategorias.Enabled = false;
                 btnBorrarTodo.Enabled = false;
                 btnEliminar.Enabled = false;
@@ -88,7 +92,12 @@ namespace CapaPresentacion
                             MessageBox.Show(respuesta);
 
                             //Cargamos la lista de nuevo para que salga bien al seleccionar el combobox de nuevo
-                            List<Categoria> lista = Program.gestor.DevolverCategorias();
+                            string message = "";
+                            List<Categoria> lista = Program.gestor.DevolverCategorias(out message);
+                            if (message != "")
+                            {
+                                MessageBox.Show(message, "ATENCIÓN");
+                            }
                             if (lista == null)
                             {
                                 MessageBox.Show("Has eliminado todas las categorías");
@@ -134,7 +143,12 @@ namespace CapaPresentacion
                         {
                             MessageBox.Show("La categoría fue eliminada correctamente con todos sus tests y preguntas");
 
-                            List<Categoria> lista = Program.gestor.DevolverCategorias();
+                            string message = "";
+                            List<Categoria> lista = Program.gestor.DevolverCategorias(out message);
+                            if (message != "")
+                            {
+                                MessageBox.Show(message, "ATENCIÓN");
+                            }
 
                             if (lista == null)
                             {
@@ -160,12 +174,22 @@ namespace CapaPresentacion
                 }
 
                 //Cargamos la lista de nuevo para que salga bien al seleccionar el combobox de nuevo
-                List<Categoria> list = Program.gestor.DevolverCategorias();
-                if (list == null)
+                string msg = "";
+                List<Categoria> list = Program.gestor.DevolverCategorias(out msg);
+                if (msg != "" && msg != "Fallo en la conexión al devolver categorías, contacte con el administrador")
                 {
-                    MessageBox.Show("Has eliminado todas las categorías");
+                    MessageBox.Show("Has eliminado todas las categorías","ATENCIÓN");
                     cboCategorias.Items.Clear();
                     cboCategorias.Text = "";
+                    btnBorrarTodo.Enabled = false;
+                    btnEliminar.Enabled = false;
+                    return;
+                }else if(msg == "Fallo en la conexión al devolver categorías, contacte con el administrador")
+                {
+                    MessageBox.Show(msg,"ATENCIÓN");
+                    btnBorrarTodo.Enabled = false;
+                    btnEliminar.Enabled = false;
+                    cboCategorias.Enabled = false;
                     return;
                 }
 
@@ -186,7 +210,12 @@ namespace CapaPresentacion
 
         private void btnBorrarTodo_Click(object sender, EventArgs e)
         {
-            List<Categoria> list = Program.gestor.DevolverCategorias();
+            string msg = "";
+            List<Categoria> list = Program.gestor.DevolverCategorias(out msg);
+            if (msg != "")
+            {
+                MessageBox.Show(msg, "ATENCIÓN");
+            }
             if (list == null)
             {
                 MessageBox.Show("No puedes eliminar las categorías sino tienes ninguna");
@@ -198,7 +227,12 @@ namespace CapaPresentacion
             {
                 string mensaje = Program.gestor.EliminarCategorias();
                 MessageBox.Show(mensaje);
-                list = Program.gestor.DevolverCategorias();
+                string message = "";
+                list = Program.gestor.DevolverCategorias(out message);
+                if (message != "")
+                {
+                    MessageBox.Show(message, "ATENCIÓN");
+                }
                 cboCategorias.Items.Clear();
                 cboCategorias.Text = "";
             }

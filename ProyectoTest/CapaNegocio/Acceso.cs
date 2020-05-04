@@ -17,9 +17,9 @@ namespace CapaNegocio
             return nuevoAcceso.AnadirCategoria(nombreCategoria);
         }
 
-        public List<Categoria> DevolverCategorias()
+        public List<Categoria> DevolverCategorias(out string msg)
         {
-            return nuevoAcceso.DevolverCategorias();
+            return nuevoAcceso.DevolverCategorias(out msg);
         }
 
 
@@ -58,7 +58,7 @@ namespace CapaNegocio
             return nuevoAcceso.DevolverTests();
         }
 
-        public List<Pregunta> DevolverTestConPreguntas (List<Test> listTest)
+        public List<Pregunta> DevolverTestConPreguntas(List<Test> listTest)
         {
             return nuevoAcceso.DevolverPreguntasDeTest(listTest);
         }

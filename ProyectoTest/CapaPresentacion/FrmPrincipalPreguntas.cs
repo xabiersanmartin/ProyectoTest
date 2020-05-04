@@ -22,8 +22,13 @@ namespace CapaPresentacion
 
         private void FrmPrincipalPreguntas_Load(object sender, EventArgs e)
         {
+            string msg = "";
             cboTestDeCategorias.Enabled = false;
-            List<Categoria> list = Program.gestor.DevolverCategorias();
+            List<Categoria> list = Program.gestor.DevolverCategorias(out msg);
+            if (msg != "")
+            {
+                MessageBox.Show(msg, "ATENCIÓN");
+            }
             cboCategorias.Items.Clear();
             cboCategorias.Items.AddRange(list.ToArray());
             cboCategorias.DisplayMember = "Descripcion";

@@ -22,7 +22,15 @@ namespace CapaPresentacion
 
         private void FrmAnadirTest_Load(object sender, EventArgs e)
         {
-            List<Categoria> list = Program.gestor.DevolverCategorias();
+            string msg = "";
+            List<Categoria> list = Program.gestor.DevolverCategorias(out msg);
+            if (msg != "")
+            {
+                MessageBox.Show(msg, "ATENCIÓN");
+                btnAnadirTest.Enabled = false;
+                btnTestCategoria.Enabled = false;
+                return;
+            }
             if (list != null)
             {
                 cboCategoria2.Items.Clear();
@@ -33,11 +41,6 @@ namespace CapaPresentacion
                 cboCategorias.Items.AddRange(list.ToArray());
                 cboCategorias.DisplayMember = "Descripcion";
 
-            }
-            else
-            {
-                MessageBox.Show("No hay categorías, debes crear una categoría para asociarla al test que quieres crear", "CUIDADO");
-                Close();
             }
 
            List<Test> listTests = Program.gestor.DevolverTests();

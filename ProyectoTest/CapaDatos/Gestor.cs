@@ -175,7 +175,7 @@ namespace CapaDatos
             return "Categoría añadida correctamente";
         }
 
-        public List<Categoria> DevolverCategorias()
+        public List<Categoria> DevolverCategorias(out string msg)
         {
             string queryDevolverCategorias = "SELECT * FROM CATEGORIAS";
             List<Categoria> devolverCategorias = new List<Categoria>();
@@ -198,16 +198,18 @@ namespace CapaDatos
                 this.CloseConnection();
                 if (devolverCategorias.Count() != 0)
                 {
+                    msg = "";
                     return devolverCategorias;
                 }
                 else
                 {
+                    msg = "No hay categorías";
                     return null;
                 }
             }
             else
             {
-
+                msg = "Fallo en la conexión al devolver categorías, contacte con el administrador";
                 return null;
             }
         }
@@ -331,7 +333,6 @@ namespace CapaDatos
                     {
                         Pregunta newPregunta = new Pregunta();
                         newPregunta.idPregunta = int.Parse(dataReader2["IdPregunta"].ToString());
-                        newPregunta.idTest = int.Parse(dataReader2["IdTest"].ToString());
                         newPregunta.enunciado = dataReader2["Enunciado"].ToString();
                         newPregunta.respV = bool.Parse(dataReader2["RespV"].ToString());
 
@@ -519,7 +520,6 @@ namespace CapaDatos
                     {
                         Pregunta newPregunta = new Pregunta();
                         newPregunta.idPregunta = int.Parse(dataReader["IdPregunta"].ToString());
-                        newPregunta.idTest = int.Parse(dataReader["IdTest"].ToString());
                         newPregunta.enunciado = dataReader["Enunciado"].ToString();
                         newPregunta.respV = bool.Parse(dataReader["RespV"].ToString());
                         testConPreguntas.Add(newPregunta);

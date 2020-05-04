@@ -59,10 +59,15 @@ namespace CapaPresentacion
 
         private void btnFomularioPreguntas_Click(object sender, EventArgs e)
         {
-            List<Categoria> comprobarCategoria = Program.gestor.DevolverCategorias();
-            if (comprobarCategoria == null)
+            string msg = "";
+            List<Categoria> comprobarCategoria = Program.gestor.DevolverCategorias(out msg);
+            if (msg == "No hay categorías")
             {
                 MessageBox.Show("Para poder acceder aquí antes debes tener alguna categoría creada");
+                return;
+            }else if (msg == "Fallo en la conexión al devolver categorías, contacte con el administrador")
+            {
+                MessageBox.Show(msg);
                 return;
             }
             

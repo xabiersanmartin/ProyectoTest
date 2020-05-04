@@ -20,10 +20,14 @@ namespace CapaPresentacion
 
         private void FrmModificarCategoria_Load(object sender, EventArgs e)
         {
-            List<Categoria> list = Program.gestor.DevolverCategorias();
+            string msg = "";
+            List<Categoria> list = Program.gestor.DevolverCategorias(out msg);
+            if (msg != "")
+            {
+                MessageBox.Show("No hay categorías, no vas a poder modificar", "ATENCIÓN");
+            }
             if (list == null)
             {
-                MessageBox.Show("No hay categorías que modificar, debes añadir una antes.");
                 cboSeleccionarCat.Enabled = false;
                 txtModificarCat.Enabled = false;
                 btnModificar.Enabled = false;
@@ -65,12 +69,14 @@ namespace CapaPresentacion
 
             Categoria  categoriaModifi = cboSeleccionarCat.SelectedItem as Categoria;
             //La cargamos para enviarsela al gestor para comprobacion de errores.
-            List<Categoria> list = Program.gestor.DevolverCategorias();
+            string msg = "";
+            List<Categoria> list = Program.gestor.DevolverCategorias(out msg);
 
             string mensaje = Program.gestor.ModificarCategoria(categoriaModifi, txtModificarCat.Text, list);
-            
+
             //Cargamos la lista de nuevo para que salga bien al seleccionar el combobox de nuevo
-            list = Program.gestor.DevolverCategorias();
+            string msg2 = "";
+            list = Program.gestor.DevolverCategorias(out msg2);
 
             MessageBox.Show(mensaje);
 

@@ -57,7 +57,12 @@ namespace CapaPresentacion
 
         private void FrmBorrarTest_Load(object sender, EventArgs e)
         {
-            List<Categoria> list = Program.gestor.DevolverCategorias();
+            string msg = "";
+            List<Categoria> list = Program.gestor.DevolverCategorias(out msg);
+            if (msg != "")
+            {
+                MessageBox.Show(msg, "ATENCIÓN");
+            }
             if (list != null)
             {
                 cboCategorias.Items.Clear();
@@ -66,9 +71,10 @@ namespace CapaPresentacion
             }
             else
             {
-                MessageBox.Show("No hay categorías.","ATENCIÓN");
                 cboCategorias.Enabled = false;
                 cboEliminarTest.Enabled = false;
+                btnEliminarTest.Enabled = false;
+                btnMostrarTest.Enabled = false;
             }
 
             List<Test> listTest = Program.gestor.DevolverTests();

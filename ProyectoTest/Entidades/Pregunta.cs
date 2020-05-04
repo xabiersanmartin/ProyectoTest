@@ -12,19 +12,17 @@ namespace Entidades
         public int numPregunta { get; set; }
         public string enunciado { get; set; }
         public bool respV { get; set; }
-        public int idTest { get; set; }
 
         public Pregunta()
         {
         }
 
-        public Pregunta(int idPreguntas, int numPregunta, string enunciado, bool respV, int idTest)
+        public Pregunta(int idPreguntas, int numPregunta, string enunciado, bool respV)
         {
             this.idPregunta = idPreguntas;
             this.numPregunta = numPregunta;
             this.enunciado = enunciado;
             this.respV = respV;
-            this.idTest = idTest;
         }
 
         public Pregunta(string enunciado)
