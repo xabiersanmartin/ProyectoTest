@@ -22,10 +22,9 @@ namespace CapaNegocio
             return nuevoAcceso.DevolverCategorias(out msg);
         }
 
-
-        public string BorrarCategoria (int eliminarCategoria)
+        public Categoria DevolverTestAsociadosCategoria(Categoria categoria, out string msg)
         {
-            return nuevoAcceso.EliminarCategoria(eliminarCategoria);
+            return nuevoAcceso.DevolverTestsCategoria(categoria, out msg);
         }
 
         public string ModificarCategoria(Categoria categoria, string nuevaCategoria, List<Categoria> categorias)
@@ -38,14 +37,14 @@ namespace CapaNegocio
             return nuevoAcceso.EliminarTodasCategorias();
         }
 
-        public List<Test> DevolverTestsDeCategoria (Categoria categoria)
+        public List<Test> DevolverTestsPreguntasDeCategoria(Categoria categoria)
         {
-            return nuevoAcceso.DevolverTestAsociadoCategoria(categoria);
+            return nuevoAcceso.DevolverTestsPreguntasAsociadosCategoria(categoria);
         }
 
-        public string BorrarCategoriaTest( Categoria categoriaBorrar)
+        public string BorrarCategoria( Categoria categoriaBorrar, List<Pregunta> preguntas)
         {
-            return nuevoAcceso.EliminarCategoriaConTest(categoriaBorrar);
+            return nuevoAcceso.EliminarCategoria(categoriaBorrar,preguntas);
         }
 
         public string AnadirTest(string nombreTest,List<Categoria> categorias)
@@ -61,11 +60,6 @@ namespace CapaNegocio
         public List<Pregunta> DevolverTestConPreguntas(List<Test> listTest)
         {
             return nuevoAcceso.DevolverPreguntasDeTest(listTest);
-        }
-
-        public string EliminarPreguntasDeTest(List<Pregunta> listPreguntas)
-        {
-            return nuevoAcceso.BorrarCategoriaTestsPreguntas(listPreguntas);
         }
 
         public string AnadirCategoriaTest(Categoria categoria, Test test)

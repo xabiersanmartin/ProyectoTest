@@ -12,7 +12,7 @@ namespace Entidades
         public int idTest { get; set; }
         public string Descripcion { get; set; }
 
-        public List<Pregunta> preguntasTest = new List<Pregunta>();
+        public List<Pregunta> PreguntasTest = new List<Pregunta>();
 
 
 
@@ -29,7 +29,7 @@ namespace Entidades
         {
             this.idTest = idTest;
             Descripcion = descripcion;
-            this.preguntasTest = preguntasTest;
+            this.PreguntasTest = preguntasTest;
         }
 
         public Test(int idTest)

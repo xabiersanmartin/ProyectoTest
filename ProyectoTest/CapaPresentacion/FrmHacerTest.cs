@@ -35,12 +35,12 @@ namespace CapaPresentacion
             int columna2 = 660;
             int fila = 50;
 
-            for (int i = 0; i < test.preguntasTest.Count; i++)
+            for (int i = 0; i < test.PreguntasTest.Count; i++)
             {
                 TextBox newText = new TextBox();
                 CheckBox newCheck = new CheckBox();
 
-                newText.Text = test.preguntasTest[i].enunciado;
+                newText.Text = test.PreguntasTest[i].enunciado;
                 newText.Location = new Point(columna, fila);
                 newText.Width = 450;
                 newText.Height = 120;
@@ -79,9 +79,9 @@ namespace CapaPresentacion
 
             }
 
-            for (int i = 0; i < test.preguntasTest.Count; i++)
+            for (int i = 0; i < test.PreguntasTest.Count; i++)
             {
-                if (test.preguntasTest[i].respV == comprobarTest[i])
+                if (test.PreguntasTest[i].respV == comprobarTest[i])
                 {
                     contador += 1;
                 }
@@ -147,12 +147,12 @@ namespace CapaPresentacion
             int columna2 = 660;
             int fila = 50;
 
-            for (int i = 0; i < test.preguntasTest.Count; i++)
+            for (int i = 0; i < test.PreguntasTest.Count; i++)
             {
                 TextBox newText = new TextBox();
                 CheckBox newCheck = new CheckBox();
 
-                newText.Text = test.preguntasTest[i].enunciado;
+                newText.Text = test.PreguntasTest[i].enunciado;
                 newText.Location = new Point(columna, fila);
                 newText.Width = 450;
                 newText.Height = 120;

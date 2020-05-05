@@ -28,7 +28,7 @@ namespace CapaPresentacion
             
             lbl.Text = test.Descripcion;
 
-            numPreg = test.preguntasTest.Count() + 1;
+            numPreg = test.PreguntasTest.Count() + 1;
 
             lblNumPreg.Text = numPreg.ToString();
 
@@ -115,7 +115,7 @@ namespace CapaPresentacion
         private void btnVolverTest_Click(object sender, EventArgs e)
         {
             FrmHacerTest frm = new FrmHacerTest();
-            List<Test> listTestBUscar = Program.gestor.DevolverTestsDeCategoria(categoria);
+            List<Test> listTestBUscar = Program.gestor.DevolverTestsPreguntasDeCategoria(categoria);
             foreach (var testBuscar in listTestBUscar)
             {
                 if (testBuscar.Descripcion == test.Descripcion)

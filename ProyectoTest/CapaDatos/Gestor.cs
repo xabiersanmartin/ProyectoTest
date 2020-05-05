@@ -214,35 +214,42 @@ namespace CapaDatos
             }
         }
 
-        public String EliminarCategoria(int categoriaEliminar)
+        public Categoria DevolverTestsCategoria(Categoria catergoria, out string msg)
         {
-            string comprobarTest = "SELECT * FROM CATEGORIASTESTS WHERE (((IdCategoria) = @IdCategoria))";
-            int comprobar = 0;
+            string queryTestAsoc = "SELECT TEST.IdTest, Test.Descripcion FROM TEST INNER JOIN CATEGORIASTESTS INNER JOIN CATEGORIAS ON CATEGORIASTESTS.IDCATEGORIA = CATEGORIAS.IDCATEGORIA ON TEST.IDTEST = CATEGORIASTESTS.IDTEST  WHERE CATEGORIAS.IDCATEGORIA = @IdCategoria";
 
             if (OpenConnection() == true)
             {
-                SqlCommand cmd = new SqlCommand(comprobarTest, conexion);
-                cmd.Parameters.AddWithValue("@IdCategoria", categoriaEliminar);
-                comprobar = Convert.ToInt32(cmd.ExecuteScalar());
+                SqlCommand cmd = new SqlCommand(queryTestAsoc, conexion);
+                cmd.Parameters.AddWithValue("@IdCategoria", catergoria.idCategoria);
+                SqlDataReader dataReader = cmd.ExecuteReader();
 
-                this.CloseConnection();
-
-                if (comprobar != 0)
+                if (dataReader.HasRows)
                 {
-                    return "test";
+                    while (dataReader.Read())
+                    {
+                        Test newTest = new Test();
+                        newTest.Descripcion = dataReader["Descripcion"].ToString();
+                        newTest.idTest = int.Parse(dataReader["IdTest"].ToString());
+                        catergoria.TestCategorias.Add(newTest);
+                    }
+                    dataReader.Close();
                 }
-
+                else
+                {
+                    msg = "La categoría no tiene tests asociados";
+                    this.conexion.Close();
+                    return catergoria;
+                }
+                this.conexion.Close();
+                msg = "";
+                return catergoria;
             }
-
-            string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE (((IdCategoria) = @VALOR))";
-            Dictionary<string, string> dic = new Dictionary<string, string>();
-            dic.Add("WHERE", categoriaEliminar.ToString());
-            string msg = "";
-            if (HacerConsulta(queryBorrarCategoria, out msg, "DELETE", dic) == false)
+            else
             {
-                return msg;
+                msg = "No se ha podido establecer conexión, conacte con el administrador";
+                return null;
             }
-            return "Categoría eliminada correctamente";
         }
 
         public String ModificarCategoria(Categoria categoria, string nuevaCategoria, List<Categoria> categorias)
@@ -278,6 +285,63 @@ namespace CapaDatos
             return "Categoría modificada correctamente";
         }
 
+        public string EliminarCategoria(Categoria categoriaBorrar, List<Pregunta> preguntas)
+        {
+
+            string msg = "";
+            bool mensaje = false;
+            bool comprobarPreg = false;
+
+            if (preguntas.Count != 0)
+            {
+                foreach (var pregunta in preguntas)
+                {
+                    string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE IdPregunta = @VALOR";
+                    Dictionary<string, string> dic3 = new Dictionary<string, string>();
+                    dic3.Add("WHERE", pregunta.idPregunta.ToString());
+                    if (HacerConsulta(queryEliminarPreguntas, out msg, "DELETE", dic3) == false)
+                    {
+                        return msg;
+                    }
+                }
+                comprobarPreg = true;
+            }
+
+            if (categoriaBorrar.TestCategorias.Count != 0)
+            {
+                foreach (var test in categoriaBorrar.TestCategorias)
+                {
+                    string queryBorrarTest = "DELETE FROM TEST WHERE IdTest = @VALOR";
+                    Dictionary<string, string> dic2 = new Dictionary<string, string>();
+                    dic2.Add("WHERE", test.idTest.ToString());
+                    if (HacerConsulta(queryBorrarTest, out msg, "DELETE", dic2) == false)
+                    {
+                        return msg;
+                    }
+                }
+                mensaje = true;
+            }
+
+            //Se nos borra automaticamente los id de las tabla M-N ya que tiene relacionados gracias al Borrar en Cascada en la base de datos.
+            string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE IdCategoria = @VALOR";
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("WHERE", categoriaBorrar.idCategoria.ToString());
+            if (HacerConsulta(queryBorrarCategoria, out msg, "DELETE", dic) == false)
+            {
+                return msg;
+            }
+
+            if (comprobarPreg == true)
+            {
+                return "Categoría con sus tests y preguntas eliminadas correctamente";
+            }
+
+            if (mensaje == true)
+            {
+                return "Categoría y tests eliminados correctamente";
+            }
+            return "Categoría eliminada";
+        }
 
         public string EliminarTodasCategorias()
         {
@@ -300,7 +364,7 @@ namespace CapaDatos
             return "Todas las categorías, test y preguntas se han eliminado con exito";
         }
 
-        public List<Test> DevolverTestAsociadoCategoria(Categoria categoriaRela)
+        public List<Test> DevolverTestsPreguntasAsociadosCategoria(Categoria categoriaRela)
         {
             List<Test> testAsoc = new List<Test>();
             string queryTestAsoc = "SELECT TEST.IdTest, Test.Descripcion FROM TEST INNER JOIN CATEGORIASTESTS INNER JOIN CATEGORIAS ON CATEGORIASTESTS.IDCATEGORIA = CATEGORIAS.IDCATEGORIA ON TEST.IDTEST = CATEGORIASTESTS.IDTEST  WHERE CATEGORIAS.IDCATEGORIA = @IdCategoria";
@@ -336,7 +400,7 @@ namespace CapaDatos
                         newPregunta.enunciado = dataReader2["Enunciado"].ToString();
                         newPregunta.respV = bool.Parse(dataReader2["RespV"].ToString());
 
-                        test.preguntasTest.Add(newPregunta);
+                        test.PreguntasTest.Add(newPregunta);
                     }
                     dataReader2.Close();
 
@@ -350,55 +414,6 @@ namespace CapaDatos
             {
                 return null;
             }
-        }
-
-        public string EliminarCategoriaConTest(Categoria categoriaBorrar)
-        {
-
-            string comprobarTest = "SELECT * FROM CATEGORIASTESTS WHERE IdCategoria = @IdCategoria";
-            string msg = "";
-
-            List<int> idTests = new List<int>();
-
-            if (OpenConnection() == true)
-            {
-                SqlCommand cmd = new SqlCommand(comprobarTest, conexion);
-                cmd.Parameters.AddWithValue("@IdCategoria", categoriaBorrar.idCategoria);
-                SqlDataReader dataReader = cmd.ExecuteReader();
-
-
-                while (dataReader.Read())
-                {
-                    int result = int.Parse(dataReader["IdTest"].ToString());
-                    idTests.Add(result);
-                }
-                dataReader.Close();
-                this.conexion.Close();
-            }
-
-
-            foreach (var test in idTests)
-            {
-                string queryBorrarTest = "DELETE FROM TEST WHERE IdTest = @VALOR";
-                Dictionary<string, string> dic2 = new Dictionary<string, string>();
-                dic2.Add("WHERE", test.ToString());
-                if (HacerConsulta(queryBorrarTest, out msg, "DELETE", dic2) == false)
-                {
-                    return msg;
-                }
-            }
-
-
-            //Se nos borra automaticamente los id de las tabla M-N ya que tiene relacionados gracias al Borrar en Cascada en la base de datos.
-            string queryBorrarCategoria = "DELETE FROM CATEGORIAS WHERE IdCategoria = @VALOR";
-            Dictionary<string, string> dic = new Dictionary<string, string>();
-            dic.Add("WHERE", categoriaBorrar.idCategoria.ToString());
-            if (HacerConsulta(queryBorrarCategoria, out msg, "DELETE", dic) == false)
-            {
-                return msg;
-            }
-
-            return "Categoría y tests eliminados correctamente";
         }
 
         public string AnadirTest(string nombreTest, List<Categoria> categorias)
@@ -529,24 +544,6 @@ namespace CapaDatos
                 }
             }
             return testConPreguntas;
-
-        }
-
-        public string BorrarCategoriaTestsPreguntas(List<Pregunta> preguntasEliminar)
-        {
-            foreach (var pregunta in preguntasEliminar)
-            {
-                string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE IdPregunta = @VALOR";
-                Dictionary<string, string> dic = new Dictionary<string, string>();
-                dic.Add("WHERE", pregunta.idPregunta.ToString());
-                string msg = "";
-                if (HacerConsulta(queryEliminarPreguntas, out msg, "DELETE", dic) == false)
-                {
-                    return msg;
-                }
-
-            }
-            return "Preguntas eliminadas";
         }
 
         public string AnadirCategoriaTest(Categoria categoria, Test test)
@@ -646,7 +643,7 @@ namespace CapaDatos
             string msg = "";
             bool mensaje = false;
 
-            if (eliminarTest.preguntasTest.Count != 0)
+            if (eliminarTest.PreguntasTest.Count != 0)
             {
                 mensaje = true;
                 string queryEliminarPreguntas = "DELETE FROM PREGUNTAS WHERE IdTest = @VALOR";
@@ -693,14 +690,13 @@ namespace CapaDatos
                     newPregunta.enunciado = dataReader["Enunciado"].ToString();
                     newPregunta.idPregunta = int.Parse(dataReader["IdPregunta"].ToString());
 
-                    buscarTest.preguntasTest.Add(newPregunta);
+                    buscarTest.PreguntasTest.Add(newPregunta);
                 }
                 dataReader.Close();
                 this.conexion.Close();
             }
 
             return buscarTest;
-
         }
 
         public string AnadirPregunta(string enunciado, bool valido, Test agregarTest)

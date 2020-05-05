@@ -52,6 +52,7 @@
             this.cboCategorias.Name = "cboCategorias";
             this.cboCategorias.Size = new System.Drawing.Size(178, 24);
             this.cboCategorias.TabIndex = 1;
+            this.cboCategorias.SelectedIndexChanged += new System.EventHandler(this.cboCategorias_SelectedIndexChanged);
             // 
             // btnEliminar
             // 

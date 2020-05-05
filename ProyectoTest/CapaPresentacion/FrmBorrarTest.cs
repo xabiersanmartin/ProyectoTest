@@ -35,7 +35,7 @@ namespace CapaPresentacion
             Categoria newCategoria = new Categoria();
             newCategoria = cboCategorias.SelectedItem as Categoria;
 
-            List<Test> listaTest = Program.gestor.DevolverTestsDeCategoria(newCategoria);
+            List<Test> listaTest = Program.gestor.DevolverTestsPreguntasDeCategoria(newCategoria);
 
             //Comprobamos que esa categoria que introduce tiene tests, de no ser asi se lo decimos al usuario y reninicamos los combobox.
             if (listaTest.Count <= 0)
@@ -143,11 +143,11 @@ namespace CapaPresentacion
             if (result == DialogResult.Yes)
             {
                 bool comprobar = false;
-                if (eliminarTest.preguntasTest.Count != 0)
+                if (eliminarTest.PreguntasTest.Count != 0)
                 {
                     string preguntas = "";
 
-                    foreach (var preg in eliminarTest.preguntasTest)
+                    foreach (var preg in eliminarTest.PreguntasTest)
                     {
                         preguntas += String.Concat(preg.enunciado + ", ");
                     }

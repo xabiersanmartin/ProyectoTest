@@ -156,7 +156,7 @@ namespace CapaPresentacion
 
             if (categoriaTest != null)
             {
-                List<Test> listTest = Program.gestor.DevolverTestsDeCategoria(categoriaTest);
+                List<Test> listTest = Program.gestor.DevolverTestsPreguntasDeCategoria(categoriaTest);
 
                 dgvTestCat.DataSource = (from t in listTest
                                          select new { Categoria = categoriaTest.Descripcion, Test = t.Descripcion }).ToList();

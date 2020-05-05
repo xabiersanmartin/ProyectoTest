@@ -13,6 +13,7 @@ namespace CapaPresentacion
 {
     public partial class FrmBorrarCategoria : Form
     {
+        Categoria categoriaTests = new Categoria();
         public FrmBorrarCategoria()
         {
             InitializeComponent();
@@ -50,55 +51,58 @@ namespace CapaPresentacion
                 return;
             }
 
-            Categoria borrarCategoria = cboCategorias.SelectedItem as Categoria;
-
             //Vamos a comprobar con el usuario si quiere eliminar la categoria antes de eliminarla.
-            DialogResult resultado = MessageBox.Show("Seguro que quieres eliminar la categoría " + borrarCategoria.Descripcion, "ELIMINAR", MessageBoxButtons.YesNo);
+            DialogResult resultado = MessageBox.Show("Seguro que quieres eliminar la categoría " + categoriaTests.Descripcion, "ELIMINAR", MessageBoxButtons.YesNo);
+            List<Pregunta> preguntasAsociadas = new List<Pregunta>();
 
             if (resultado == DialogResult.Yes)
             {
-                string mensaje = Program.gestor.BorrarCategoria(borrarCategoria.idCategoria);
-
-                if (mensaje == "test")
+                if (categoriaTests.TestCategorias.Count != 0)
                 {
-                    DialogResult result = new DialogResult();
-                    List<Test> testAsociados = new List<Test>();
-                    List<Pregunta> preguntasAsociadas = new List<Pregunta>();
                     string tests = "";
 
-                    testAsociados = Program.gestor.DevolverTestsDeCategoria(borrarCategoria);
-                    preguntasAsociadas = Program.gestor.DevolverTestConPreguntas(testAsociados);
-
-                    for (int i = 0; i < testAsociados.Count; i++)
+                    for (int i = 0; i < categoriaTests.TestCategorias.Count; i++)
                     {
-                        if ((i + 1) == testAsociados.Count)
+                        if ((i + 1) == categoriaTests.TestCategorias.Count)
                         {
-                            tests += String.Concat(testAsociados[i].Descripcion + ".");
+                            tests += String.Concat(categoriaTests.TestCategorias[i].Descripcion + ".");
                         }
                         else
                         {
-                            tests += String.Concat(testAsociados[i].Descripcion + ", ");
+                            tests += String.Concat(categoriaTests.TestCategorias[i].Descripcion + ", ");
                         }
                     }
 
-                    if (preguntasAsociadas.Count == 0)
+                    preguntasAsociadas = Program.gestor.DevolverTestConPreguntas(categoriaTests.TestCategorias);
+                    if (preguntasAsociadas.Count != 0)
                     {
-                        DialogResult result2 = new DialogResult();
-                        result2 = MessageBox.Show("Seguro que quieres eliminar la categoría " + borrarCategoria.Descripcion + " que tiene los tests " + tests, "CUIDADO", MessageBoxButtons.YesNo);
+                        string preguntas = "";
 
-                        if (result2 == DialogResult.Yes)
+                        for (int i = 0; i < preguntasAsociadas.Count; i++)
                         {
-                            string respuesta = Program.gestor.BorrarCategoriaTest(borrarCategoria);
-                            MessageBox.Show(respuesta);
-
-                            //Cargamos la lista de nuevo para que salga bien al seleccionar el combobox de nuevo
-                            string message = "";
-                            List<Categoria> lista = Program.gestor.DevolverCategorias(out message);
-                            if (message != "")
+                            if ((i + 1) == preguntasAsociadas.Count)
                             {
-                                MessageBox.Show(message, "ATENCIÓN");
+                                preguntas += String.Concat(preguntasAsociadas[i].enunciado + ".");
                             }
-                            if (lista == null)
+                            else
+                            {
+                                preguntas += String.Concat(preguntasAsociadas[i].enunciado + ", ");
+                            }
+                        }
+                        DialogResult result = new DialogResult();
+                        result = MessageBox.Show("Seguro que quieres eliminar la categoría " + categoriaTests.Descripcion + "\n" + "\n" + "Con los tests: " + tests + "\n" + "\n" + " Con las preguntas: " + preguntas, "CUIDADO", MessageBoxButtons.YesNo);
+                        if (result == DialogResult.Yes)
+                        {
+                            string message = Program.gestor.BorrarCategoria(categoriaTests, preguntasAsociadas);
+                            MessageBox.Show(message);
+
+                            string message2 = "";
+                            List<Categoria> listCategoriasNuevas = Program.gestor.DevolverCategorias(out message2);
+                            if (message2 != "")
+                            {
+                                MessageBox.Show(message2, "ATENCIÓN");
+                            }
+                            if (listCategoriasNuevas == null)
                             {
                                 MessageBox.Show("Has eliminado todas las categorías");
                                 cboCategorias.Items.Clear();
@@ -107,105 +111,81 @@ namespace CapaPresentacion
                             }
 
                             cboCategorias.Items.Clear();
-                            cboCategorias.Items.AddRange(lista.ToArray());
+                            cboCategorias.Items.AddRange(listCategoriasNuevas.ToArray());
                             cboCategorias.DisplayMember = "Descripcion";
                             cboCategorias.Text = "";
                         }
+                        else
+                        {
+                            cboCategorias.SelectedIndex = -1;
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        DialogResult result = new DialogResult();
+                        result = MessageBox.Show("Seguro que quieres eliminar la categoría " + categoriaTests.Descripcion + " que tiene los tests " + tests, "CUIDADO", MessageBoxButtons.YesNo);
+                        if (result == DialogResult.Yes)
+                        {
+                            string message = Program.gestor.BorrarCategoria(categoriaTests, preguntasAsociadas);
+                            MessageBox.Show(message);
 
-                        cboCategorias.SelectedIndex = -1;
+                            string message2 = "";
+                            List<Categoria> listCategoriasNuevas = Program.gestor.DevolverCategorias(out message2);
+                            if (message2 != "")
+                            {
+                                MessageBox.Show(message2, "ATENCIÓN");
+                            }
+                            if (listCategoriasNuevas == null)
+                            {
+                                MessageBox.Show("Has eliminado todas las categorías");
+                                cboCategorias.Items.Clear();
+                                cboCategorias.Text = "";
+                                return;
+                            }
+
+                            cboCategorias.Items.Clear();
+                            cboCategorias.Items.AddRange(listCategoriasNuevas.ToArray());
+                            cboCategorias.DisplayMember = "Descripcion";
+                            cboCategorias.Text = "";
+                        }
+                        else
+                        {
+                            cboCategorias.SelectedIndex = -1;
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    string mensaje = Program.gestor.BorrarCategoria(categoriaTests, preguntasAsociadas);
+                    MessageBox.Show(mensaje);
+
+                    string message3 = "";
+                    List<Categoria> lista = Program.gestor.DevolverCategorias(out message3);
+                    if (message3 != "")
+                    {
+                        MessageBox.Show(message3, "ATENCIÓN");
+                    }
+                    if (lista == null)
+                    {
+                        MessageBox.Show("Has eliminado todas las categorías");
+                        cboCategorias.Items.Clear();
+                        cboCategorias.Text = "";
                         return;
-
                     }
 
-                    string preguntas = "";
-
-                    for (int i = 0; i < preguntasAsociadas.Count; i++)
-                    {
-                        if ((i + 1) == preguntasAsociadas.Count)
-                        {
-                            preguntas += String.Concat(preguntasAsociadas[i].enunciado + ".");
-                        }
-                        else
-                        {
-                            preguntas += String.Concat(preguntasAsociadas[i].enunciado + ", ");
-                        }
-
-                    }
-
-                    result = MessageBox.Show("Seguro que quieres eliminar la categoría " + borrarCategoria.Descripcion + "\n" + "\n" + "Con los tests: " + tests + "\n" + "\n" + " Con las preguntas: " + preguntas, "CUIDADO", MessageBoxButtons.YesNo);
-
-                    if (result == DialogResult.Yes)
-                    {
-                        string respuesta = Program.gestor.EliminarPreguntasDeTest(preguntasAsociadas);
-                        string respuesta2 = Program.gestor.BorrarCategoriaTest(borrarCategoria);
-
-                        if (respuesta == "Preguntas eliminadas" && respuesta2 == "Categoría y tests eliminados correctamente")
-                        {
-                            MessageBox.Show("La categoría fue eliminada correctamente con todos sus tests y preguntas");
-
-                            string message = "";
-                            List<Categoria> lista = Program.gestor.DevolverCategorias(out message);
-                            if (message != "")
-                            {
-                                MessageBox.Show(message, "ATENCIÓN");
-                            }
-
-                            if (lista == null)
-                            {
-                                MessageBox.Show("Has eliminado todas las categorías");
-                                cboCategorias.Items.Clear();
-                                cboCategorias.Text = "";
-                                return;
-                            }
-
-                            cboCategorias.Items.Clear();
-                            cboCategorias.Items.AddRange(lista.ToArray());
-                            cboCategorias.DisplayMember = "Descripcion";
-                            cboCategorias.Text = "";
-                        }
-                        else
-                        {
-                            MessageBox.Show("Ha sucedido un problema contacte con administrador.");
-                        }
-                    }
-
-                    cboCategorias.SelectedIndex = -1;
-                    return;
-                }
-
-                //Cargamos la lista de nuevo para que salga bien al seleccionar el combobox de nuevo
-                string msg = "";
-                List<Categoria> list = Program.gestor.DevolverCategorias(out msg);
-                if (msg != "" && msg != "Fallo en la conexión al devolver categorías, contacte con el administrador")
-                {
-                    MessageBox.Show("Has eliminado todas las categorías","ATENCIÓN");
                     cboCategorias.Items.Clear();
+                    cboCategorias.Items.AddRange(lista.ToArray());
+                    cboCategorias.DisplayMember = "Descripcion";
                     cboCategorias.Text = "";
-                    btnBorrarTodo.Enabled = false;
-                    btnEliminar.Enabled = false;
-                    return;
-                }else if(msg == "Fallo en la conexión al devolver categorías, contacte con el administrador")
-                {
-                    MessageBox.Show(msg,"ATENCIÓN");
-                    btnBorrarTodo.Enabled = false;
-                    btnEliminar.Enabled = false;
-                    cboCategorias.Enabled = false;
-                    return;
                 }
-
-                MessageBox.Show(mensaje);
-
-                cboCategorias.Items.Clear();
-                cboCategorias.Items.AddRange(list.ToArray());
-                cboCategorias.DisplayMember = "Descripcion";
-                cboCategorias.Text = "";
             }
             else
             {
-                MessageBox.Show("No se eliminó la categoría " + borrarCategoria.Descripcion);
                 cboCategorias.SelectedIndex = -1;
+                cboCategorias.Text = "";
             }
-
         }
 
         private void btnBorrarTodo_Click(object sender, EventArgs e)
@@ -246,6 +226,27 @@ namespace CapaPresentacion
         private void btnVolver_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void cboCategorias_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (categoriaTests.TestCategorias.Count != 0)
+            {
+                categoriaTests.TestCategorias.Clear();
+            }
+            
+            if (cboCategorias.SelectedIndex == -1)
+            {
+                return;
+            }
+            Categoria categoria = cboCategorias.SelectedItem as Categoria;
+            string msg = "";
+            if (msg == "No se ha podido establecer conexión, conacte con el administrador")
+            {
+                MessageBox.Show(msg);
+                return;
+            }
+            categoriaTests = Program.gestor.DevolverTestAsociadosCategoria(categoria, out msg);
         }
     }
 }

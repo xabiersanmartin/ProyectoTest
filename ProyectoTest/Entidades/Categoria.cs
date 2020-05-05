@@ -11,7 +11,7 @@ namespace Entidades
         public int idCategoria { get; set; }
         public string Descripcion { get; set; }
 
-        public List<Test> testCategorias = new List<Test>();
+        public List<Test> TestCategorias = new List<Test>();
 
 
         public Categoria(string descripcion)
@@ -36,7 +36,7 @@ namespace Entidades
 
         public Categoria(int idCategoria, string descripcion, List<Test> testCategorias) : this(idCategoria, descripcion)
         {
-            this.testCategorias = testCategorias;
+            this.TestCategorias = testCategorias;
         }
 
         public override bool Equals(object obj)

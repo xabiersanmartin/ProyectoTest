@@ -27,7 +27,7 @@ namespace CapaPresentacion
             lblTest.Text = test.Descripcion;
 
             cboPreguntas.Items.Clear();
-            cboPreguntas.Items.AddRange(test.preguntasTest.ToArray());
+            cboPreguntas.Items.AddRange(test.PreguntasTest.ToArray());
             cboPreguntas.DisplayMember = "Enunciado";
 
             if (volver == true)
@@ -62,10 +62,10 @@ namespace CapaPresentacion
                 testBuscar.idTest = test.idTest;
 
                 Test nuevoTest = Program.gestor.DevolverPreguntasTest(testBuscar);
-                if (testBuscar.preguntasTest.Count !=  0)
+                if (testBuscar.PreguntasTest.Count !=  0)
                 {
                     cboPreguntas.Items.Clear();
-                    cboPreguntas.Items.AddRange(nuevoTest.preguntasTest.ToArray());
+                    cboPreguntas.Items.AddRange(nuevoTest.PreguntasTest.ToArray());
                     cboPreguntas.DisplayMember = "Enunciado";
                     cboPreguntas.Text = "";
 
@@ -121,7 +121,7 @@ namespace CapaPresentacion
         private void btnVolverTest_Click(object sender, EventArgs e)
         {
             FrmHacerTest frm = new FrmHacerTest();
-            List<Test> listTestBUscar = Program.gestor.DevolverTestsDeCategoria(categoria);
+            List<Test> listTestBUscar = Program.gestor.DevolverTestsPreguntasDeCategoria(categoria);
             foreach (var testBuscar in listTestBUscar)
             {
                 if (testBuscar.Descripcion == test.Descripcion)

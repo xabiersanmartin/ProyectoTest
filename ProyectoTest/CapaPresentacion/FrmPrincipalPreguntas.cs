@@ -53,7 +53,7 @@ namespace CapaPresentacion
 
             Categoria categoria = cboCategorias.SelectedItem as Categoria;
 
-            List<Test> testsDeCategorias = Program.gestor.DevolverTestsDeCategoria(categoria);
+            List<Test> testsDeCategorias = Program.gestor.DevolverTestsPreguntasDeCategoria(categoria);
             if (testsDeCategorias.Count == 0)
             {
                 MessageBox.Show("No tienes ningun test asociado a esta categoría", "ATENCIÓN");
@@ -99,11 +99,11 @@ namespace CapaPresentacion
 
             if (cboTestDeCategorias.SelectedIndex == -1)
             {
-                MessageBox.Show("No puedes borrar una pregunta sin a ver seleccionado antes la categoría y el test al que quieres añadirle esas preguntas", "ATENCIÓN");
+                MessageBox.Show("No puedes borrar una pregunta sin haber seleccionado antes la categoría y el test", "ATENCIÓN");
                 return;
             }
 
-            if (comprobarTest.preguntasTest.Count == 0)
+            if (comprobarTest.PreguntasTest.Count == 0)
             {
                 MessageBox.Show("El test: " + comprobarTest.Descripcion + " no tiene preguntas que eliminar.");
                 return;
@@ -125,7 +125,7 @@ namespace CapaPresentacion
                 return;
             }
 
-            if (test.preguntasTest.Count == 0)
+            if (test.PreguntasTest.Count == 0)
             {
                 MessageBox.Show("En este test(" + test.Descripcion + ") no hay preguntas para borrar");
                 return;
@@ -163,7 +163,7 @@ namespace CapaPresentacion
                 return;
             }
 
-            if (test.preguntasTest.Count == 0)
+            if (test.PreguntasTest.Count == 0)
             {
                 MessageBox.Show("En este test(" + test.Descripcion + ") no hay preguntas.");
                 return;
