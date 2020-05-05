@@ -35,7 +35,6 @@
             this.btnVolver = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.cboCategorias = new System.Windows.Forms.ComboBox();
-            this.btnMostrarTest = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -103,22 +102,11 @@
             this.cboCategorias.TabIndex = 11;
             this.cboCategorias.SelectedIndexChanged += new System.EventHandler(this.cboCategorias_SelectedIndexChanged);
             // 
-            // btnMostrarTest
-            // 
-            this.btnMostrarTest.Location = new System.Drawing.Point(725, 200);
-            this.btnMostrarTest.Name = "btnMostrarTest";
-            this.btnMostrarTest.Size = new System.Drawing.Size(166, 46);
-            this.btnMostrarTest.TabIndex = 12;
-            this.btnMostrarTest.Text = "Mostrar todos los test";
-            this.btnMostrarTest.UseVisualStyleBackColor = true;
-            this.btnMostrarTest.Click += new System.EventHandler(this.btnMostrarTest_Click);
-            // 
             // FrmBorrarTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1131, 450);
-            this.Controls.Add(this.btnMostrarTest);
             this.Controls.Add(this.cboCategorias);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnVolver);
@@ -145,6 +133,5 @@
         private System.Windows.Forms.Button btnVolver;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cboCategorias;
-        private System.Windows.Forms.Button btnMostrarTest;
     }
 }

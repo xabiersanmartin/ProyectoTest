@@ -74,7 +74,6 @@ namespace CapaPresentacion
                 cboCategorias.Enabled = false;
                 cboEliminarTest.Enabled = false;
                 btnEliminarTest.Enabled = false;
-                btnMostrarTest.Enabled = false;
             }
 
             List<Test> listTest = Program.gestor.DevolverTests();
@@ -93,33 +92,6 @@ namespace CapaPresentacion
             cboEliminarTest.Items.AddRange(listTest.ToArray());
             cboEliminarTest.DisplayMember = "Descripcion";
 
-
-        }
-
-        private void btnMostrarTest_Click(object sender, EventArgs e)
-        {
-            //Ponemos a este botón para facilitar al usuario el reinicio de los combobox, el el caso de que quiera eliminar un test, que no tiene categoria, para que le salgan todos.
-            //Tambien porque si a seleccionado ya un combobox, no tendra forma de ver todos esos test en cuyo caso este sin categoria a no ser que salga del formulario y vuelva a entrar.
-
-            cboEliminarTest.Text = "";
-            cboEliminarTest.SelectedIndex = -1;
-
-            List<Test> listTest = Program.gestor.DevolverTests();
-            if (listTest == null)
-            {
-                MessageBox.Show("No tienes ningun test para eliminar, para poder eliminarlos debes crearlos antes");
-                cboEliminarTest.SelectedIndex = -1;
-                cboEliminarTest.Enabled = false;
-                cboCategorias.Enabled = false;
-                return;
-            }
-
-            cboEliminarTest.Items.Clear();
-            cboEliminarTest.Items.AddRange(listTest.ToArray());
-            cboEliminarTest.DisplayMember = "Descripcion";
-
-            cboCategorias.SelectedIndex = -1;
-            cboCategorias.Text = "";
 
         }
 
@@ -179,6 +151,7 @@ namespace CapaPresentacion
                         cboCategorias.Text = "";
                         cboEliminarTest.Enabled = false;
                         cboCategorias.Enabled = false;
+                        btnEliminarTest.Enabled = false;
                         return;
                     }
 

@@ -32,9 +32,9 @@ namespace CapaNegocio
             return nuevoAcceso.ModificarCategoria(categoria, nuevaCategoria, categorias);
         }
 
-        public string EliminarCategorias()
+        public string EliminarCategorias(out string msg)
         {
-            return nuevoAcceso.EliminarTodasCategorias();
+            return nuevoAcceso.EliminarTodasCategorias(out msg);
         }
 
         public List<Test> DevolverTestsPreguntasDeCategoria(Categoria categoria)

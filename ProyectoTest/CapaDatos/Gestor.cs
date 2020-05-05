@@ -343,7 +343,7 @@ namespace CapaDatos
             return "Categoría eliminada";
         }
 
-        public string EliminarTodasCategorias()
+        public string EliminarTodasCategorias(out string message)
         {
             string queryEliminarCategorias = "DELETE FROM CATEGORIAS";
             string queryEliminarTest = "DELETE T FROM TEST AS T INNER JOIN CATEGORIASTESTS ON T.IDTEST = CATEGORIASTESTS.IDTEST WHERE T.IDTEST = CATEGORIASTESTS.IDTEST";
@@ -351,16 +351,35 @@ namespace CapaDatos
             string msg = "";
             if (HacerConsulta(queryEliminarPreg, out msg) == false)
             {
-                return msg;
+                if (msg == "Fallo al ejecutarse")
+                {
+                    message = "";
+                }
+                else
+                {
+                    message = msg;
+                    return msg;
+                }                
             }
             if (HacerConsulta(queryEliminarTest, out msg) == false)
             {
-                return msg;
+                if (msg == "Fallo al ejecutarse")
+                {
+                    message = "";
+                }
+                else
+                {
+                    message = msg;
+                    return msg;
+                }
             }
             if (HacerConsulta(queryEliminarCategorias, out msg) == false)
             {
+                message = msg;
                 return msg;
             }
+
+            message = "";
             return "Todas las categorías, test y preguntas se han eliminado con exito";
         }
 

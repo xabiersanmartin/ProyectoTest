@@ -100,13 +100,15 @@ namespace CapaPresentacion
                             List<Categoria> listCategoriasNuevas = Program.gestor.DevolverCategorias(out message2);
                             if (message2 != "")
                             {
-                                MessageBox.Show(message2, "ATENCIÓN");
+                                MessageBox.Show("Has eliminado todas las categorías", "ATENCIÓN");
                             }
                             if (listCategoriasNuevas == null)
                             {
-                                MessageBox.Show("Has eliminado todas las categorías");
                                 cboCategorias.Items.Clear();
                                 cboCategorias.Text = "";
+                                cboCategorias.Enabled = false;
+                                btnBorrarTodo.Enabled = false;
+                                btnEliminar.Enabled = false;
                                 return;
                             }
 
@@ -134,13 +136,15 @@ namespace CapaPresentacion
                             List<Categoria> listCategoriasNuevas = Program.gestor.DevolverCategorias(out message2);
                             if (message2 != "")
                             {
-                                MessageBox.Show(message2, "ATENCIÓN");
+                                MessageBox.Show("Has eliminado todas las categorías", "ATENCIÓN");
                             }
                             if (listCategoriasNuevas == null)
                             {
-                                MessageBox.Show("Has eliminado todas las categorías");
                                 cboCategorias.Items.Clear();
                                 cboCategorias.Text = "";
+                                cboCategorias.Enabled = false;
+                                btnBorrarTodo.Enabled = false;
+                                btnEliminar.Enabled = false;
                                 return;
                             }
 
@@ -165,13 +169,15 @@ namespace CapaPresentacion
                     List<Categoria> lista = Program.gestor.DevolverCategorias(out message3);
                     if (message3 != "")
                     {
-                        MessageBox.Show(message3, "ATENCIÓN");
+                        MessageBox.Show("Has eliminado todas las categorías", "ATENCIÓN");
                     }
                     if (lista == null)
                     {
-                        MessageBox.Show("Has eliminado todas las categorías");
                         cboCategorias.Items.Clear();
                         cboCategorias.Text = "";
+                        cboCategorias.Enabled = false;
+                        btnBorrarTodo.Enabled = false;
+                        btnEliminar.Enabled = false;
                         return;
                     }
 
@@ -195,17 +201,19 @@ namespace CapaPresentacion
             if (msg != "")
             {
                 MessageBox.Show(msg, "ATENCIÓN");
-            }
-            if (list == null)
-            {
-                MessageBox.Show("No puedes eliminar las categorías sino tienes ninguna");
                 return;
             }
+
 
             DialogResult result = MessageBox.Show("¿Seguro que quieres eliminar todas las categorías? \n \n Piensa que también eliminaras todos los test asociados a esas categorías y las preguntas asociadas a los test", "ELIMINAR", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                string mensaje = Program.gestor.EliminarCategorias();
+                string message2 = "";
+                string mensaje = Program.gestor.EliminarCategorias(out message2);
+                if (message2 != "")
+                {
+                    MessageBox.Show(message2);
+                }
                 MessageBox.Show(mensaje);
                 string message = "";
                 list = Program.gestor.DevolverCategorias(out message);
@@ -215,6 +223,9 @@ namespace CapaPresentacion
                 }
                 cboCategorias.Items.Clear();
                 cboCategorias.Text = "";
+                cboCategorias.Enabled = false;
+                btnBorrarTodo.Enabled = false;
+                btnEliminar.Enabled = false;
             }
             else
             {
