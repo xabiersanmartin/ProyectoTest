@@ -97,8 +97,7 @@ namespace CapaDatos
                     switch (tipoConsulta)
                     {
                         case "INSERT":
-                            string verga = parametros["VALUES"];
-                            cmd.Parameters.AddWithValue("@VALOR", verga);
+                            cmd.Parameters.AddWithValue("@VALOR", parametros["VALUES"]);
                             break;
                         case "UPDATE":
                             cmd.Parameters.AddWithValue("@VALOR1", parametros["SET"]);
